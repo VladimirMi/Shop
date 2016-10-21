@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true"
+        android:id="@+id/pressed">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="@color/colorAccent"/>
+                    <size android:width="@dimen/size_medium_56"
+                          android:height="@dimen/size_medium_56"/>
+                </shape>
+            </item>
+            <item android:drawable="@drawable/ic_fb_24"
+                  android:top="@dimen/spacing_normal_16"
+                  android:right="@dimen/spacing_normal_16"
+                  android:bottom="@dimen/spacing_normal_16"
+                  android:left="@dimen/spacing_normal_16"/>
+        </layer-list>
+    </item>
+
+    <item android:id="@+id/usual">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="#80000000"/>
+                    <size android:width="@dimen/size_medium_56"
+                          android:height="@dimen/size_medium_56"/>
+                </shape>
+            </item>
+            <item android:drawable="@drawable/ic_fb_24"
+                android:top="@dimen/spacing_normal_16"
+                android:right="@dimen/spacing_normal_16"
+                android:bottom="@dimen/spacing_normal_16"
+                android:left="@dimen/spacing_normal_16"/>
+        </layer-list>
+    </item>
+</selector>

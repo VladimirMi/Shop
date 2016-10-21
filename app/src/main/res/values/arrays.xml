@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dot_colors">
+        <item>@color/colorAccent</item>
+        <item>@color/dot_color_1</item>
+        <item>@color/dot_color_2</item>
+    </string-array>
+</resources>

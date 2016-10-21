@@ -15,36 +15,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/logo_img"
-            android:layout_width="@dimen/logo_icon_width"
-            android:layout_height="@dimen/logo_icon_height"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/spacing_medium_48"
-            android:src="@drawable/firebase_icon"/>
-
-        <ru.mikhalev.vladimir.mvpauth.ui.views.CustomFontTextView
-            android:id="@+id/app_name_txt"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/logo_img"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/spacing_medium_24"
-            android:text="@string/app_name"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/font_largest_40"
-            app:font="PTBebasNeueBook.ttf"/>
+            android:layout_marginTop="@dimen/spacing_medium_36"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/logo_img"
+                android:layout_width="@dimen/logo_icon_width"
+                android:layout_height="@dimen/logo_icon_height"
+                android:src="@drawable/firebase_icon"/>
+
+            <ru.mikhalev.vladimir.mvpauth.ui.views.CustomFontTextView
+                android:id="@+id/app_name_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:layout_marginLeft="@dimen/spacing_normal_16"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font_largest_40"
+                app:font="PTBebasNeueBook.ttf"/>
+        </LinearLayout>
 
         <com.bhargavms.dotloader.DotLoader
             android:id="@+id/dot_loader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/app_name_txt"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/spacing_normal_16"
-            android:visibility="invisible"
             app:color_array="@array/dot_colors"
+            android:layout_above="@id/auth_wrapper"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"
             app:dot_radius="6dp"
             app:number_of_dots="3"/>
 
@@ -52,7 +54,7 @@
             android:id="@+id/auth_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/social_wrapper"
+            android:layout_above="@id/social_wrapper"
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
@@ -108,7 +110,7 @@
         </ru.mikhalev.vladimir.mvpauth.ui.views.AuthPanel>
 
         <LinearLayout
-            android:id="@id/social_wrapper"
+            android:id="@+id/social_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -131,6 +133,5 @@
                 android:background="@drawable/vk_selector_btn"/>
 
         </LinearLayout>
-
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

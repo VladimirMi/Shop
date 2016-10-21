@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">MVPAuth</string>
+
+    <string name="email_hint">E-mail</string>
+    <string name="password_hint">Пароль</string>
+    <string name="err_msg_password">Неправильный пароль</string>
+    <string name="err_msg_email">Неправильный email адрес</string>
+    <string name="err_msg_login">Неверный логин или пароль</string>
+    <string name="err_msg_token">Invalid Token</string>
+    <string name="password_tag">password</string>
+    <string name="email_tag">email</string>
+    <string name="err">Неправильный e-mail адрес</string>
+    <string name="show_catalog">Показать каталог</string>
+    <string name="login">Войти</string>
 </resources>
