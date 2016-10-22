@@ -69,6 +69,22 @@ public class MainActivity extends AppCompatActivity implements IAuthView, View.O
         super.onDestroy();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(ConstantManager.LOADER_VISIBILE, mDotLoader.isShown());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState.getBoolean(ConstantManager.LOADER_VISIBILE)) {
+            showLoad();
+        } else {
+            hideLoad();
+        }
+    }
+
     //endregion
 
     //region ============== IAuthView ===============

@@ -12,4 +12,7 @@ public interface ConstantManager {
     String AUTH_TOKEN_KEY = "AUTH_TOKEN_KEY";
 
     String INVALID_TOKEN = "";
+
+
+    String LOADER_VISIBILE = "LOADER_VISIBILE";
 }
