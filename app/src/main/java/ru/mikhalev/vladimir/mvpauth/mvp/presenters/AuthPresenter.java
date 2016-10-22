@@ -9,7 +9,7 @@ import ru.mikhalev.vladimir.mvpauth.data.managers.DataManager;
 import ru.mikhalev.vladimir.mvpauth.mvp.models.AuthModel;
 import ru.mikhalev.vladimir.mvpauth.mvp.views.IAuthView;
 import ru.mikhalev.vladimir.mvpauth.utils.ConstantManager;
-import ru.mikhalev.vladimir.mvpauth.utils.MyTextWatcher;
+import ru.mikhalev.vladimir.mvpauth.utils.Helper;
 
 public class AuthPresenter implements IAuthPresenter {
     private static AuthPresenter ourInstance = new AuthPresenter();
@@ -54,24 +54,23 @@ public class AuthPresenter implements IAuthPresenter {
 
     @Override
     public void clickOnLogin() {
-        if (getView()!=null && getView().getAuthPanel() != null) {
+        if (getView() != null && getView().getAuthPanel() != null) {
             if (getView().getAuthPanel().isIdle()) {
                 getView().getAuthPanel().setCustomState(ConstantManager.LOGIN_STATE);
             } else {
                 String email = getView().getAuthPanel().getUserEmail();
                 String password = getView().getAuthPanel().getUserPassword();
 
-                if (!MyTextWatcher.isValidEmail(email)) {
+                if (!Helper.isValidEmail(email)) {
                     getView().requestEmailFocus();
                     getView().showMessage(sAppContext.getString(R.string.err_msg_email));
                     return;
                 }
-                if (!MyTextWatcher.isValidPassword(password)) {
+                if (!Helper.isValidPassword(password)) {
                     getView().requestPasswordFocus();
                     getView().showMessage(sAppContext.getString(R.string.err_msg_password));
                     return;
                 }
-                // TODO: 20-Oct-16 auth user
                 mAuthModel.loginUser(email, password);
                 getView().showLoad();
                 getView().showMessage("request for user auth");
@@ -110,5 +109,31 @@ public class AuthPresenter implements IAuthPresenter {
     @Override
     public boolean checkUserAuth() {
         return mAuthModel.isAuthUser();
+    }
+
+    @Override
+    public void validateEmail() {
+        if (getView() != null && getView().getAuthPanel() != null) {
+            String email = getView().getAuthPanel().getUserEmail();
+
+            if (!Helper.isValidEmail(email)) {
+                getView().setEmailError(sAppContext.getString(R.string.err_msg_email));
+            } else {
+                getView().setEmailError(null);
+            }
+        }
+    }
+
+    @Override
+    public void validatePassword() {
+        if (getView() != null && getView().getAuthPanel() != null) {
+            String password = getView().getAuthPanel().getUserPassword();
+
+            if (!Helper.isValidPassword(password)) {
+                getView().setPasswordError(sAppContext.getString(R.string.err_msg_password));
+            } else {
+                getView().setPasswordError(null);
+            }
+        }
     }
 }

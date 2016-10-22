@@ -3,6 +3,8 @@ package ru.mikhalev.vladimir.mvpauth.data.managers;
 
 import android.content.Context;
 
+import ru.mikhalev.vladimir.mvpauth.utils.ConstantManager;
+
 public class DataManager {
     private static DataManager ourInstance;
     private PreferencesManager mPreferencesManager;
@@ -26,5 +28,14 @@ public class DataManager {
 
     public Context getAppContext() {
         return mAppContext;
+    }
+
+
+    public boolean isAuthUser() {
+        return !mPreferencesManager.getAuthToken().equals(ConstantManager.INVALID_TOKEN);
+    }
+
+    public void loginUser(String email, String password) {
+        // TODO: 10/22/16 implement auth
     }
 }

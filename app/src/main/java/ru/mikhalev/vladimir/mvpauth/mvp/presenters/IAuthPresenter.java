@@ -21,4 +21,8 @@ public interface IAuthPresenter {
     void clickOnShowCatalog();
 
     boolean checkUserAuth();
+
+    void validateEmail();
+
+    void validatePassword();
 }

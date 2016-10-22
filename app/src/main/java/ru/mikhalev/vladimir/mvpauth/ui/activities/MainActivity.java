@@ -3,6 +3,7 @@ package ru.mikhalev.vladimir.mvpauth.ui.activities;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,16 +24,18 @@ import ru.mikhalev.vladimir.mvpauth.mvp.presenters.IAuthPresenter;
 import ru.mikhalev.vladimir.mvpauth.mvp.views.IAuthView;
 import ru.mikhalev.vladimir.mvpauth.ui.views.AuthPanel;
 import ru.mikhalev.vladimir.mvpauth.utils.ConstantManager;
-import ru.mikhalev.vladimir.mvpauth.utils.MyTextWatcher;
 
 public class MainActivity extends AppCompatActivity implements IAuthView, View.OnClickListener {
-    AuthPresenter mPresenter = AuthPresenter.getInstance();
+    private AuthPresenter mPresenter = AuthPresenter.getInstance();
 
     @BindView(R.id.coordinator_container) CoordinatorLayout mCoordinatorLayout;
     @BindView(R.id.auth_wrapper) AuthPanel mAuthPanel;
 
     @BindView(R.id.login_email_et) EditText mEmailEt;
     @BindView(R.id.login_password_et) EditText mPasswordEt;
+
+    @BindView(R.id.login_email_til) TextInputLayout mEmailTil;
+    @BindView(R.id.login_password_til) TextInputLayout mPasswordTil;
 
     @BindView(R.id.show_catalog_btn) Button mShowCatalogBtn;
     @BindView(R.id.login_btn) Button mLoginBtn;
@@ -58,10 +61,6 @@ public class MainActivity extends AppCompatActivity implements IAuthView, View.O
         mFbBtn.setOnClickListener(this);
         mTwBtn.setOnClickListener(this);
         mVkBtn.setOnClickListener(this);
-
-        // TODO: 10/21/16 remake to mvp
-        mPasswordEt.addTextChangedListener(new MyTextWatcher(this, mPasswordEt));
-        mEmailEt.addTextChangedListener(new MyTextWatcher(this, mEmailEt));
     }
 
     @Override
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements IAuthView, View.O
 
     @Override
     public IAuthPresenter getPresenter() {
-        return null;
+        return mPresenter;
     }
 
     @Override
@@ -146,6 +145,24 @@ public class MainActivity extends AppCompatActivity implements IAuthView, View.O
     @Override
     public void requestPasswordFocus() {
         requestFocus(mPasswordEt);
+    }
+
+    @Override
+    public void setEmailError(String error) {
+        if (error != null) {
+            mEmailTil.setError(error);
+        } else {
+            mEmailTil.setErrorEnabled(false);
+        }
+    }
+
+    @Override
+    public void setPasswordError(String error) {
+        if (error != null) {
+            mPasswordTil.setError(error);
+        } else {
+            mPasswordTil.setErrorEnabled(false);
+        }
     }
 
     //endregion

@@ -1,17 +1,20 @@
 package ru.mikhalev.vladimir.mvpauth.mvp.models;
 
 
+import ru.mikhalev.vladimir.mvpauth.data.managers.DataManager;
+
 public class AuthModel {
+    private DataManager mDataManager;
 
     public AuthModel() {
+        mDataManager = DataManager.getInstance();
     }
 
     public  boolean isAuthUser() {
-        // TODO: 20-Oct-16 search token
-        return false;
+        return mDataManager.isAuthUser();
     }
 
     public void loginUser(String email, String password) {
-        // TODO: 20-Oct-16  send data to server for auth
+        mDataManager.loginUser(email, password);
     }
 }

@@ -11,5 +11,5 @@ public interface ConstantManager {
     // Preferences Keys
     String AUTH_TOKEN_KEY = "AUTH_TOKEN_KEY";
 
-    String INVALID_TOKEN = "INVALID_TOKEN";
+    String INVALID_TOKEN = "";
 }

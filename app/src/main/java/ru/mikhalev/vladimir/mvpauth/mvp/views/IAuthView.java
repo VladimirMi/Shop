@@ -29,4 +29,8 @@ public interface IAuthView {
     void requestEmailFocus();
 
     void requestPasswordFocus();
+
+    void setEmailError(String error);
+
+    void setPasswordError(String error);
 }

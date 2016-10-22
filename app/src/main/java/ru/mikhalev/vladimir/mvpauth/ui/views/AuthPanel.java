@@ -1,7 +1,6 @@
 package ru.mikhalev.vladimir.mvpauth.ui.views;
 
 import android.content.Context;
-import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.CardView;
@@ -16,34 +15,39 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.data.managers.DataManager;
+import ru.mikhalev.vladimir.mvpauth.mvp.presenters.AuthPresenter;
 import ru.mikhalev.vladimir.mvpauth.utils.ConstantManager;
+import ru.mikhalev.vladimir.mvpauth.utils.MyTextWatcher;
 
 
 public class AuthPanel extends LinearLayout {
 
+    private static final String TAG = ConstantManager.TAG_PREFIX + "AuthPanel";
     private int mCustomState = ConstantManager.IDLE_STATE;
+    private AuthPresenter mPresenter = AuthPresenter.getInstance();
 
     @BindView(R.id.auth_card) CardView mAuthCard;
     @BindView(R.id.login_email_et) EditText mEmailEt;
     @BindView(R.id.login_password_et) EditText mPasswordEt;
     @BindView(R.id.show_catalog_btn) Button mShowCatalogBtn;
-    @BindView(R.id.login_btn) Button mLoginBtn;
 
-    private Animation mInAnimation = AnimationUtils.loadAnimation(DataManager.getInstance().getAppContext(),
+    @BindView(R.id.login_btn) Button mLoginBtn;
+    private Animation mCardInAnimation = AnimationUtils.loadAnimation(DataManager.getInstance().getAppContext(),
             R.anim.card_in_animation);
-    private Animation mOutAnimation = AnimationUtils.loadAnimation(DataManager.getInstance().getAppContext(),
+    private Animation mCardOutAnimation = AnimationUtils.loadAnimation(DataManager.getInstance().getAppContext(),
             R.anim.card_out_animation);
 
     public AuthPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    // TODO: 20-Oct-16 validate and save state for email and password
-
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
+        mPasswordEt.addTextChangedListener(new MyTextWatcher(mPasswordEt));
+        mEmailEt.addTextChangedListener(new MyTextWatcher(mEmailEt));
+
         showViewFromState();
     }
 
@@ -59,11 +63,13 @@ public class AuthPanel extends LinearLayout {
     protected void onRestoreInstanceState(Parcelable state) {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(state);
-        setCustomState(savedState.state);
+        mCustomState = savedState.state;
+        showViewFromState();
     }
 
     public void setCustomState(int customState) {
         mCustomState = customState;
+        showAnimationFromState();
         showViewFromState();
     }
 
@@ -75,23 +81,31 @@ public class AuthPanel extends LinearLayout {
         }
     }
 
+    private void showAnimationFromState() {
+        if (mCustomState == ConstantManager.LOGIN_STATE) {
+            showLoginStateAnimation();
+        } else {
+            showIdleStateAnimation();
+        }
+    }
+
     private void showLoginState() {
         mAuthCard.setVisibility(VISIBLE);
         mShowCatalogBtn.setVisibility(GONE);
-        mAuthCard.startAnimation(mInAnimation);
+
     }
 
     private void showIdleState() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mAuthCard.setVisibility(GONE);
-                mShowCatalogBtn.setVisibility(VISIBLE);
-            }
-        }, 500);
+        mShowCatalogBtn.setVisibility(VISIBLE);
+        mAuthCard.setVisibility(GONE);
+    }
 
-        mAuthCard.startAnimation(mOutAnimation);
+    private void showLoginStateAnimation() {
+        mAuthCard.startAnimation(mCardInAnimation);
+    }
+
+    private void showIdleStateAnimation() {
+        mAuthCard.startAnimation(mCardOutAnimation);
     }
 
     public String getUserEmail() {
