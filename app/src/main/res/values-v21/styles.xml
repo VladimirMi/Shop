@@ -2,7 +2,7 @@
 <resources>
 
     <style name="StartBtn" parent="Base.Widget.AppCompat.Button">
-        <item name="android:colorButtonNormal">@color/colorAccent</item>
+        <item name="android:colorButtonNormal">@color/color_accent</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
