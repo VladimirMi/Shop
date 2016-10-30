@@ -3,19 +3,33 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
     </style>
 
-    <style name="LoginCard">
-        <item name="android:layout_marginLeft">@dimen/spacing_medium_32</item>
-        <item name="android:layout_marginRight">@dimen/spacing_medium_32</item>
-        <item name="android:layout_marginBottom">@dimen/spacing_small_8</item>
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/color_primary_dark</item>
+        <item name="colorControlNormal">@color/color_primary_dark</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="CustomCard">
         <item name="cardBackgroundColor">@android:color/white</item>
         <item name="cardCornerRadius">@dimen/card_corner_radius</item>
         <item name="contentPadding">@dimen/spacing_normal_16</item>
         <item name="cardElevation">@dimen/card_elevation</item>
+    </style>
+
+    <style name="CustomCard.LoginCard">
+        <item name="android:layout_marginLeft">@dimen/spacing_medium_36</item>
+        <item name="android:layout_marginRight">@dimen/spacing_medium_36</item>
+        <item name="android:layout_marginBottom">@dimen/spacing_small_8</item>
     </style>
 
     <style name="CustomButton">
@@ -30,7 +44,7 @@
     </style>
 
     <style name="StartBtn" parent="Base.Widget.AppCompat.Button">
-        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/color_accent</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
@@ -53,5 +67,78 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="NavigationView" parent="Widget.Design.NavigationView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="itemIconTint">@color/nav_icon_color_selector</item>
+        <item name="itemBackground">@drawable/nav_drawer_item_selector</item>
+        <item name="itemTextColor">@color/nav_item_color_selector</item>
+    </style>
+
+    <style name="CustomCard.ProductCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/spacing_small_8</item>
+    </style>
+
+    <style name="ProductText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/roboto_regular</item>
+    </style>
+
+    <style name="ProductText.ProductTitle">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/spacing_small_12</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/roboto_medium</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/font_small_14</item>
+    </style>
+
+    <style name="ProductText.ProductDescription">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/spacing_normal_16</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/roboto_medium</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">@dimen/font_small_14</item>
+    </style>
+
+    <style name="CountBtn">
+        <item name="android:layout_width">@dimen/size_medium_44</item>
+        <item name="android:layout_height">@dimen/size_medium_44</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:padding">@dimen/spacing_small_12</item>
+    </style>
+
+    <style name="ProductText.LabelPrice">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">@dimen/font_small_10</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginBottom">@dimen/spacing_small_8</item>
+    </style>
+
+    <style name="ProductText.ValuePrice">
+        <item name="android:layout_height">@dimen/size_medium_44</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/font_larger_24</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="PageIndicator">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="piv_unselectedColor">@color/grey</item>
+        <item name="piv_selectedColor">@color/color_accent</item>
+        <item name="piv_padding">1dp</item>
+        <item name="piv_animationDuration">500</item>
+        <item name="piv_animationType">scale</item>
+    </style>
 
 </resources>

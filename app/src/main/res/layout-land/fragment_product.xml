@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="product"
+            type="ru.mikhalev.vladimir.mvpauth.catalog.product.ProductDto"/>
+    </data>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/spacing_small_8">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.CardView
+                style="@style/CustomCard.ProductCard">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ru.mikhalev.vladimir.mvpauth.core.ui.AspectRatioImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="2"
+                        android:background="@color/color_accent"
+                        android:scaleType="centerCrop"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/ProductText.ProductTitle"
+                            android:text="@{product.productName}"/>
+
+                        <TextView
+                            style="@style/ProductText.ProductDescription"
+                            android:text="@{product.description}"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:paddingTop="@dimen/spacing_small_8">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/ProductText.LabelPrice"
+                                    android:layout_marginBottom="0dp"
+                                    android:text="Стоимость"/>
+
+                                <TextView
+                                    style="@style/ProductText.ValuePrice"
+                                    android:text='@{product.price*product.count+".-"}'/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/ProductText.LabelPrice"
+                                    android:layout_marginBottom="0dp"
+                                    android:text="Количество"/>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <ImageButton
+                                        android:id="@+id/minus"
+                                        style="@style/CountBtn"
+                                        android:src="@drawable/ic_minus_24dp"/>
+
+                                    <TextView
+                                        style="@style/ProductText.ValuePrice"
+                                        android:text='@{""+product.count}'/>
+
+                                    <ImageButton
+                                        android:id="@+id/plus"
+                                        style="@style/CountBtn"
+                                        android:src="@drawable/ic_plus_24dp"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>

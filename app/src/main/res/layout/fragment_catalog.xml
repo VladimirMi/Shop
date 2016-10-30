@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/product_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/pager_indicator"
+            android:layout_alignParentTop="true"/>
+
+        <com.rd.PageIndicatorView
+            android:id="@id/pager_indicator"
+            style="@style/PageIndicator"
+            android:layout_above="@+id/btn_wrapper"
+            app:piv_viewPager="@id/product_pager"/>
+
+        <LinearLayout
+            android:id="@id/btn_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/add_to_card_btn"
+                style="@style/CustomButton"
+                android:layout_marginBottom="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_normal_16"
+                android:text="В корзину"
+                android:theme="@style/StartBtn"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

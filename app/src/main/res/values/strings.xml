@@ -12,4 +12,14 @@
     <string name="err">Неправильный e-mail адрес</string>
     <string name="show_catalog">Показать каталог</string>
     <string name="login">Войти</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="roboto_regular">sans-serif</string>
+    <string name="roboto_medium">sans-serif-medium</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="message.exit">Вы уверены что хотите выйти?</string>
+    <string name="message.error.common">Извините что то пошло не так, попрбуйте позже</string>
+    <string name="message.auth">Необходима авторизация</string>
 </resources>
