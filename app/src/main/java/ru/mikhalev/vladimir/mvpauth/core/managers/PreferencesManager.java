@@ -3,9 +3,9 @@ package ru.mikhalev.vladimir.mvpauth.core.managers;
 import android.content.SharedPreferences;
 
 import ru.mikhalev.vladimir.mvpauth.core.MvpApplication;
-import ru.mikhalev.vladimir.mvpauth.core.utils.ConstantManager;
 
 public class PreferencesManager {
+    private static final String AUTH_TOKEN_KEY = "AUTH_TOKEN_KEY";
     private SharedPreferences mSharedPreferences;
 
     public PreferencesManager() {
@@ -14,12 +14,12 @@ public class PreferencesManager {
 
     public void saveAuthToken(String authToken) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(ConstantManager.AUTH_TOKEN_KEY, authToken);
+        editor.putString(AUTH_TOKEN_KEY, authToken);
         editor.apply();
     }
 
     public String getAuthToken() {
-        return mSharedPreferences.getString(ConstantManager.AUTH_TOKEN_KEY, ConstantManager.INVALID_TOKEN);
+        return mSharedPreferences.getString(AUTH_TOKEN_KEY, "");
     }
 
     public void clearAllData() {

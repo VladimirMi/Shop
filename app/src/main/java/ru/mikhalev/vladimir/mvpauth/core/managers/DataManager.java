@@ -58,7 +58,7 @@ public class DataManager {
     }
 
     private void generateMockData() {
-        mMockProductList.add(new ProductDto(1, "test 1", "imageUrl", "description 1, description 1,, description 1, description 1, description 1, description 1, description 1, description 1, description 1, description 1, description 1, description 1, description 1", 100, 1));
+        mMockProductList.add(new ProductDto(1, "test 1", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 100, 1));
         mMockProductList.add(new ProductDto(2, "test 2", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 200, 1));
         mMockProductList.add(new ProductDto(3, "test 3", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 300, 1));
         mMockProductList.add(new ProductDto(4, "test 4", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 400, 1));

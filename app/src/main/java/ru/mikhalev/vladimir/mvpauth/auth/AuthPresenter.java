@@ -1,16 +1,20 @@
 package ru.mikhalev.vladimir.mvpauth.auth;
 
 
+import android.databinding.Bindable;
 import android.os.Handler;
+
+import com.android.databinding.library.baseAdapters.BR;
 
 import ru.mikhalev.vladimir.mvpauth.core.base.presenter.AbstractPresenter;
 import ru.mikhalev.vladimir.mvpauth.core.utils.AppConfig;
-import ru.mikhalev.vladimir.mvpauth.core.utils.ConstantManager;
 
 public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuthPresenter {
     private static AuthPresenter ourInstance = new AuthPresenter();
     private AuthModel mAuthModel;
     private IAuthView mAuthView;
+    private String mEmail = "";
+    private String mPassword = "";
 
     private AuthPresenter() {
         mAuthModel = new AuthModel();
@@ -18,6 +22,28 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
 
     public static AuthPresenter getInstance() {
         return ourInstance;
+    }
+
+    @Bindable
+    public String getEmail() {
+        return mEmail;
+    }
+
+    @Bindable
+    public String getPassword() {
+        return mPassword;
+    }
+
+    public void setEmail(String email) {
+        mEmail = email.trim();
+        notifyPropertyChanged(BR.email);
+        validateEmail();
+    }
+
+    public void setPassword(String password) {
+        mPassword = password.trim();
+        notifyPropertyChanged(BR.password);
+        validatePassword();
     }
 
     @Override
@@ -35,10 +61,8 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
     public void clickOnLogin() {
         if (getView() != null && getView().getAuthPanel() != null) {
             if (getView().getAuthPanel().isIdle()) {
-                getView().getAuthPanel().setCustomState(ConstantManager.LOGIN_STATE);
+                getView().getAuthPanel().setCustomState(AuthPanel.LOGIN_STATE);
             } else {
-                String email = getView().getAuthPanel().getUserEmail();
-                String password = getView().getAuthPanel().getUserPassword();
 
                 if (!validateEmail()) {
                     return;
@@ -46,10 +70,11 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
                 if (!validatePassword()) {
                     return;
                 }
-                mAuthModel.loginUser(email, password);
+                mAuthModel.loginUser(mPassword, mEmail);
 
                 // TODO: 30.10.2016 Registration stab
                 getView().showLoad();
+                resetFields();
                 getView().showMessage("request for user auth");
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -98,10 +123,8 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
 
     @Override
     public boolean validateEmail() {
-        if (getView() != null && getView().getAuthPanel() != null) {
-            String email = getView().getAuthPanel().getUserEmail();
-
-            if (isValidEmail(email)) {
+        if (getView() != null) {
+            if (isValidEmail(mEmail)) {
                 getView().showEmailError(false);
                 return true;
             } else {
@@ -113,10 +136,9 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
 
     @Override
     public boolean validatePassword() {
-        if (getView() != null && getView().getAuthPanel() != null) {
-            String password = getView().getAuthPanel().getUserPassword();
+        if (getView() != null) {
 
-            if (isValidPassword(password)) {
+            if (isValidPassword(mPassword)) {
                 getView().showPasswordError(false);
                 return true;
             } else {
@@ -127,12 +149,17 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
     }
 
     private boolean isValidEmail(String email) {
-        return !email.trim().isEmpty() &&
+        return !email.isEmpty() &&
                 AppConfig.EMAIL_ADDRESS_VALIDATE.matcher(email.trim()).matches();
     }
 
     private boolean isValidPassword(String password) {
-        return !password.trim().isEmpty() &&
+        return !password.isEmpty() &&
                 AppConfig.PASSWORD_VALIDATE.matcher(password.trim()).matches();
+    }
+
+    private void resetFields() {
+        mEmail = "";
+        mPassword = "";
     }
 }

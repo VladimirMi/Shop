@@ -8,29 +8,22 @@ import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.core.managers.DataManager;
-import ru.mikhalev.vladimir.mvpauth.core.utils.ConstantManager;
-import ru.mikhalev.vladimir.mvpauth.core.utils.MyTextWatcher;
 
 
 public class AuthPanel extends LinearLayout {
 
-    private static final String TAG = ConstantManager.TAG_PREFIX + "AuthPanel";
-    private int mCustomState = ConstantManager.IDLE_STATE;
-    private AuthPresenter mPresenter = AuthPresenter.getInstance();
+    private static final String TAG = "AuthPanel";
+    public static int LOGIN_STATE = 0;
+    public static int IDLE_STATE = 1;
+    private int mCustomState = IDLE_STATE;
 
-    @BindView(R.id.auth_card) CardView mAuthCard;
-    @BindView(R.id.login_email_et) EditText mEmailEt;
-    @BindView(R.id.login_password_et) EditText mPasswordEt;
-    @BindView(R.id.show_catalog_btn) Button mShowCatalogBtn;
+    private CardView mAuthCard;
+    private Button mShowCatalogBtn;
 
-    @BindView(R.id.login_btn) Button mLoginBtn;
     private Animation mCardInAnimation = AnimationUtils.loadAnimation(DataManager.getInstance().getAppContext(),
             R.anim.card_in_animation);
     private Animation mCardOutAnimation = AnimationUtils.loadAnimation(DataManager.getInstance().getAppContext(),
@@ -40,13 +33,13 @@ public class AuthPanel extends LinearLayout {
         super(context, attrs);
     }
 
+
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        ButterKnife.bind(this);
-        mPasswordEt.addTextChangedListener(new MyTextWatcher(mPasswordEt));
-        mEmailEt.addTextChangedListener(new MyTextWatcher(mEmailEt));
-
+        mAuthCard = (CardView) findViewById(R.id.auth_card);
+        mShowCatalogBtn = (Button) findViewById(R.id.show_catalog_btn);
         showViewFromState();
     }
 
@@ -73,7 +66,7 @@ public class AuthPanel extends LinearLayout {
     }
 
     private void showViewFromState() {
-        if (mCustomState == ConstantManager.LOGIN_STATE) {
+        if (mCustomState == LOGIN_STATE) {
             showLoginState();
         } else {
             showIdleState();
@@ -81,7 +74,7 @@ public class AuthPanel extends LinearLayout {
     }
 
     private void showAnimationFromState() {
-        if (mCustomState == ConstantManager.LOGIN_STATE) {
+        if (mCustomState == LOGIN_STATE) {
             showLoginStateAnimation();
         } else {
             showIdleStateAnimation();
@@ -107,16 +100,8 @@ public class AuthPanel extends LinearLayout {
         mAuthCard.startAnimation(mCardOutAnimation);
     }
 
-    public String getUserEmail() {
-        return String.valueOf(mEmailEt.getText());
-    }
-
-    public String getUserPassword() {
-        return String.valueOf(mPasswordEt.getText());
-    }
-
     public boolean isIdle() {
-        return mCustomState == ConstantManager.IDLE_STATE;
+        return mCustomState == IDLE_STATE;
     }
 
 

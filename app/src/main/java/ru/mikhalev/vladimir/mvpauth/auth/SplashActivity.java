@@ -1,62 +1,40 @@
 package ru.mikhalev.vladimir.mvpauth.auth;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
-import com.bhargavms.dotloader.DotLoader;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.RootActivity;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseActivity;
-import ru.mikhalev.vladimir.mvpauth.core.utils.ConstantManager;
+import ru.mikhalev.vladimir.mvpauth.databinding.ActivitySplashBinding;
 
 public class SplashActivity extends BaseActivity implements IAuthView, View.OnClickListener {
+    private static final String TAG = "SplashActivity";
+    private static final String LOADER_VISIBILE = "LOADER_VISIBILE";
     private AuthPresenter mPresenter = AuthPresenter.getInstance();
-
-    @BindView(R.id.coordinator_container) CoordinatorLayout mCoordinatorLayout;
-    @BindView(R.id.auth_wrapper) AuthPanel mAuthPanel;
-
-    @BindView(R.id.login_email_et) EditText mEmailEt;
-    @BindView(R.id.login_password_et) EditText mPasswordEt;
-
-    @BindView(R.id.login_email_til) TextInputLayout mEmailTil;
-    @BindView(R.id.login_password_til) TextInputLayout mPasswordTil;
-
-    @BindView(R.id.show_catalog_btn) Button mShowCatalogBtn;
-    @BindView(R.id.login_btn) Button mLoginBtn;
-
-    @BindView(R.id.fb_btn) ImageButton mFbBtn;
-    @BindView(R.id.tw_btn) ImageButton mTwBtn;
-    @BindView(R.id.vk_btn) ImageButton mVkBtn;
-
-    @BindView(R.id.dot_loader) DotLoader mDotLoader;
+    private ActivitySplashBinding mBinding;
 
     //region ============== Life cycle ===============
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         mPresenter.takeView(this);
         mPresenter.initView();
+        mBinding.setPresenter(mPresenter);
 
-        mShowCatalogBtn.setOnClickListener(this);
-        mLoginBtn.setOnClickListener(this);
-        mFbBtn.setOnClickListener(this);
-        mTwBtn.setOnClickListener(this);
-        mVkBtn.setOnClickListener(this);
+        mBinding.showCatalogBtn.setOnClickListener(this);
+        mBinding.loginBtn.setOnClickListener(this);
+        mBinding.fbBtn.setOnClickListener(this);
+        mBinding.twBtn.setOnClickListener(this);
+        mBinding.vkBtn.setOnClickListener(this);
     }
 
     @Override
@@ -68,13 +46,13 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(ConstantManager.LOADER_VISIBILE, mDotLoader.isShown());
+        outState.putBoolean(LOADER_VISIBILE, mBinding.dotLoader.isShown());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState.getBoolean(ConstantManager.LOADER_VISIBILE)) {
+        if (savedInstanceState.getBoolean(LOADER_VISIBILE)) {
             showLoad();
         } else {
             hideLoad();
@@ -86,48 +64,48 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
     //region =============== IView ==============
     @Override
     public void showLoad() {
-        mDotLoader.setVisibility(View.VISIBLE);
+        mBinding.dotLoader.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoad() {
-        mDotLoader.setVisibility(View.GONE);
+        mBinding.dotLoader.setVisibility(View.GONE);
     }
     //endregion
 
     //region ============== IAuthView ===============
     @Override
     public void showLoginBtn() {
-        mLoginBtn.setVisibility(View.VISIBLE);
+        mBinding.loginBtn.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoginBtn() {
-        mLoginBtn.setVisibility(View.INVISIBLE);
+        mBinding.loginBtn.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public AuthPanel getAuthPanel() {
-        return mAuthPanel;
+        return mBinding.authPanel;
     }
 
     @Override
     public void showEmailError(boolean error) {
         if (error) {
-            mEmailTil.setError(this.getString(R.string.err_msg_email));
-            requestFocus(mEmailEt);
+            mBinding.email.setError(this.getString(R.string.message_error_email));
+            requestFocus(mBinding.emailEt);
         } else {
-            mEmailTil.setErrorEnabled(false);
+            mBinding.email.setErrorEnabled(false);
         }
     }
 
     @Override
     public void showPasswordError(boolean error) {
         if (error) {
-            mPasswordTil.setError(this.getString(R.string.err_msg_password));
-            requestFocus(mPasswordEt);
+            mBinding.password.setError(this.getString(R.string.message_error_password));
+            requestFocus(mBinding.passwordEt);
         } else {
-            mPasswordTil.setErrorEnabled(false);
+            mBinding.password.setErrorEnabled(false);
         }
     }
 
@@ -140,11 +118,10 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
     //endregion
 
 
-
     @Override
     public void onBackPressed() {
-        if (!mAuthPanel.isIdle()) {
-            mAuthPanel.setCustomState(ConstantManager.IDLE_STATE);
+        if (!mBinding.authPanel.isIdle()) {
+            mBinding.authPanel.setCustomState(AuthPanel.IDLE_STATE);
             hideLoad();
         } else {
             super.onBackPressed();

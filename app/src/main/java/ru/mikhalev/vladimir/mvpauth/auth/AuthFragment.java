@@ -29,6 +29,7 @@ public class AuthFragment extends BaseFragment implements IAuthView, View.OnClic
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_auth, container, false);
         mPresenter.takeView(this);
         mPresenter.clickOnLogin();
+        mBinding.setPresenter(mPresenter);
         mBinding.loginBtn.setOnClickListener(this);
         return mBinding.getRoot();
     }
@@ -46,26 +47,26 @@ public class AuthFragment extends BaseFragment implements IAuthView, View.OnClic
 
     @Override
     public AuthPanel getAuthPanel() {
-        return mBinding.authWrapper;
+        return mBinding.authPanel;
     }
 
     @Override
     public void showEmailError(boolean error) {
         if (error) {
-            mBinding.loginEmailTil.setError(this.getString(R.string.err_msg_email));
-            requestFocus(mBinding.loginEmailEt);
+            mBinding.email.setError(this.getString(R.string.message_error_email));
+            requestFocus(mBinding.emailEt);
         } else {
-            mBinding.loginEmailTil.setErrorEnabled(false);
+            mBinding.email.setErrorEnabled(false);
         }
     }
 
     @Override
     public void showPasswordError(boolean error) {
         if (error) {
-            mBinding.loginPasswordTil.setError(this.getString(R.string.err_msg_password));
-            requestFocus(mBinding.loginPasswordEt);
+            mBinding.password.setError(this.getString(R.string.message_error_password));
+            requestFocus(mBinding.passwordEt);
         } else {
-            mBinding.loginPasswordTil.setErrorEnabled(false);
+            mBinding.password.setErrorEnabled(false);
         }
     }
 

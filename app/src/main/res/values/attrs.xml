@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CustomFontTextView">
-        <attr name="font" format="string"/>
-    </declare-styleable>
-
     <declare-styleable name="AspectRatioImageView">
         <attr name="aspect_ratio" format="float"/>
     </declare-styleable>

@@ -1,5 +1,6 @@
 package ru.mikhalev.vladimir.mvpauth.core.base.presenter;
 
+import android.databinding.BaseObservable;
 import android.support.annotation.Nullable;
 
 import ru.mikhalev.vladimir.mvpauth.core.base.view.IView;
@@ -8,7 +9,7 @@ import ru.mikhalev.vladimir.mvpauth.core.base.view.IView;
  * Developer Vladimir Mikhalev, 27.10.2016
  */
 
-public abstract class AbstractPresenter<T extends IView> {
+public abstract class AbstractPresenter<T extends IView> extends BaseObservable{
     private T mView;
 
     public void takeView(T view) {

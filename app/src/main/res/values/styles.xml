@@ -86,13 +86,13 @@
     <style name="ProductText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/roboto_regular</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/font.roboto_regular</item>
     </style>
 
     <style name="ProductText.ProductTitle">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_marginTop">@dimen/spacing_small_12</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/roboto_medium</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/font.roboto_medium</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/font_small_14</item>
     </style>
@@ -101,7 +101,7 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginTop">@dimen/spacing_normal_16</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/roboto_medium</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/font.roboto_medium</item>
         <item name="android:textColor">@color/grey</item>
         <item name="android:textSize">@dimen/font_small_14</item>
     </style>
