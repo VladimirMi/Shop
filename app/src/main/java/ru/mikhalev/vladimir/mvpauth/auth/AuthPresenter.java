@@ -12,8 +12,8 @@ import ru.mikhalev.vladimir.mvpauth.core.utils.AppConfig;
 public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuthPresenter {
     private static AuthPresenter ourInstance = new AuthPresenter();
     private AuthModel mAuthModel;
-    private IAuthView mAuthView;
-    private String mEmail = "";
+    private IAuthView mAuthView;    //// TODO: 02.11.2016 ненужна - удаляй
+    private String mEmail = "";       //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
     private String mPassword = "";
 
     private AuthPresenter() {
@@ -36,13 +36,13 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
 
     public void setEmail(String email) {
         mEmail = email.trim();
-        notifyPropertyChanged(BR.email);
+        notifyPropertyChanged(BR.email);       //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
         validateEmail();
     }
 
     public void setPassword(String password) {
         mPassword = password.trim();
-        notifyPropertyChanged(BR.password);
+        notifyPropertyChanged(BR.password);       //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
         validatePassword();
     }
 
@@ -135,7 +135,7 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
     }
 
     @Override
-    public boolean validatePassword() {
+    public boolean validatePassword() {  //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
         if (getView() != null) {
 
             if (isValidPassword(mPassword)) {
@@ -148,12 +148,12 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
         return false;
     }
 
-    private boolean isValidEmail(String email) {
+    private boolean isValidEmail(String email) {  //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
         return !email.isEmpty() &&
                 AppConfig.EMAIL_ADDRESS_VALIDATE.matcher(email.trim()).matches();
     }
 
-    private boolean isValidPassword(String password) {
+    private boolean isValidPassword(String password) {   //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
         return !password.isEmpty() &&
                 AppConfig.PASSWORD_VALIDATE.matcher(password.trim()).matches();
     }
