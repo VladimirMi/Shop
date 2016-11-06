@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.catalog.product;
+package ru.mikhalev.vladimir.mvpauth.product;
 
 import ru.mikhalev.vladimir.mvpauth.core.base.view.IView;
 

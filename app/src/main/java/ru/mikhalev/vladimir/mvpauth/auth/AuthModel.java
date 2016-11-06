@@ -1,14 +1,9 @@
 package ru.mikhalev.vladimir.mvpauth.auth;
 
 
-import ru.mikhalev.vladimir.mvpauth.core.managers.DataManager;
+import ru.mikhalev.vladimir.mvpauth.core.base.model.AbstractModel;
 
-public class AuthModel {
-    private DataManager mDataManager;
-
-    public AuthModel() {
-        mDataManager = DataManager.getInstance();
-    }
+public class AuthModel extends AbstractModel{
 
     public  boolean isAuthUser() {
         return mDataManager.isAuthUser();

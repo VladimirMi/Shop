@@ -1,12 +1,18 @@
-package ru.mikhalev.vladimir.mvpauth.catalog.product;
+package ru.mikhalev.vladimir.mvpauth.product;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.core.base.presenter.AbstractPresenter;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.ProductScope;
 
 /**
  * Developer Vladimir Mikhalev 28.10.2016
  */
 public class ProductPresenter extends AbstractPresenter<IProductView> implements IProductPresenter{
-    private ProductModel mProductModel;
+    @Inject
+    ProductModel mProductModel;
     private ProductDto mProduct;
 
     public static ProductPresenter newInstance(ProductDto product) {
@@ -14,7 +20,7 @@ public class ProductPresenter extends AbstractPresenter<IProductView> implements
     }
 
     public ProductPresenter(ProductDto product) {
-        mProductModel = new ProductModel();
+        DaggerService.getComponent(Component.class).inject(this);
         mProduct = product;
     }
 
@@ -44,4 +50,23 @@ public class ProductPresenter extends AbstractPresenter<IProductView> implements
             getView().updateProductCountView(mProduct);
         }
     }
+
+    //region ==================== DI ========================
+
+    @dagger.Module
+    public static class Module {
+        @Provides
+        @ProductScope
+        ProductModel provideProductModel() {
+            return new ProductModel();
+        }
+    }
+
+    @dagger.Component(modules = Module.class)
+    @ProductScope
+    interface Component {
+        void inject(ProductPresenter presenter);
+    }
+
+    //endregion
 }

@@ -1,38 +1,39 @@
 package ru.mikhalev.vladimir.mvpauth.core.managers;
 
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.mikhalev.vladimir.mvpauth.catalog.product.ProductDto;
-import ru.mikhalev.vladimir.mvpauth.core.MvpApplication;
+import javax.inject.Inject;
+
+import ru.mikhalev.vladimir.mvpauth.core.App;
+import ru.mikhalev.vladimir.mvpauth.core.network.api.RestService;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.components.DataManagerComponent;
+import ru.mikhalev.vladimir.mvpauth.di.modules.LocaleModule;
+import ru.mikhalev.vladimir.mvpauth.di.modules.NetworkModule;
+import ru.mikhalev.vladimir.mvpauth.product.ProductDto;
 
 public class DataManager {
-    private static DataManager ourInstance = new DataManager();
-    private PreferencesManager mPreferencesManager;
-    private Context mAppContext;
+    @Inject
+    PreferencesManager mPreferencesManager;
+    @Inject
+    RestService mRestService;
+
+
     private List<ProductDto> mMockProductList = new ArrayList<>();
 
-    private DataManager() {
-        mPreferencesManager = new PreferencesManager();
-        mAppContext = MvpApplication.getAppContext();
+    public DataManager() {
+        DaggerService.getComponent(DataManagerComponent.class,
+                App.getAppComponent(),
+                new LocaleModule(),
+                new NetworkModule()).inject(this);
         generateMockData();
-    }
-
-    public static DataManager getInstance() {
-        return ourInstance;
     }
 
     public PreferencesManager getPreferencesManager() {
         return mPreferencesManager;
     }
-
-    public Context getAppContext() {
-        return mAppContext;
-    }
-
 
     public boolean isAuthUser() {
 //        return !mPreferencesManager.getAuthToken().equals(ConstantManager.INVALID_TOKEN);

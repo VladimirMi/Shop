@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.catalog.product;
+package ru.mikhalev.vladimir.mvpauth.product;
 
 import android.os.Parcel;
 import android.os.Parcelable;

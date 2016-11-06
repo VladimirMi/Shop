@@ -2,7 +2,7 @@ package ru.mikhalev.vladimir.mvpauth.core.base;
 
 import android.support.v4.app.Fragment;
 
-import ru.mikhalev.vladimir.mvpauth.RootActivity;
+import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
 import ru.mikhalev.vladimir.mvpauth.core.base.view.IView;
 
 /**

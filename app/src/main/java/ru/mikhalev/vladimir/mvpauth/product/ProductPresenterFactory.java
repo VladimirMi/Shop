@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.catalog.product;
+package ru.mikhalev.vladimir.mvpauth.product;
 
 import java.util.HashMap;
 import java.util.Map;

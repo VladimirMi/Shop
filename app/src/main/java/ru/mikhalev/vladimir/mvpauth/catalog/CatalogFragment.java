@@ -10,10 +10,15 @@ import android.widget.Button;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.catalog.product.ProductDto;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseFragment;
 import ru.mikhalev.vladimir.mvpauth.databinding.FragmentCatalogBinding;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.CatalogScope;
+import ru.mikhalev.vladimir.mvpauth.product.ProductDto;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.
@@ -21,7 +26,8 @@ import ru.mikhalev.vladimir.mvpauth.databinding.FragmentCatalogBinding;
 
 public class CatalogFragment extends BaseFragment implements ICatalogView, View.OnClickListener {
     public static final String TAG = "CatalogFragment";
-    private CatalogPresenter mPresenter = CatalogPresenter.getInstance();
+    @Inject
+    CatalogPresenter mPresenter;
     private FragmentCatalogBinding mBinding;
 
     public CatalogFragment() {
@@ -36,6 +42,9 @@ public class CatalogFragment extends BaseFragment implements ICatalogView, View.
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_catalog, container, false);
+
+        DaggerService.getComponent(CatalogFragment.Component.class,
+                new CatalogFragment.Module()).inject(this);
         mPresenter.takeView(this);
         mPresenter.initView();
         mBinding.addToCardBtn.setOnClickListener(this);
@@ -81,5 +90,24 @@ public class CatalogFragment extends BaseFragment implements ICatalogView, View.
         cart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_cart_fill, 0, 0, 0);
         cart.setText(String.valueOf(i));
     }
+    //endregion
+
+    //region ==================== DI ========================
+
+    @dagger.Module
+    public static class Module {
+        @Provides
+        @CatalogScope
+        CatalogPresenter provideCatalogPresenter() {
+            return new CatalogPresenter();
+        }
+    }
+
+    @dagger.Component(modules = Module.class)
+    @CatalogScope
+    interface Component {
+        void inject(CatalogFragment view);
+    }
+
     //endregion
 }

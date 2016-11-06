@@ -1,15 +1,15 @@
 package ru.mikhalev.vladimir.mvpauth.core.managers;
 
+import android.content.Context;
 import android.content.SharedPreferences;
-
-import ru.mikhalev.vladimir.mvpauth.core.MvpApplication;
+import android.preference.PreferenceManager;
 
 public class PreferencesManager {
     private static final String AUTH_TOKEN_KEY = "AUTH_TOKEN_KEY";
-    private SharedPreferences mSharedPreferences;
+    private final SharedPreferences mSharedPreferences;
 
-    public PreferencesManager() {
-        mSharedPreferences = MvpApplication.getSharedPreferences();
+    public PreferencesManager(Context context) {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public void saveAuthToken(String authToken) {

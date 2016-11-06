@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.catalog.product;
+package ru.mikhalev.vladimir.mvpauth.product;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -7,9 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseFragment;
 import ru.mikhalev.vladimir.mvpauth.databinding.FragmentProductBinding;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.ProductScope;
 
 /**
  * Developer Vladimir Mikhalev 28.10.2016
@@ -17,7 +22,8 @@ import ru.mikhalev.vladimir.mvpauth.databinding.FragmentProductBinding;
 
 public class ProductFragment extends BaseFragment implements IProductView, View.OnClickListener {
     private FragmentProductBinding mBinding;
-    private ProductPresenter mPresenter;
+    @Inject
+    ProductPresenter mPresenter;
 
     public ProductFragment() {
     }
@@ -33,7 +39,10 @@ public class ProductFragment extends BaseFragment implements IProductView, View.
     private void readArguments(Bundle bundle) {
         if (bundle != null) {
             ProductDto product = bundle.getParcelable("PRODUCT");
-            mPresenter = ProductPresenterFactory.getInstance(product);
+
+            // FIXME: 06.11.2016 recreate component
+            DaggerService.getComponent(Component.class, new Module(product)).inject(this);
+//            mPresenter = ProductPresenterFactory.getInstance(product);
         }
     }
 
@@ -83,4 +92,29 @@ public class ProductFragment extends BaseFragment implements IProductView, View.
                 break;
         }
     }
+
+    //region ==================== DI ========================
+
+    @dagger.Module
+    public static class Module {
+        private ProductDto mProduct;
+
+        public Module(ProductDto product) {
+            mProduct = product;
+        }
+
+        @Provides
+        @ProductScope
+        ProductPresenter provideCatalogPresenter() {
+            return new ProductPresenter(mProduct);
+        }
+    }
+
+    @dagger.Component(modules = Module.class)
+    @ProductScope
+    interface Component {
+        void inject(ProductFragment view);
+    }
+
+    //endregion
 }

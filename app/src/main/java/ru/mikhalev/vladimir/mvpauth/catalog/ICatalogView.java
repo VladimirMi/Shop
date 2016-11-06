@@ -3,7 +3,7 @@ package ru.mikhalev.vladimir.mvpauth.catalog;
 import java.util.List;
 
 import ru.mikhalev.vladimir.mvpauth.core.base.view.IView;
-import ru.mikhalev.vladimir.mvpauth.catalog.product.ProductDto;
+import ru.mikhalev.vladimir.mvpauth.product.ProductDto;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.

@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth;
+package ru.mikhalev.vladimir.mvpauth.root;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -11,16 +11,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
+import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.account.AccountFragment;
 import ru.mikhalev.vladimir.mvpauth.auth.AuthFragment;
 import ru.mikhalev.vladimir.mvpauth.catalog.CatalogFragment;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseActivity;
-import ru.mikhalev.vladimir.mvpauth.core.base.view.IView;
 import ru.mikhalev.vladimir.mvpauth.core.utils.MyGlideModule;
 import ru.mikhalev.vladimir.mvpauth.databinding.ActivityRootBinding;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.RootScope;
 
-public class RootActivity extends BaseActivity implements IView, NavigationView.OnNavigationItemSelectedListener {
+public class RootActivity extends BaseActivity implements IRootView, NavigationView.OnNavigationItemSelectedListener {
     private ActivityRootBinding mBinding;
+    @Inject RootPresenter mPresenter;
     private FragmentManager mFragmentManager;
     private boolean isExitEnabled = false;
 
@@ -29,6 +35,9 @@ public class RootActivity extends BaseActivity implements IView, NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_root);
+        DaggerService.getComponent(RootActivity.Component.class,
+                new RootActivity.Module()).inject(this);
+        mPresenter.takeView(this);
 
         initToolbar();
         initDrawer();
@@ -38,6 +47,13 @@ public class RootActivity extends BaseActivity implements IView, NavigationView.
             replaceFragment(new CatalogFragment(), CatalogFragment.TAG);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.dropView();
+        super.onDestroy();
+    }
+
     //endregion
 
     private void initToolbar() {
@@ -116,4 +132,24 @@ public class RootActivity extends BaseActivity implements IView, NavigationView.
         AuthFragment fragment = new AuthFragment();
         replaceFragment(fragment, AuthFragment.TAG);
     }
+
+    //region ==================== DI ========================
+
+    @dagger.Module
+    public static class Module {
+        @Provides
+        @RootScope
+        RootPresenter provideRootPresenter() {
+            return new RootPresenter();
+        }
+    }
+
+    @dagger.Component(modules = Module.class)
+    @RootScope
+    public interface Component {
+        void inject(RootActivity view);
+        RootPresenter getRootPresenter();
+    }
+
+    //endregion
 }

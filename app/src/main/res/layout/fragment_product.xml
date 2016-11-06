@@ -8,7 +8,7 @@
         <import type="ru.mikhalev.vladimir.mvpauth.R"/>
         <variable
             name="product"
-            type="ru.mikhalev.vladimir.mvpauth.catalog.product.ProductDto"/>
+            type="ru.mikhalev.vladimir.mvpauth.product.ProductDto"/>
     </data>
 
     <android.support.v4.widget.NestedScrollView

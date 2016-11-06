@@ -6,23 +6,25 @@ import android.os.Handler;
 
 import com.android.databinding.library.baseAdapters.BR;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.core.base.presenter.AbstractPresenter;
 import ru.mikhalev.vladimir.mvpauth.core.utils.AppConfig;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.AuthScope;
 
 public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuthPresenter {
-    private static AuthPresenter ourInstance = new AuthPresenter();
-    private AuthModel mAuthModel;
-    private IAuthView mAuthView;    //// TODO: 02.11.2016 ненужна - удаляй
-    private String mEmail = "";       //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
+    @Inject
+    AuthModel mAuthModel;
+
+    public AuthPresenter() {
+        DaggerService.getComponent(Component.class).inject(this);
+    }
+
+    //region =============== Binding ==============
+    private String mEmail = "";
     private String mPassword = "";
-
-    private AuthPresenter() {
-        mAuthModel = new AuthModel();
-    }
-
-    public static AuthPresenter getInstance() {
-        return ourInstance;
-    }
 
     @Bindable
     public String getEmail() {
@@ -36,15 +38,16 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
 
     public void setEmail(String email) {
         mEmail = email.trim();
-        notifyPropertyChanged(BR.email);       //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
+        notifyPropertyChanged(BR.email);
         validateEmail();
     }
 
     public void setPassword(String password) {
         mPassword = password.trim();
-        notifyPropertyChanged(BR.password);       //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
+        notifyPropertyChanged(BR.password);
         validatePassword();
     }
+    //endregion
 
     @Override
     public void initView() {
@@ -135,7 +138,7 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
     }
 
     @Override
-    public boolean validatePassword() {  //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
+    public boolean validatePassword() {
         if (getView() != null) {
 
             if (isValidPassword(mPassword)) {
@@ -148,12 +151,12 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
         return false;
     }
 
-    private boolean isValidEmail(String email) {  //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
+    private boolean isValidEmail(String email) {
         return !email.isEmpty() &&
                 AppConfig.EMAIL_ADDRESS_VALIDATE.matcher(email.trim()).matches();
     }
 
-    private boolean isValidPassword(String password) {   //// TODO: 02.11.2016 это должно быть или в модели или во вьюмодели, но никак не в презентере
+    private boolean isValidPassword(String password) {
         return !password.isEmpty() &&
                 AppConfig.PASSWORD_VALIDATE.matcher(password.trim()).matches();
     }
@@ -162,4 +165,26 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
         mEmail = "";
         mPassword = "";
     }
+
+
+
+
+    //region ==================== DI ========================
+
+    @dagger.Module
+    public static class Module {
+        @Provides
+        @AuthScope
+        AuthModel provideAuthModel() {
+            return new AuthModel();
+        }
+    }
+
+    @dagger.Component(modules = Module.class)
+    @AuthScope
+    interface Component {
+        void inject(AuthPresenter presenter);
+    }
+
+    //endregion
 }

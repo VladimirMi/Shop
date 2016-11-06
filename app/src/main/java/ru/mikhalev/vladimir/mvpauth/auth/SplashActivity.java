@@ -9,15 +9,22 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.RootActivity;
+import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseActivity;
 import ru.mikhalev.vladimir.mvpauth.databinding.ActivitySplashBinding;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.AuthScope;
 
 public class SplashActivity extends BaseActivity implements IAuthView, View.OnClickListener {
     private static final String TAG = "SplashActivity";
     private static final String LOADER_VISIBILE = "LOADER_VISIBILE";
-    private AuthPresenter mPresenter = AuthPresenter.getInstance();
+
+    @Inject
+    AuthPresenter mPresenter;
     private ActivitySplashBinding mBinding;
 
     //region ============== Life cycle ===============
@@ -26,6 +33,10 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
+
+        DaggerService.getComponent(Component.class).inject(this);
+
+
         mPresenter.takeView(this);
         mPresenter.initView();
         mBinding.setPresenter(mPresenter);
@@ -40,13 +51,16 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
     @Override
     protected void onDestroy() {
         mPresenter.dropView();
+        if (isFinishing()) {
+            DaggerService.unregisterScope(AuthScope.class);
+        }
         super.onDestroy();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(LOADER_VISIBILE, mBinding.dotLoader.isShown());
+        outState.putBoolean(LOADER_VISIBILE, mBinding.loader.isShown());
     }
 
     @Override
@@ -64,12 +78,12 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
     //region =============== IView ==============
     @Override
     public void showLoad() {
-        mBinding.dotLoader.setVisibility(View.VISIBLE);
+        mBinding.loader.show();
     }
 
     @Override
     public void hideLoad() {
-        mBinding.dotLoader.setVisibility(View.GONE);
+        mBinding.loader.hide();
     }
     //endregion
 
@@ -81,7 +95,7 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
 
     @Override
     public void hideLoginBtn() {
-        mBinding.loginBtn.setVisibility(View.INVISIBLE);
+        mBinding.loginBtn.setVisibility(View.GONE);
     }
 
     @Override
@@ -164,4 +178,23 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
             editText.setSelection(editText.length());
         }
     }
+
+    //region ==================== DI ========================
+
+    @dagger.Module
+    public static class Module {
+        @Provides
+        @AuthScope
+        AuthPresenter provideAuthPresenter() {
+            return new AuthPresenter();
+        }
+    }
+
+    @dagger.Component(modules = Module.class)
+    @AuthScope
+    interface Component {
+        void inject(SplashActivity view);
+    }
+
+    //endregion
 }

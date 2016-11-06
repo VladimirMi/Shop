@@ -5,13 +5,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.core.managers.DataManager;
 
 
 public class AuthPanel extends LinearLayout {
@@ -24,10 +21,10 @@ public class AuthPanel extends LinearLayout {
     private CardView mAuthCard;
     private Button mShowCatalogBtn;
 
-    private Animation mCardInAnimation = AnimationUtils.loadAnimation(DataManager.getInstance().getAppContext(),
-            R.anim.card_in_animation);
-    private Animation mCardOutAnimation = AnimationUtils.loadAnimation(DataManager.getInstance().getAppContext(),
-            R.anim.card_out_animation);
+//    private Animation mCardInAnimation = AnimationUtils.loadAnimation(DataManager.getInstance().getAppContext(),
+//            R.anim.card_in_animation);
+//    private Animation mCardOutAnimation = AnimationUtils.loadAnimation(DataManager.getInstance().getAppContext(),
+//            R.anim.card_out_animation);
 
     public AuthPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -93,11 +90,11 @@ public class AuthPanel extends LinearLayout {
     }
 
     private void showLoginStateAnimation() {
-        mAuthCard.startAnimation(mCardInAnimation);
+//        mAuthCard.startAnimation(mCardInAnimation);
     }
 
     private void showIdleStateAnimation() {
-        mAuthCard.startAnimation(mCardOutAnimation);
+//        mAuthCard.startAnimation(mCardOutAnimation);
     }
 
     public boolean isIdle() {

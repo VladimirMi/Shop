@@ -11,12 +11,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool;
-import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
 import com.bumptech.glide.load.engine.cache.MemorySizeCalculator;
 import com.bumptech.glide.module.GlideModule;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-
-import ru.mikhalev.vladimir.mvpauth.core.managers.DataManager;
 
 
 public class MyGlideModule implements GlideModule {
@@ -30,8 +27,8 @@ public class MyGlideModule implements GlideModule {
 
         int cacheSize100MegaBytes = 104857600;
 
-        builder.setDiskCache(
-                new DiskLruCacheFactory(DataManager.getInstance().getAppContext().getCacheDir().getPath(), cacheSize100MegaBytes));
+//        builder.setDiskCache(
+//                new DiskLruCacheFactory(DataManager.getInstance().getAppContext().getCacheDir().getPath(), cacheSize100MegaBytes));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.catalog.product;
+package ru.mikhalev.vladimir.mvpauth.product;
 
 import ru.mikhalev.vladimir.mvpauth.core.managers.DataManager;
 
@@ -7,7 +7,7 @@ import ru.mikhalev.vladimir.mvpauth.core.managers.DataManager;
  */
 
 public class ProductModel {
-    private DataManager mDataManager = DataManager.getInstance();
+    private DataManager mDataManager;
 
 
     public ProductDto getProductById(int productId) {

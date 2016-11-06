@@ -19,7 +19,7 @@ import ru.mikhalev.vladimir.mvpauth.databinding.FragmentAuthBinding;
 
 public class AuthFragment extends BaseFragment implements IAuthView, View.OnClickListener {
     public static final String TAG = "AuthFragment";
-    AuthPresenter mPresenter = AuthPresenter.getInstance();
+    AuthPresenter mPresenter = new AuthPresenter();
 
     private FragmentAuthBinding mBinding;
 
@@ -32,6 +32,12 @@ public class AuthFragment extends BaseFragment implements IAuthView, View.OnClic
         mBinding.setPresenter(mPresenter);
         mBinding.loginBtn.setOnClickListener(this);
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        mPresenter.dropView();
+        super.onDestroyView();
     }
 
     //region =============== IAuthView ==============
@@ -77,12 +83,12 @@ public class AuthFragment extends BaseFragment implements IAuthView, View.OnClic
 
     @Override
     public void showLoad() {
-        mBinding.dotLoader.setVisibility(View.VISIBLE);
+//        mBinding.dotLoader.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoad() {
-        mBinding.dotLoader.setVisibility(View.INVISIBLE);
+//        mBinding.dotLoader.setVisibility(View.INVISIBLE);
     }
 
     //endregion

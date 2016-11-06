@@ -2,24 +2,34 @@ package ru.mikhalev.vladimir.mvpauth.catalog;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.core.base.presenter.AbstractPresenter;
-import ru.mikhalev.vladimir.mvpauth.catalog.product.ProductDto;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.CatalogScope;
+import ru.mikhalev.vladimir.mvpauth.product.ProductDto;
+import ru.mikhalev.vladimir.mvpauth.root.IRootView;
+import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
+import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.
  */
 public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements ICatalogPressenter {
-    private static CatalogPresenter ourInstance = new CatalogPresenter();
-    private CatalogModel mCatalogModel;
+    @Inject
+    CatalogModel mCatalogModel;
+
+    @Inject
+    RootPresenter mRootPresenter;
+
     private List<ProductDto> mProductList;
     private int mCartCounter = 0;
 
-    private CatalogPresenter() {
-        mCatalogModel = new CatalogModel();
-    }
-
-    public static CatalogPresenter getInstance() {
-        return ourInstance;
+    public CatalogPresenter() {
+        DaggerService.getComponent(CatalogPresenter.Component.class,
+                DaggerService.getComponent(RootActivity.Component.class),
+                new CatalogPresenter.Module()).inject(this);
     }
 
     @Override
@@ -38,7 +48,8 @@ public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements
     public void clickOnBuyButton(int position) {
         if (getView() != null) {
             if (checkUserAuth()) {
-                getView().showAddToCartMessage(mProductList.get(position));
+                getRootView().showMessage("Товар " + mProductList.get(position).getProductName()
+                        + " успешно добавлен в корзину");
                 mCartCounter += mProductList.get(position).getCount();
                 getView().updateProductCounter(mCartCounter);
             } else {
@@ -51,4 +62,28 @@ public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements
     public boolean checkUserAuth() {
         return mCatalogModel.isUserAuth();
     }
+
+    private IRootView getRootView() {
+        return mRootPresenter.getView();
+    }
+
+    //region ==================== DI ========================
+
+    @dagger.Module
+    public static class Module {
+        @Provides
+        @CatalogScope
+        CatalogModel provideCatalogModel() {
+            return new CatalogModel();
+        }
+    }
+
+    @dagger.Component(dependencies = RootActivity.Component.class,
+            modules = Module.class)
+    @CatalogScope
+    interface Component {
+        void inject(CatalogPresenter presenter);
+    }
+
+    //endregion
 }

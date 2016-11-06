@@ -3,7 +3,7 @@
           package="ru.mikhalev.vladimir.mvpauth">
 
     <application
-        android:name=".core.MvpApplication"
+        android:name=".core.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".RootActivity"/>
+        <activity android:name=".root.RootActivity"/>
 
         <meta-data
             android:name="ru.mikhalev.vladimir.mvpauth.core.utils.MyGlideModule"

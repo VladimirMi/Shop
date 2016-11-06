@@ -20,16 +20,14 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <com.bhargavms.dotloader.DotLoader
-            android:id="@+id/dot_loader"
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/loader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/spacing_medium_32"
-            android:visibility="invisible"
-            app:color_array="@array/dot_colors"
-            app:dot_radius="6dp"
-            app:number_of_dots="3"/>
+            app:indicatorColor="@color/color_accent"
+            app:indicatorName="BallPulseIndicator"/>
 
         <android.support.v7.widget.CardView
             android:id="@+id/auth_card"
