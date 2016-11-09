@@ -141,4 +141,9 @@
         <item name="piv_animationType">scale</item>
     </style>
 
+
+    <style name="collapsedtext" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/color_primary_dark</item>
+    </style>
+
 </resources>

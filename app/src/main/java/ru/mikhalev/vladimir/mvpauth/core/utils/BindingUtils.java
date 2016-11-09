@@ -14,17 +14,17 @@ import android.widget.TextView;
 
 public class BindingUtils {
 
-    @BindingAdapter("bind:image")
+    @BindingAdapter("image")
     public static void setImage(ImageView imageView, @DrawableRes int resId) {
         MyGlideModule.setImage(imageView.getContext(), resId, imageView);
     }
 
-    @BindingAdapter("bind:avatar")
+    @BindingAdapter("avatar")
     public static void setAvatar(ImageView imageView, @DrawableRes int resId) {
         MyGlideModule.setUserAvatar(imageView.getContext(), resId, imageView);
     }
 
-    @BindingAdapter("bind:font")
+    @BindingAdapter("font")
     public static void setFont(TextView textView, String  fontName) {
         Typeface tf = Typeface.createFromAsset(textView.getContext().getAssets(),
                 "fonts/" + fontName);

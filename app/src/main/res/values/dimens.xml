@@ -42,4 +42,7 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
 
+    <dimen name="avatar_width">135dp</dimen>
+    <dimen name="half_avatar_width">68dp</dimen>
+
 </resources>
