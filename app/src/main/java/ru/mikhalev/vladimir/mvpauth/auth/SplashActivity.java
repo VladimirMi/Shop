@@ -106,7 +106,7 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
     @Override
     public void showEmailError(boolean error) {
         if (error) {
-            mBinding.email.setError(this.getString(R.string.message_error_email));
+            mBinding.email.setError(this.getString(R.string.auth_email_error));
             requestFocus(mBinding.emailEt);
         } else {
             mBinding.email.setErrorEnabled(false);
@@ -116,7 +116,7 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
     @Override
     public void showPasswordError(boolean error) {
         if (error) {
-            mBinding.password.setError(this.getString(R.string.message_error_password));
+            mBinding.password.setError(this.getString(R.string.auth_password_error));
             requestFocus(mBinding.passwordEt);
         } else {
             mBinding.password.setErrorEnabled(false);

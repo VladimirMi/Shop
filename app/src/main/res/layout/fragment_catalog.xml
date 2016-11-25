@@ -33,7 +33,7 @@
                 android:layout_marginBottom="@dimen/spacing_normal_16"
                 android:layout_marginTop="@dimen/spacing_normal_16"
                 android:text="В корзину"
-                android:theme="@style/StartBtn"/>
+                android:theme="@style/EnterButton"/>
 
         </LinearLayout>
     </RelativeLayout>

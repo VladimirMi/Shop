@@ -43,17 +43,17 @@
         <item name="android:layout_marginRight">@dimen/spacing_medium_32</item>
     </style>
 
-    <style name="StartBtn" parent="Base.Widget.AppCompat.Button">
+    <style name="EnterButton" parent="Base.Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/color_accent</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="ShowBtn" parent="Base.Widget.AppCompat.Button">
+    <style name="ShowButton" parent="Base.Widget.AppCompat.Button">
         <item name="colorButtonNormal">@android:color/white</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="SocialBtn">
+    <style name="SocialButton">
         <item name="android:layout_width">@dimen/size_medium_56</item>
         <item name="android:layout_height">@dimen/size_medium_56</item>
         <item name="android:layout_margin">@dimen/spacing_normal_16</item>
@@ -62,18 +62,18 @@
     <style name="AuthField">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-medium</item>
+        <item name="android:fontFamily">@string/font.roboto.medium</item>
         <item name="android:textColor">@android:color/darker_gray</item>
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="NavigationView" parent="Widget.Design.NavigationView">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="NavigationDrawer" parent="Widget.Design.NavigationView">
+        <item name="android:layout_width">@dimen/drawer_width</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_gravity">left</item>
+        <item name="android:layout_gravity">start</item>
         <item name="android:fitsSystemWindows">true</item>
-        <item name="itemIconTint">@color/nav_icon_color_selector</item>
         <item name="itemBackground">@drawable/nav_drawer_item_selector</item>
+        <item name="itemIconTint">@color/nav_icon_color_selector</item>
         <item name="itemTextColor">@color/nav_item_color_selector</item>
     </style>
 
@@ -83,37 +83,37 @@
         <item name="android:layout_margin">@dimen/spacing_small_8</item>
     </style>
 
-    <style name="ProductText">
+    <style name="CustomText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/font.roboto_regular</item>
+        <item name="android:fontFamily">@string/font.roboto.regular</item>
     </style>
 
-    <style name="ProductText.ProductTitle">
+    <style name="CustomText.ProductTitle">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_marginTop">@dimen/spacing_small_12</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/font.roboto_medium</item>
+        <item name="android:fontFamily">@string/font.roboto.medium</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/font_small_14</item>
     </style>
 
-    <style name="ProductText.ProductDescription">
+    <style name="CustomText.ProductDescription">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginTop">@dimen/spacing_normal_16</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">@string/font.roboto_medium</item>
+        <item name="android:fontFamily">@string/font.roboto.medium</item>
         <item name="android:textColor">@color/grey</item>
         <item name="android:textSize">@dimen/font_small_14</item>
     </style>
 
-    <style name="CountBtn">
+    <style name="CountButton">
         <item name="android:layout_width">@dimen/size_medium_44</item>
         <item name="android:layout_height">@dimen/size_medium_44</item>
         <item name="android:background">@android:color/white</item>
         <item name="android:padding">@dimen/spacing_small_12</item>
     </style>
 
-    <style name="ProductText.LabelPrice">
+    <style name="CustomText.LabelPrice">
         <item name="android:textColor">@color/grey</item>
         <item name="android:textSize">@dimen/font_small_10</item>
         <item name="android:textStyle">bold</item>
@@ -121,7 +121,7 @@
         <item name="android:layout_marginBottom">@dimen/spacing_small_8</item>
     </style>
 
-    <style name="ProductText.ValuePrice">
+    <style name="CustomText.ValuePrice">
         <item name="android:layout_height">@dimen/size_medium_44</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textStyle">bold</item>
@@ -142,8 +142,63 @@
     </style>
 
 
-    <style name="collapsedtext" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textColor">@color/color_primary_dark</item>
+    <style name="Icon">
+        <item name="android:layout_width">@dimen/spacing_medium_24</item>
+        <item name="android:layout_height">@dimen/spacing_medium_24</item>
+        <item name="android:tint">@color/color_accent</item>
     </style>
 
+    <style name="Icon.Account">
+        <item name="android:layout_marginTop">@dimen/spacing_medium_24</item>
+        <item name="android:layout_marginRight">@dimen/spacing_normal_16</item>
+        <item name="android:layout_gravity">center_horizontal|top</item>
+    </style>
+
+    <style name="CustomText.AccountLabel">
+        <item name="android:paddingTop">@dimen/spacing_normal_16</item>
+        <item name="android:paddingBottom">@dimen/spacing_tiny_4</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textSize">@dimen/font_small_12</item>
+    </style>
+
+    <style name="CustomText.AccountValue">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">@dimen/font_normal_16</item>
+        <item name="android:paddingTop">@dimen/spacing_tiny_4</item>
+        <item name="android:paddingBottom">@dimen/spacing_tiny_4</item>
+    </style>
+
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/grey_light</item>
+    </style>
+
+    <style name="CustomText.AccountTitle">
+        <item name="android:textSize">@dimen/font_normal_16</item>
+        <item name="android:paddingTop">@dimen/spacing_normal_16</item>
+        <item name="android:paddingBottom">@dimen/spacing_normal_16</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CustomSwitch">
+        <item name="android:paddingTop">@dimen/spacing_normal_16</item>
+        <item name="android:paddingBottom">@dimen/spacing_normal_16</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@string/font.roboto.regular</item>
+    </style>
+
+    <style name="CustomEditText">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:paddingTop">@dimen/spacing_tiny_4</item>
+    </style>
+
+    <style name="CustomEditText.AddressNumber">
+        <item name="android:inputType">number</item>
+    </style>
+
+    <dimen name="drawer_width">300dp</dimen>
 </resources>

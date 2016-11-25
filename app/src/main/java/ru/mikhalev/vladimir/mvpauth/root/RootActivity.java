@@ -67,7 +67,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     private void initDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mBinding.drawer, mBinding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, mBinding.drawer, mBinding.toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
         mBinding.drawer.addDrawerListener(toggle);
         mBinding.navigationView.setNavigationItemSelectedListener(this);
         toggle.syncState();

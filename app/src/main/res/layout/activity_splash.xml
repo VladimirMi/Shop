@@ -43,7 +43,7 @@
                 android:text="@string/app_name"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/font_largest_40"
-                bind:font="@{@string/font_nueu_book}"/>
+                bind:font="@{@string/font_bebas_book}"/>
 
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/loader"
@@ -84,7 +84,7 @@
                             <android.support.design.widget.TextInputEditText
                                 android:id="@+id/email_et"
                                 style="@style/AuthField"
-                                android:hint="@string/text.email"
+                                android:hint="@string/auth.email.hint"
                                 android:inputType="textEmailAddress"
                                 android:text="@={presenter.email}"/>
                         </android.support.design.widget.TextInputLayout>
@@ -97,7 +97,7 @@
                             <android.support.design.widget.TextInputEditText
                                 android:id="@+id/password_et"
                                 style="@style/AuthField"
-                                android:hint="@string/text.password"
+                                android:hint="@string/auth.password.hint"
                                 android:inputType="textPassword"
                                 android:text="@={presenter.password}"/>
                         </android.support.design.widget.TextInputLayout>
@@ -109,14 +109,14 @@
                 <Button
                     android:id="@+id/show_catalog_btn"
                     style="@style/CustomButton"
-                    android:text="@string/text.show_catalog"
-                    android:theme="@style/ShowBtn"/>
+                    android:text="@string/auth.catalog"
+                    android:theme="@style/ShowButton"/>
 
                 <Button
                     android:id="@+id/login_btn"
                     style="@style/CustomButton"
-                    android:text="@string/text.login"
-                    android:theme="@style/StartBtn"/>
+                    android:text="@string/auth.login"
+                    android:theme="@style/EnterButton"/>
             </ru.mikhalev.vladimir.mvpauth.auth.AuthPanel>
 
             <LinearLayout
@@ -129,17 +129,17 @@
 
                 <ImageButton
                     android:id="@+id/fb_btn"
-                    style="@style/SocialBtn"
+                    style="@style/SocialButton"
                     android:background="@drawable/fb_selector_btn"/>
 
                 <ImageButton
                     android:id="@+id/tw_btn"
-                    style="@style/SocialBtn"
+                    style="@style/SocialButton"
                     android:background="@drawable/tw_selector_btn"/>
 
                 <ImageButton
                     android:id="@+id/vk_btn"
-                    style="@style/SocialBtn"
+                    style="@style/SocialButton"
                     android:background="@drawable/vk_selector_btn"/>
 
             </LinearLayout>

@@ -60,7 +60,7 @@
 
         <android.support.design.widget.NavigationView
             android:id="@+id/navigation_view"
-            style="@style/NavigationView"
+            style="@style/NavigationDrawer"
             app:headerLayout="@layout/drawer_header"
             app:menu="@menu/drawer_menu">
 

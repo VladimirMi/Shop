@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="ru.mikhalev.vladimir.mvpauth.R.drawable"/>
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="@dimen/drawer_header_height"
         android:background="@drawable/nav_header_bg"
         android:paddingBottom="@dimen/spacing_normal_16"
         android:paddingLeft="@dimen/spacing_normal_16"
-        android:paddingRight="@dimen/spacing_normal_16"
-        android:paddingTop="@dimen/avatar_top_padding">
+        android:paddingStart="@dimen/spacing_normal_16"
+        android:paddingTop="@dimen/avatar_top_padding"
+        tools:ignore="contentDescription">
 
         <ImageView
             android:id="@+id/avatar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_width="@dimen/drawer_avatar_size"
+            android:layout_height="@dimen/drawer_avatar_size"
+            tools:src="@drawable/user_avatar"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:fontFamily="sans-serif-medium"
-            android:text="User first namer"
+            android:maxLines="1"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_normal_16"/>
+            android:textSize="@dimen/font_normal_16"
+            app:font="@{@string/font_roboto_regular}"
+            tools:text="@string/account.username.sample"/>
 
     </RelativeLayout>
 </layout>

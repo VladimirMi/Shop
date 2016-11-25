@@ -23,11 +23,11 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/ProductText.ProductTitle"
+                    style="@style/CustomText.ProductTitle"
                     android:text="@{product.productName}"/>
 
                 <TextView
-                    style="@style/ProductText.ProductDescription"
+                    style="@style/CustomText.ProductDescription"
                     android:text="@{product.description}"/>
 
                 <ru.mikhalev.vladimir.mvpauth.core.ui.AspectRatioImageView
@@ -52,7 +52,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            style="@style/ProductText.LabelPrice"
+                            style="@style/CustomText.LabelPrice"
                             android:text="Количество"/>
 
                         <LinearLayout
@@ -63,16 +63,16 @@
 
                             <ImageButton
                                 android:id="@+id/minus"
-                                style="@style/CountBtn"
+                                style="@style/CountButton"
                                 android:src="@drawable/ic_minus_24dp"/>
 
                             <TextView
-                                style="@style/ProductText.ValuePrice"
+                                style="@style/CustomText.ValuePrice"
                                 android:text='@{""+product.count}'/>
 
                             <ImageButton
                                 android:id="@+id/plus"
-                                style="@style/CountBtn"
+                                style="@style/CountButton"
                                 android:src="@drawable/ic_plus_24dp"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -85,11 +85,11 @@
                         android:orientation="vertical">
 
                         <TextView
-                            style="@style/ProductText.LabelPrice"
+                            style="@style/CustomText.LabelPrice"
                             android:text="Стоимость"/>
 
                         <TextView
-                            style="@style/ProductText.ValuePrice"
+                            style="@style/CustomText.ValuePrice"
                             android:text='@{""+(product.count==0 ? product.price : product.price*product.count)+".-"}'/>
                     </LinearLayout>
                 </LinearLayout>

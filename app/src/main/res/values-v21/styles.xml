@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="StartBtn" parent="Base.Widget.AppCompat.Button">
+    <style name="EnterButton" parent="Base.Widget.AppCompat.Button">
         <item name="android:colorButtonNormal">@color/color_accent</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="ShowBtn" parent="Base.Widget.AppCompat.Button">
+    <style name="ShowButton" parent="Base.Widget.AppCompat.Button">
         <item name="android:colorButtonNormal">@android:color/white</item>
         <item name="android:textColor">@android:color/black</item>
     </style>

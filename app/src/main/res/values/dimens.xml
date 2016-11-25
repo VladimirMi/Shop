@@ -9,7 +9,6 @@
     <dimen name="font_small_12">12sp</dimen>
     <dimen name="font_small_10">10sp</dimen>
 
-
     <!-- Spaces -->
     <dimen name="spacing_largest_84">84dp</dimen>
     <dimen name="spacing_larger_72">72dp</dimen>
@@ -42,7 +41,10 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
 
-    <dimen name="avatar_width">135dp</dimen>
-    <dimen name="half_avatar_width">68dp</dimen>
+    <dimen name="profile_avatar_size">135dp</dimen>
+    <dimen name="half_profile_avatar_size">68dp</dimen>
+    <dimen name="drawer_header_height">160dp</dimen>
+    <dimen name="drawer_avatar_size">64dp</dimen>
+    <dimen name="profile_avatar_elevation">8dp</dimen>
 
 </resources>

@@ -1,23 +1,68 @@
 <resources>
     <string name="app_name">MVPAuth</string>
 
-    <string name="text.email">E-mail</string>
-    <string name="text.password">Пароль</string>
-    <string name="text.show_catalog">Показать каталог</string>
-    <string name="text.login">Войти</string>
-
-    <string name="message.exit">Нажмите еще раз для выхода</string>
+    <string name="message.exit">Вы уверены что хотите выйти?</string>
     <string name="message.auth">Необходима авторизация</string>
     <string name="message.error.common">Извините что то пошло не так, попрбуйте позже</string>
-    <string name="message.error.password">Неправильный пароль</string>
-    <string name="message.error.email">Неправильный email адрес</string>
-    <string name="message.error.login">Неверный логин или пароль</string>
     <string name="message.error.token">Invalid Token</string>
 
-    <string name="font.roboto_medium">sans-serif-medium</string>
-    <string name="font.roboto_regular">sans-serif</string>
-    <string name="font.nueu_book">PTBebasNeueBook.ttf</string>
+    <!-- Fonts -->
+    <string name="font.roboto.regular">Roboto-Regular.ttf</string>
+    <string name="font.roboto.light">Roboto-Light.ttf</string>
+    <string name="font.roboto.medium">Roboto-Medium.ttf</string>
+    <string name="font.bebas.book">PTBebasNeueBook.ttf</string>
+    <string name="font.bebas.regular">PTBebasNeueRegular.ttf</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!-- Auth -->
+    <string name="auth.email.hint">Введите E-mail</string>
+    <string name="auth.email.error">Неверный E-mail</string>
+    <string name="auth.password.hint">Введите пароль</string>
+    <string name="auth.password.error">Пароль не должен быть меньше 8 символов</string>
+    <string name="auth.catalog">Смотреть каталог</string>
+    <string name="auth.login">Войти</string>
+    <string name="auth.login.success">Вошли</string>
+    <string name="auth.login.fail">Не удалось войти</string>
+    <string name="auth.login.vk">Авторизация через ВКонтакте</string>
+    <string name="auth.login.twitter">Авторизация через Twitter</string>
+    <string name="auth.login.fb">Авторизация через Facebook</string>
+
+    <!-- Navigation drawer -->
+    <string name="nav.drawer.open">open</string>
+    <string name="nav.drawer.close">close</string>
+    <string name="nav.profile">Личный кабинет</string>
+    <string name="nav.catalog">Каталог товаров</string>
+    <string name="nav.favorite">Избранное</string>
+    <string name="nav.orders">Мои заказы</string>
+    <string name="nav.notifications">Мои уведомления</string>
+
+    <!-- Catalog -->
+    <string name="catalog.add">В корзину</string>
+
+    <!-- Product -->
+    <string name="product.count">Количество</string>
+    <string name="product.price">Стоимость</string>
+
+    <!-- Account -->
+    <string name="account.username.sample">Евгений Максимович</string>
+    <string name="account.phone.title">Телефон:</string>
+    <string name="account.phone.sample">+7(909)987-45-15</string>
+    <string name="account.delivery.title">Адрес доставки:</string>
+    <string name="account.home.title">Дом:</string>
+    <string name="account.home.sample">ул.Пушкина, д.Колотушкина</string>
+    <string name="account.comment.title">Комментарий:</string>
+    <string name="account.comment.sample">Без комментариев</string>
+    <string name="account.address.add">Добавить адрес</string>
+    <string name="account.push.title">Push-уведомления:</string>
+    <string name="account.order.notify">Уведомлять о статусе заказа</string>
+    <string name="account.extra.notify">Уведомлять о акциях и спец. предложениях</string>
+
+    <!-- AddressScreen -->
+    <string name="address_screen_label">Добавить адрес доставки</string>
+    <string name="address_delivery_location">Название места доставки</string>
+    <string name="address_street">Улица</string>
+    <string name="address_home">Дом</string>
+    <string name="address_apartment">Квартира</string>
+    <string name="address_floor">Этаж</string>
+    <string name="address_comment">Комментарий</string>
+    <string name="address_point_map">Указать на карте</string>
 </resources>

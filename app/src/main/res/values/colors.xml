@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_primary">#ffffff</color>
+    <color name="color_primary">#FFFFFF</color>
     <color name="color_primary_dark">#757575</color>
-    <color name="color_accent">#ffa610</color>
+    <color name="color_accent">#FFA815</color>
 
-    <color name="yellow">#ffd710</color>
+    <color name="grey_light">#EDEFF3</color>
+    <color name="grey">#454545</color>
+
+    <color name="yellow">#FFD710</color>
     <color name="blue">#03A9F4</color>
     <color name="red">#E65100</color>
-    <color name="grey_light">#edefe3</color>
-    <color name="grey">#808080</color>
 </resources>
