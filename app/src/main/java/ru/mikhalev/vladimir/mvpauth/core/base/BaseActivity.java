@@ -24,7 +24,7 @@ public class BaseActivity extends AppCompatActivity implements IView {
     public void showMessage(String message) {
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_container);
         if (coordinatorLayout != null) {
-            Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
         } else {
             Log.d(TAG, "Coordinator container cannot be null");
         }

@@ -15,13 +15,13 @@ import android.widget.TextView;
 public class BindingUtils {
 
     @BindingAdapter("image")
-    public static void setImage(ImageView imageView, @DrawableRes int resId) {
-        MyGlideModule.setImage(imageView.getContext(), resId, imageView);
+    public static void setImage(ImageView imageView, String path) {
+        MyGlideModule.setImage(path, imageView);
     }
 
     @BindingAdapter("avatar")
     public static void setAvatar(ImageView imageView, @DrawableRes int resId) {
-        MyGlideModule.setUserAvatar(imageView.getContext(), resId, imageView);
+        MyGlideModule.setUserAvatar(resId, imageView);
     }
 
     @BindingAdapter("font")

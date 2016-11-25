@@ -10,6 +10,7 @@ import ru.mikhalev.vladimir.mvpauth.di.modules.AppModule;
 public class App extends Application {
     private static AppComponent sAppComponent;
 
+
     @Override
     public void onCreate() {
         super.onCreate();

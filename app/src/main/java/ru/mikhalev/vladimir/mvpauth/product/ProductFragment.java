@@ -13,7 +13,6 @@ import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseFragment;
 import ru.mikhalev.vladimir.mvpauth.databinding.FragmentProductBinding;
-import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.di.scopes.ProductScope;
 
 /**
@@ -21,6 +20,7 @@ import ru.mikhalev.vladimir.mvpauth.di.scopes.ProductScope;
  */
 
 public class ProductFragment extends BaseFragment implements IProductView, View.OnClickListener {
+    private static final String TAG = "ProductFragment";
     private FragmentProductBinding mBinding;
     @Inject
     ProductPresenter mPresenter;
@@ -41,8 +41,10 @@ public class ProductFragment extends BaseFragment implements IProductView, View.
             ProductDto product = bundle.getParcelable("PRODUCT");
 
             // FIXME: 06.11.2016 recreate component
-            DaggerService.getComponent(Component.class, new Module(product)).inject(this);
-//            mPresenter = ProductPresenterFactory.getInstance(product);
+
+            DaggerProductFragment_Component.builder()
+                    .module(new ProductFragment.Module(product))
+                    .build().inject(this);
         }
     }
 
@@ -61,9 +63,9 @@ public class ProductFragment extends BaseFragment implements IProductView, View.
     }
 
     @Override
-    public void onDestroyView() {
+    public void onStop() {
         mPresenter.dropView();
-        super.onDestroyView();
+        super.onStop();
     }
 
     //endregion

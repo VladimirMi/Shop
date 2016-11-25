@@ -59,17 +59,16 @@ public class DataManager {
     }
 
     private void generateMockData() {
-        mMockProductList.add(new ProductDto(1, "test 1", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 100, 1));
-        mMockProductList.add(new ProductDto(2, "test 2", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 200, 1));
-        mMockProductList.add(new ProductDto(3, "test 3", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 300, 1));
-        mMockProductList.add(new ProductDto(4, "test 4", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 400, 1));
-        mMockProductList.add(new ProductDto(5, "test 5", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 500, 1));
-        mMockProductList.add(new ProductDto(6, "test 6", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 600, 1));
-        mMockProductList.add(new ProductDto(7, "test 7", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 700, 1));
-        mMockProductList.add(new ProductDto(8, "test 8", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 800, 1));
-        mMockProductList.add(new ProductDto(9, "test 9", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 900, 1));
-        mMockProductList.add(new ProductDto(10, "test 10", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 1000, 1));
-        mMockProductList.add(new ProductDto(11, "test 11", "imageUrl", "description 1, description 1, description 1, description 1, description 1", 1100, 1));
+        mMockProductList.add(new ProductDto(1, "LG MS-2595GIS", "http://mdata.yandex.net/i?path=b1017020219_img_id151065237584951211.jpeg&size=9", "Отдельно стоящая микроволновая печь", 12299, 1));
+        mMockProductList.add(new ProductDto(2, "Microsoft Xbox One 500 ГБ", "http://mdata.yandex.net/i?path=b0315200439_img_id8312843205844878861.jpeg&size=9", "Стационарная игровая приставка", 19989, 1));
+        mMockProductList.add(new ProductDto(3, "Samsung UE32J4000AU", "http://mdata.yandex.net/i?path=b0528113945_img_id383163117745284423.jpeg&size=9", "ЖК-телевизор, 720p HD", 17989, 1));
+        mMockProductList.add(new ProductDto(4, "Palit GeForce GTX 1060 1506Mhz PCI-E 3.0 6144Mb 8000Mhz 192 bit DVI HDMI HDCP", "http://mdata.yandex.net/i?path=b0720170635_img_id894639973318463136.jpeg&size=9", "Видеокарта NVIDIA GeForce GTX 1060", 20990, 1));
+        mMockProductList.add(new ProductDto(5, "Xiaomi Redmi 3", "http://mdata.yandex.net/i?path=b0201213211_img_id8890851960327700873.jpeg", "Смартфон, Android 5.1", 13559, 1));
+        mMockProductList.add(new ProductDto(6, "HGST HUC156060CSS204", "http://mdata.yandex.net/i?path=b1221154653_img_id8182254918959210372.jpeg&size=9", "Жесткий диск для сервера", 25980, 1));
+        mMockProductList.add(new ProductDto(7, "Smart Balance Wheel SUV 10", "http://mdata.yandex.net/i?path=b0721165228_img_id1146336079498735060.jpeg&size=9", "Гироскутер", 12400, 1));
+        mMockProductList.add(new ProductDto(8, "Makita HR2450", "http://mdata.yandex.net/i?path=b1221162808_img_id7519836334746001621.jpeg", "Перфоратор мощностью 780 Вт", 7206, 1));
+        mMockProductList.add(new ProductDto(9, "Casio GWG-1000-1A3", "http://mdata.yandex.net/i?path=b0908180932_img_id3349079021650035138.jpeg", "Кварцевые наручные часы", 57490, 1));
+        mMockProductList.add(new ProductDto(10, "Рекурсивный арбалет Man Kung MK-80 A4AL Оса", "http://cdn.e96.ru/assets/images/catalog/bows_crossbows_slingshots/arbalety/589396/man-kung-mk-80-a4al-osa_2092141.jpg", "Арбалет-пистолет \\\"Оса\\\" MK-80 A4AL (алюминий, черный, с рычагом)", 2390, 1));
 
     }
 }

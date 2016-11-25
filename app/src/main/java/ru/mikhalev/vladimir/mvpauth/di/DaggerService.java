@@ -40,6 +40,15 @@ public class DaggerService {
         return component;
     }
 
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <T> T getProductComponent(Class<T> componentClass, Object... dependencies) {
+
+        T component = createDaggerComponent(componentClass, dependencies);
+
+        return component;
+    }
+
     private static <T> T createDaggerComponent(Class<T> componentClass, Object... dependencies) {
         String fqn = componentClass.getName();
 

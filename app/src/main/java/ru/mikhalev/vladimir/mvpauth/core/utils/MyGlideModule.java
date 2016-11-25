@@ -36,9 +36,9 @@ public class MyGlideModule implements GlideModule {
         // nothing to do here
     }
 
-    public static void setImage( Context context, int imageRes, ImageView view) {
-        Glide.with(context)
-                .load(imageRes)
+    public static void setImage(String path, ImageView view) {
+        Glide.with(view.getContext())
+                .load(path)
                 .centerCrop()
                 .fitCenter()
                 .skipMemoryCache(true)
@@ -46,8 +46,8 @@ public class MyGlideModule implements GlideModule {
                 .into(view);
     }
 
-    public static void setUserAvatar(final Context context, int imageRes, ImageView view) {
-        Glide.with(context)
+    public static void setUserAvatar(int imageRes, ImageView view) {
+        Glide.with(view.getContext())
                 .load(imageRes)
                 .asBitmap()
                 .centerCrop()
@@ -57,7 +57,7 @@ public class MyGlideModule implements GlideModule {
                     @Override
                     protected void setResource(Bitmap resource) {
                         RoundedBitmapDrawable circularBitmapDrawable =
-                                RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                                RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
                         circularBitmapDrawable.setCircular(true);
                         view.setImageDrawable(circularBitmapDrawable);
                     }

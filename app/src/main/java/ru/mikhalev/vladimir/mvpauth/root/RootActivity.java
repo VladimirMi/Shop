@@ -2,10 +2,12 @@ package ru.mikhalev.vladimir.mvpauth.root;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -44,7 +46,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
         mFragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
-            replaceFragment(new CatalogFragment(), CatalogFragment.TAG);
+            replaceFragment(new CatalogFragment(), CatalogFragment.TAG, false);
         }
     }
 
@@ -70,7 +72,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
         mBinding.navigationView.setNavigationItemSelectedListener(this);
         toggle.syncState();
         ImageView avatar = (ImageView) mBinding.navigationView.getHeaderView(0).findViewById(R.id.avatar);
-        MyGlideModule.setUserAvatar(this, R.drawable.user_avatar, avatar);
+        MyGlideModule.setUserAvatar(R.drawable.user_avatar, avatar);
     }
 
     @Override
@@ -79,30 +81,30 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
         if (mBinding.drawer.isDrawerOpen(GravityCompat.START)) {
             mBinding.drawer.closeDrawer(GravityCompat.START);
-        } else if (fragment == null) {
-            replaceFragment(new CatalogFragment(), CatalogFragment.TAG);
+        } else if (fragment != null && !fragment.isVisible()) {
+            mFragmentManager.popBackStack();
             mBinding.navigationView.setCheckedItem(R.id.nav_catalog);
         } else if (isExitEnabled) {
             super.onBackPressed();
         } else {
-            showMessage(getString(R.string.message_exit));
             isExitEnabled = true;
+            new Handler().postDelayed(() -> isExitEnabled = false, 2000);
+            showMessage(getString(R.string.message_exit));
         }
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_accout:
                 if (!item.isChecked()) {
-                    replaceFragment(new AccountFragment(), AccountFragment.TAG);
+                    replaceFragment(new AccountFragment(), AccountFragment.TAG, true);
                 }
                 break;
 
             case R.id.nav_catalog:
                 if (!item.isChecked()) {
-                    replaceFragment(new CatalogFragment(), CatalogFragment.TAG);
+                    mFragmentManager.popBackStack();
                 }
                 break;
 
@@ -121,16 +123,19 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
         return true;
     }
 
-    private void replaceFragment(Fragment fragment, String tag) {
-        mFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment, tag)
-                .commit();
+    private void replaceFragment(Fragment fragment, String tag, boolean addToBackStack) {
+        FragmentTransaction ft = mFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment, tag);
+        if (addToBackStack) {
+            ft.addToBackStack(null);
+        }
+        ft.commit();
         isExitEnabled = false;
     }
 
     public void showAuthFragment() {
         AuthFragment fragment = new AuthFragment();
-        replaceFragment(fragment, AuthFragment.TAG);
+        replaceFragment(fragment, AuthFragment.TAG, true);
     }
 
     //region ==================== DI ========================

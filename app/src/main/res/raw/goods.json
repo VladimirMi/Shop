@@ -1,0 +1,64 @@
+{
+  "goods": [
+    {
+      "name": "LG MS-2595GIS",
+      "description": "Отдельно стоящая микроволновая печь",
+      "image_url": "http://mdata.yandex.net/i?path=b1017020219_img_id151065237584951211.jpeg&size=9",
+      "price": 12299
+    },
+    {
+      "name": "Microsoft Xbox One 500 ГБ",
+      "description": "Стационарная игровая приставка",
+      "image_url": "http://mdata.yandex.net/i?path=b0315200439_img_id8312843205844878861.jpeg&size=9",
+      "price": 19989
+    },
+    {
+      "name": "Samsung UE32J4000AU",
+      "description": "ЖК-телевизор, 720p HD",
+      "image_url": "http://mdata.yandex.net/i?path=b0528113945_img_id383163117745284423.jpeg&size=9",
+      "price": 17989
+    },
+    {
+      "name": "Palit GeForce GTX 1060 1506Mhz PCI-E 3.0 6144Mb 8000Mhz 192 bit DVI HDMI HDCP",
+      "description": "Видеокарта NVIDIA GeForce GTX 1060",
+      "image_url": "http://mdata.yandex.net/i?path=b0720170635_img_id894639973318463136.jpeg&size=9",
+      "price": 20990
+    },
+    {
+      "name": "Xiaomi Redmi 3",
+      "description": "Смартфон, Android 5.1",
+      "image_url": "http://mdata.yandex.net/i?path=b0201213211_img_id8890851960327700873.jpeg",
+      "price": 13599
+    },
+    {
+      "name": "HGST HUC156060CSS204",
+      "description": "Жесткий диск для сервера",
+      "image_url": "http://mdata.yandex.net/i?path=b1221154653_img_id8182254918959210372.jpeg&size=9",
+      "price": 25980
+    },
+    {
+      "name": "Smart Balance Wheel SUV 10",
+      "description": "Гироскутер",
+      "image_url": "http://mdata.yandex.net/i?path=b0721165228_img_id1146336079498735060.jpeg&size=9",
+      "price": 12400
+    },
+    {
+      "name": "Makita HR2450",
+      "description": "Перфоратор мощностью 780 Вт",
+      "image_url": "http://mdata.yandex.net/i?path=b1221162808_img_id7519836334746001621.jpeg",
+      "price": 7206
+    },
+    {
+      "name": "Casio GWG-1000-1A3",
+      "description": "Кварцевые наручные часы",
+      "image_url": "http://mdata.yandex.net/i?path=b0908180932_img_id3349079021650035138.jpeg",
+      "price": 57490
+    },
+    {
+      "name": "Рекурсивный арбалет Man Kung MK-80 A4AL Оса",
+      "description": "Арбалет-пистолет \"Оса\" MK-80 A4AL (алюминий, черный, с рычагом)",
+      "image_url": "http://cdn.e96.ru/assets/images/catalog/bows_crossbows_slingshots/arbalety/589396/man-kung-mk-80-a4al-osa_2092141.jpg",
+      "price": 2390
+    }
+  ]
+}

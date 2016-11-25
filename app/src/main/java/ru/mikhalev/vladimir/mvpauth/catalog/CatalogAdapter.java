@@ -2,7 +2,7 @@ package ru.mikhalev.vladimir.mvpauth.catalog;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import ru.mikhalev.vladimir.mvpauth.product.ProductFragment;
  * Developer Vladimir Mikhalev, 29.10.2016.
  */
 
-public class CatalogAdapter extends FragmentPagerAdapter {
+public class CatalogAdapter extends FragmentStatePagerAdapter {
     private List<ProductDto> mProductList = new ArrayList<>();
 
     public CatalogAdapter(FragmentManager fm) {

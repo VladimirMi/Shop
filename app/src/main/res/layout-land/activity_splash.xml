@@ -24,30 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_medium_36"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/logo"
-                    android:layout_width="@dimen/logo_width"
-                    android:layout_height="@dimen/logo_height"
-                    android:src="@drawable/firebase_icon"/>
-
-                <TextView
-                    android:id="@+id/app_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_normal_16"
-                    android:text="@string/app_name"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/font_largest_40"
-                    bind:font="@{@string/font_nueu_book}"/>
-            </LinearLayout>
-
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/loader"
                 android:layout_width="wrap_content"
@@ -62,7 +38,9 @@
                 android:id="@id/auth_panel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/social_wrapper"
+                android:layout_toLeftOf="@id/social_wrapper"
+                android:layout_marginBottom="@dimen/spacing_large_56"
+                android:layout_marginLeft="@dimen/spacing_largest_84"
                 android:gravity="bottom"
                 android:orientation="vertical">
 
@@ -124,11 +102,11 @@
 
             <LinearLayout
                 android:id="@+id/social_wrapper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <ImageButton
                     android:id="@+id/fb_btn"
@@ -145,6 +123,32 @@
                     style="@style/SocialBtn"
                     android:background="@drawable/vk_selector_btn"/>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="34dp"
+                android:layout_marginLeft="@dimen/spacing_largest_84"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_toLeftOf="@+id/social_wrapper">
+
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="@dimen/logo_width"
+                    android:layout_height="@dimen/logo_height"
+                    android:src="@drawable/firebase_icon"/>
+
+                <TextView
+                    android:id="@+id/app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_normal_16"
+                    android:text="@string/app_name"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_largest_40"
+                    bind:font="@{@string/font_nueu_book}"/>
             </LinearLayout>
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
