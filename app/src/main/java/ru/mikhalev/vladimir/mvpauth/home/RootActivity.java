@@ -30,7 +30,7 @@ import ru.mikhalev.vladimir.mvpauth.core.utils.MyGlideModule;
 import ru.mikhalev.vladimir.mvpauth.databinding.ActivityHomeBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.ToolbarBasketItemBinding;
 
-public class HomeActivity extends BaseActivity implements IRootView, NavigationView.OnNavigationItemSelectedListener {
+public class RootActivity extends BaseActivity implements IRootView, NavigationView.OnNavigationItemSelectedListener {
     private ActivityHomeBinding mBinding;
     private ToolbarBasketItemBinding mBasketBinding;
     @Inject RootPresenter mPresenter;
@@ -47,8 +47,8 @@ public class HomeActivity extends BaseActivity implements IRootView, NavigationV
                 (ViewGroup) mBinding.getRoot(), false);
         mBasketBinding.setCount(0);
 
-        DaggerService.getComponent(HomeActivity.Component.class,
-                new HomeActivity.Module()).inject(this);
+        DaggerService.getComponent(RootActivity.Component.class,
+                new RootActivity.Module()).inject(this);
         mPresenter.takeView(this);
 
         initToolbar();
@@ -179,7 +179,7 @@ public class HomeActivity extends BaseActivity implements IRootView, NavigationV
     @dagger.Component(modules = Module.class)
     @RootScope
     public interface Component {
-        void inject(HomeActivity view);
+        void inject(RootActivity view);
         RootPresenter getRootPresenter();
     }
     //endregion

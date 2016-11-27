@@ -5,11 +5,6 @@ package ru.mikhalev.vladimir.mvpauth.core.layers.view;
  */
 
 public interface IView {
-    void showMessage(String message);
 
-    void showError(Throwable e);
-
-    void showLoad();
-
-    void hideLoad();
+    boolean viewOnBackPressed();
 }

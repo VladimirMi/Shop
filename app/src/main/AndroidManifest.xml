@@ -21,12 +21,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".home.HomeActivity"
+            android:name=".home.RootActivity"
             android:launchMode="singleTop"/>
         <activity
             android:name=".address.AddressActivity"
             android:label="@string/address_screen_label"
-            android:parentActivityName=".home.HomeActivity">
+            android:parentActivityName=".home.RootActivity">
         </activity>
         <meta-data
             android:name="ru.mikhalev.vladimir.mvpauth.core.utils.MyGlideModule"

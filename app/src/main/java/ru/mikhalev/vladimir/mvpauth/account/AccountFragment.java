@@ -13,7 +13,7 @@ import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.address.AddressActivity;
 import ru.mikhalev.vladimir.mvpauth.databinding.ActivityHomeBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.FragmentAccountBinding;
-import ru.mikhalev.vladimir.mvpauth.home.HomeActivity;
+import ru.mikhalev.vladimir.mvpauth.home.RootActivity;
 
 public class AccountFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
     public static final String TAG = "AccountFragment";
@@ -63,11 +63,11 @@ public class AccountFragment extends Fragment implements AppBarLayout.OnOffsetCh
                 .start();
     }
 
-    private HomeActivity getHomeActivity() {
-        if (!(getActivity() instanceof HomeActivity)) {
-            throw new IllegalStateException("Parent activity should be HomeActivity");
+    private RootActivity getHomeActivity() {
+        if (!(getActivity() instanceof RootActivity)) {
+            throw new IllegalStateException("Parent activity should be RootActivity");
         }
-        return (HomeActivity) getActivity();
+        return (RootActivity) getActivity();
     }
 
     @Override

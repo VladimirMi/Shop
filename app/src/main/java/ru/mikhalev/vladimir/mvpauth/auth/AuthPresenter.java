@@ -12,7 +12,6 @@ import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AuthScope;
 import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.AbstractPresenter;
-import ru.mikhalev.vladimir.mvpauth.core.utils.AppConfig;
 
 public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuthPresenter {
     @Inject
@@ -149,16 +148,6 @@ public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuth
             }
         }
         return false;
-    }
-
-    private boolean isValidEmail(String email) {
-        return !email.isEmpty() &&
-                AppConfig.EMAIL_ADDRESS_VALIDATE.matcher(email.trim()).matches();
-    }
-
-    private boolean isValidPassword(String password) {
-        return !password.isEmpty() &&
-                AppConfig.PASSWORD_VALIDATE.matcher(password.trim()).matches();
     }
 
     private void resetFields() {

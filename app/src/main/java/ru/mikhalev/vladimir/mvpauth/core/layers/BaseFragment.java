@@ -3,7 +3,7 @@ package ru.mikhalev.vladimir.mvpauth.core.layers;
 import android.support.v4.app.Fragment;
 
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
-import ru.mikhalev.vladimir.mvpauth.home.HomeActivity;
+import ru.mikhalev.vladimir.mvpauth.home.RootActivity;
 
 /**
  * Developer Vladimir Mikhalev, 30.10.2016.
@@ -30,7 +30,7 @@ public class BaseFragment extends Fragment implements IView {
         getRootActivity().hideLoad();
     }
 
-    public HomeActivity getRootActivity() {
-        return (HomeActivity) getActivity();
+    public RootActivity getRootActivity() {
+        return (RootActivity) getActivity();
     }
 }
