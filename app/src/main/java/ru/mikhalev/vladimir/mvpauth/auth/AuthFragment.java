@@ -10,7 +10,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.core.base.BaseFragment;
+import ru.mikhalev.vladimir.mvpauth.core.layers.BaseFragment;
 import ru.mikhalev.vladimir.mvpauth.databinding.FragmentAuthBinding;
 
 /**

@@ -9,10 +9,10 @@ import com.android.databinding.library.baseAdapters.BR;
 import javax.inject.Inject;
 
 import dagger.Provides;
-import ru.mikhalev.vladimir.mvpauth.core.base.presenter.AbstractPresenter;
+import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AuthScope;
+import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.AbstractPresenter;
 import ru.mikhalev.vladimir.mvpauth.core.utils.AppConfig;
-import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.di.scopes.AuthScope;
 
 public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuthPresenter {
     @Inject

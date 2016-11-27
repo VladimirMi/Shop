@@ -1,7 +1,7 @@
 package ru.mikhalev.vladimir.mvpauth.auth;
 
 
-import ru.mikhalev.vladimir.mvpauth.core.base.model.AbstractModel;
+import ru.mikhalev.vladimir.mvpauth.core.layers.model.AbstractModel;
 
 public class AuthModel extends AbstractModel{
 

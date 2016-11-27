@@ -6,13 +6,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ru.mikhalev.vladimir.mvpauth.catalog.ProductDto;
 import ru.mikhalev.vladimir.mvpauth.core.App;
+import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.core.di.components.DataManagerComponent;
+import ru.mikhalev.vladimir.mvpauth.core.di.modules.LocaleModule;
+import ru.mikhalev.vladimir.mvpauth.core.di.modules.NetworkModule;
 import ru.mikhalev.vladimir.mvpauth.core.network.api.RestService;
-import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.di.components.DataManagerComponent;
-import ru.mikhalev.vladimir.mvpauth.di.modules.LocaleModule;
-import ru.mikhalev.vladimir.mvpauth.di.modules.NetworkModule;
-import ru.mikhalev.vladimir.mvpauth.product.ProductDto;
 
 public class DataManager {
     @Inject

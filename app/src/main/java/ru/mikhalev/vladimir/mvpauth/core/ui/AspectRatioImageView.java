@@ -16,6 +16,7 @@ public class AspectRatioImageView extends ImageView {
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AspectRatioImageView);
         mAspectRatio = array.getFloat(R.styleable.AspectRatioImageView_aspect_ratio, DEFAULT_ASPECT_RATIO);
+        array.recycle();
     }
 
     @Override

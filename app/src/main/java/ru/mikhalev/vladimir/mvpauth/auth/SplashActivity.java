@@ -13,11 +13,11 @@ import javax.inject.Inject;
 
 import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
-import ru.mikhalev.vladimir.mvpauth.core.base.BaseActivity;
+import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AuthScope;
+import ru.mikhalev.vladimir.mvpauth.core.layers.view.BaseActivity;
 import ru.mikhalev.vladimir.mvpauth.databinding.ActivitySplashBinding;
-import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.di.scopes.AuthScope;
+import ru.mikhalev.vladimir.mvpauth.home.HomeActivity;
 
 public class SplashActivity extends BaseActivity implements IAuthView, View.OnClickListener {
     private static final String TAG = "SplashActivity";
@@ -125,7 +125,7 @@ public class SplashActivity extends BaseActivity implements IAuthView, View.OnCl
 
     @Override
     public void showCatalogScreen() {
-        Intent intent = new Intent(this, RootActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
     }

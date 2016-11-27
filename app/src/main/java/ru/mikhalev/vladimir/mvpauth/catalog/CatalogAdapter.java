@@ -7,9 +7,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.mikhalev.vladimir.mvpauth.product.ProductDto;
-import ru.mikhalev.vladimir.mvpauth.product.ProductFragment;
-
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.
  */

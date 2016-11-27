@@ -2,8 +2,7 @@ package ru.mikhalev.vladimir.mvpauth.catalog;
 
 import java.util.List;
 
-import ru.mikhalev.vladimir.mvpauth.core.base.model.AbstractModel;
-import ru.mikhalev.vladimir.mvpauth.product.ProductDto;
+import ru.mikhalev.vladimir.mvpauth.core.layers.model.AbstractModel;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.

@@ -20,8 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".root.RootActivity"/>
-
+        <activity
+            android:name=".home.HomeActivity"
+            android:launchMode="singleTop"/>
+        <activity
+            android:name=".address.AddressActivity"
+            android:label="@string/address_screen_label"
+            android:parentActivityName=".home.HomeActivity">
+        </activity>
         <meta-data
             android:name="ru.mikhalev.vladimir.mvpauth.core.utils.MyGlideModule"
             android:value="GlideModule"/>

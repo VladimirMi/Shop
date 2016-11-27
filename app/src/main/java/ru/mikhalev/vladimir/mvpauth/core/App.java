@@ -3,9 +3,9 @@ package ru.mikhalev.vladimir.mvpauth.core;
 
 import android.app.Application;
 
-import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.di.components.AppComponent;
-import ru.mikhalev.vladimir.mvpauth.di.modules.AppModule;
+import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
+import ru.mikhalev.vladimir.mvpauth.core.di.modules.AppModule;
 
 public class App extends Application {
     private static AppComponent sAppComponent;

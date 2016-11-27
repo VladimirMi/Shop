@@ -1,0 +1,13 @@
+package ru.mikhalev.vladimir.mvpauth.home;
+
+import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.AbstractPresenter;
+
+/**
+ * Developer Vladimir Mikhalev, 06.11.2016.
+ */
+public class RootPresenter  extends AbstractPresenter<IRootView>{
+    @Override
+    public void initView() {
+        // TODO: 06.11.2016 init avatar + username + state
+    }
+}

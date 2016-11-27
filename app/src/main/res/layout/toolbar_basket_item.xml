@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="count"
+            type="int"/>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingEnd="@dimen/spacing_normal_16"
+        android:paddingRight="@dimen/spacing_normal_16"
+        tools:ignore="RtlSymmetry">
+
+        <ImageView
+            android:id="@+id/basket_item"
+            android:layout_width="@dimen/size_small_24"
+            android:layout_height="@dimen/size_small_24"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_shopping_cart_color_primary_dark_24dp"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:id="@+id/basket_counter"
+            android:layout_width="@dimen/spacing_small_12"
+            android:layout_height="@dimen/spacing_small_12"
+            android:layout_alignTop="@+id/basket_item"
+            android:layout_marginLeft="@dimen/spacing_tiny_4"
+            android:layout_marginStart="@dimen/spacing_tiny_4"
+            android:layout_marginTop="-4dp"
+            android:layout_toEndOf="@+id/basket_item"
+            android:layout_toRightOf="@+id/basket_item"
+            android:background="@drawable/counter_background"
+            android:gravity="center"
+            android:text="@{String.valueOf(count)}"
+            android:textAlignment="center"
+            android:textColor="@color/color_primary"
+            android:textSize="@dimen/font_tiny_8"
+            tools:text="0"/>
+
+    </RelativeLayout>
+
+</layout>

@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.List;
 
@@ -14,11 +13,10 @@ import javax.inject.Inject;
 
 import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.core.base.BaseFragment;
+import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.core.di.scopes.CatalogScope;
+import ru.mikhalev.vladimir.mvpauth.core.layers.BaseFragment;
 import ru.mikhalev.vladimir.mvpauth.databinding.FragmentCatalogBinding;
-import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.di.scopes.CatalogScope;
-import ru.mikhalev.vladimir.mvpauth.product.ProductDto;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.
@@ -85,10 +83,8 @@ public class CatalogFragment extends BaseFragment implements ICatalogView, View.
     }
 
     @Override
-    public void updateProductCounter(int i) {
-        Button cart = (Button) getRootActivity().findViewById(R.id.cart);
-        cart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_cart_fill, 0, 0, 0);
-        cart.setText(String.valueOf(i));
+    public void updateProductCounter(int count) {
+        getRootActivity().setBasketCounter(count);
     }
     //endregion
 

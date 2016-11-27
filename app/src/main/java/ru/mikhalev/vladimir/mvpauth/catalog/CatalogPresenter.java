@@ -5,13 +5,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.Provides;
-import ru.mikhalev.vladimir.mvpauth.core.base.presenter.AbstractPresenter;
-import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.di.scopes.CatalogScope;
-import ru.mikhalev.vladimir.mvpauth.product.ProductDto;
-import ru.mikhalev.vladimir.mvpauth.root.IRootView;
-import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
-import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
+import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.core.di.scopes.CatalogScope;
+import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.AbstractPresenter;
+import ru.mikhalev.vladimir.mvpauth.home.HomeActivity;
+import ru.mikhalev.vladimir.mvpauth.home.IRootView;
+import ru.mikhalev.vladimir.mvpauth.home.RootPresenter;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.
@@ -28,7 +27,7 @@ public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements
 
     public CatalogPresenter() {
         DaggerService.getComponent(CatalogPresenter.Component.class,
-                DaggerService.getComponent(RootActivity.Component.class),
+                DaggerService.getComponent(HomeActivity.Component.class),
                 new CatalogPresenter.Module()).inject(this);
     }
 
@@ -78,7 +77,7 @@ public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements
         }
     }
 
-    @dagger.Component(dependencies = RootActivity.Component.class,
+    @dagger.Component(dependencies = HomeActivity.Component.class,
             modules = Module.class)
     @CatalogScope
     interface Component {

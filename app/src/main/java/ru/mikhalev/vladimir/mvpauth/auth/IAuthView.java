@@ -3,7 +3,7 @@ package ru.mikhalev.vladimir.mvpauth.auth;
 
 import android.support.annotation.Nullable;
 
-import ru.mikhalev.vladimir.mvpauth.core.base.view.IView;
+import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
 
 public interface IAuthView extends IView {
 
