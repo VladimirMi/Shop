@@ -1,5 +1,6 @@
 package ru.mikhalev.vladimir.mvpauth.core.di;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -13,6 +14,14 @@ import java.util.Map;
  */
 
 public class DaggerService {
+    public static final String SERVICE_NAME = "DAGGER_SERVICE";
+
+    @SuppressWarnings("unchecked")
+    public static <T> T getDaggerComponent(Context context) {
+        return (T) context.getSystemService(SERVICE_NAME);
+    }
+
+
     private static Map<Class, Object> sComponentMap = new HashMap<>();
 
     private static void registerComponent(Class classComponent, Object daggerComponent) {

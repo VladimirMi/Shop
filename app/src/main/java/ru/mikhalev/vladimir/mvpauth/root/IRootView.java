@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.home;
+package ru.mikhalev.vladimir.mvpauth.root;
 
 import android.support.annotation.Nullable;
 

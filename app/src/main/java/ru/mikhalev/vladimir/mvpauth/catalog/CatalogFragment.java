@@ -79,7 +79,7 @@ public class CatalogFragment extends BaseFragment implements ICatalogView, View.
 
     @Override
     public void showAuthScreen() {
-        getRootActivity().showAuthFragment();
+//        getRootActivity().showAuthFragment();
     }
 
     @Override

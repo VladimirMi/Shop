@@ -8,9 +8,9 @@ import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.CatalogScope;
 import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.AbstractPresenter;
-import ru.mikhalev.vladimir.mvpauth.home.IRootView;
-import ru.mikhalev.vladimir.mvpauth.home.RootActivity;
-import ru.mikhalev.vladimir.mvpauth.home.RootPresenter;
+import ru.mikhalev.vladimir.mvpauth.root.IRootView;
+import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
+import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.

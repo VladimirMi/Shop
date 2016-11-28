@@ -7,14 +7,16 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 
 import dagger.Provides;
+import mortar.MortarScope;
 import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AuthScope;
 import ru.mikhalev.vladimir.mvpauth.flow.AbsScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
-import ru.mikhalev.vladimir.mvpauth.home.IRootView;
-import ru.mikhalev.vladimir.mvpauth.home.RootActivity;
-import ru.mikhalev.vladimir.mvpauth.home.RootPresenter;
+import ru.mikhalev.vladimir.mvpauth.root.IRootView;
+import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
+import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
 
 /**
  * Developer Vladimir Mikhalev, 27.11.2016.
@@ -23,9 +25,22 @@ import ru.mikhalev.vladimir.mvpauth.home.RootPresenter;
 @Screen(R.layout.screen_auth)
 public class AuthScreen extends AbsScreen<RootActivity.Component> {
 
+    private int mInputState = AuthInputState.IDLE;
+
+    public int getInputState() {
+        return mInputState;
+    }
+
+    public void setInputState(int inputState) {
+        this.mInputState = inputState;
+    }
+
     @Override
     public Object createScreenComponent(RootActivity.Component parentComponent) {
-        return null;
+        return DaggerAuthScreen_Component.builder()
+                .component(parentComponent)
+                .module(new AuthScreen.Module())
+                .build();
     }
 
     //region =============== DI ==============
@@ -52,6 +67,7 @@ public class AuthScreen extends AbsScreen<RootActivity.Component> {
 
     @dagger.Component(dependencies = RootActivity.Component.class,
             modules = Module.class)
+    @AuthScope
     public interface Component {
         void inject(AuthPresenter presenter);
 
@@ -59,7 +75,6 @@ public class AuthScreen extends AbsScreen<RootActivity.Component> {
     }
     //endregion
 
-    //region =============== Presenter ==============
     public class AuthPresenter extends ViewPresenter<AuthView> implements IAuthPresenter {
 
         @Inject
@@ -67,6 +82,12 @@ public class AuthScreen extends AbsScreen<RootActivity.Component> {
 
         @Inject
         RootPresenter mRootPresenter;
+
+        @Override
+        protected void onEnterScope(MortarScope scope) {
+            super.onEnterScope(scope);
+            ((AuthScreen.Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
+        }
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
@@ -88,10 +109,12 @@ public class AuthScreen extends AbsScreen<RootActivity.Component> {
             mAuthModel.loginUser(viewModel.getEmail(), viewModel.getPassword());
 
             // TODO: 30.10.2016 Registration stab
-            getRootView().showLoad();
-            getRootView().showMessage("request for user auth");
+            if (getRootView() != null) {
+                getRootView().showLoad();
+                getRootView().showMessage("request for user auth");
+            }
             Handler handler = new Handler();
-            handler.postDelayed(() -> getView().showCatalogScreen(), 3000);
+            handler.postDelayed(this::clickOnShowCatalog, 3000);
         }
 
         @Override
@@ -119,6 +142,9 @@ public class AuthScreen extends AbsScreen<RootActivity.Component> {
         public void clickOnShowCatalog() {
             if (getView() != null) {
                 // TODO: 27-Oct-16 if update data complete start catalog screen
+                if (getRootView() != null) {
+                    getRootView().hideLoad();
+                }
                 getView().showCatalogScreen();
             }
         }

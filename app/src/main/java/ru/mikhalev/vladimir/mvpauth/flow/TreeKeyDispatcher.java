@@ -19,6 +19,7 @@ import flow.Traversal;
 import flow.TraversalCallback;
 import flow.TreeKey;
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.mortar.ScreenScoper;
 
 /**
  * Developer Vladimir Mikhalev, 27.11.2016.
@@ -54,9 +55,9 @@ public class TreeKeyDispatcher implements Dispatcher, KeyChanger {
             // TODO: 27.11.2016 implement treekey case
         }
 
-        // TODO: 27.11.2016 mortar context for screen
         Context flowContext = traversal.createContext(inKey, mActivity);
-        contexts = Collections.singletonMap(inKey, flowContext);
+        Context mortarContext = ScreenScoper.getScreenScope((AbsScreen) inKey).createContext(flowContext);
+        contexts = Collections.singletonMap(inKey, mortarContext);
         changeKey(outState, inState, traversal.direction, contexts, callback);
     }
 
@@ -83,6 +84,10 @@ public class TreeKeyDispatcher implements Dispatcher, KeyChanger {
             incomingState.restore(newView);
 
             // TODO: 27.11.2016 unregister screen scope
+            if (((AbsScreen) outKey) != null) {
+                ((AbsScreen) outKey).unregisterScope();
+            }
+
             if (mRootFrame.getChildAt(0) != null) {
                 mRootFrame.removeView(mRootFrame.getChildAt(0));
             }

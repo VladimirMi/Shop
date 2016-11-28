@@ -21,8 +21,6 @@ import ru.mikhalev.vladimir.mvpauth.core.utils.AppConfig;
 
 public class AuthViewModel extends BaseObservable {
 
-    private static final int MIN_PASSWORD_LENGTH = 8;
-
     @IntDef({
             FIELD.EMAIL,
             FIELD.PASSWORD})
@@ -64,12 +62,12 @@ public class AuthViewModel extends BaseObservable {
         }
     }
 
-    boolean isValidEmail() {
+    private boolean isValidEmail() {
         return !email.isEmpty() &&
                 AppConfig.EMAIL_ADDRESS_VALIDATE.matcher(email).matches();
     }
 
-    boolean isValidPassword() {
+    private boolean isValidPassword() {
         return !password.isEmpty() &&
                 AppConfig.PASSWORD_VALIDATE.matcher(password).matches();
     }
@@ -88,7 +86,6 @@ public class AuthViewModel extends BaseObservable {
     public void setEmail(String email) {
         this.email = email;
         validate(FIELD.EMAIL);
-
     }
 
     public String getPassword() {

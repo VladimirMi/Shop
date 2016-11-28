@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter;
 import android.databinding.BindingConversion;
 import android.graphics.Typeface;
 import android.support.annotation.DrawableRes;
+import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,18 +15,29 @@ import android.widget.TextView;
 
 public class BindingUtils {
 
+    @BindingAdapter("onClick")
+    public static void bindOnClick(View view, Runnable runnable) {
+        view.setOnClickListener(v -> runnable.run());
+    }
+
+    @BindingAdapter("error")
+    public static void bindError(TextInputLayout textInputLayout, final String error) {
+        textInputLayout.setErrorEnabled(error != null);
+        textInputLayout.setError(error);
+    }
+
     @BindingAdapter("image")
-    public static void setImage(ImageView imageView, String path) {
+    public static void bindImage(ImageView imageView, String path) {
         MyGlideModule.setImage(path, imageView);
     }
 
     @BindingAdapter("avatar")
-    public static void setAvatar(ImageView imageView, @DrawableRes int resId) {
+    public static void bindAvatar(ImageView imageView, @DrawableRes int resId) {
         MyGlideModule.setUserAvatar(resId, imageView);
     }
 
     @BindingAdapter("font")
-    public static void setFont(TextView textView, String  fontName) {
+    public static void bindFont(TextView textView, String fontName) {
         Typeface tf = Typeface.createFromAsset(textView.getContext().getAssets(),
                 "fonts/" + fontName);
         textView.setTypeface(tf);

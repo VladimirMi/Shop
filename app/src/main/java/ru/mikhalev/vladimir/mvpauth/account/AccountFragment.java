@@ -11,9 +11,8 @@ import android.view.ViewGroup;
 
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.address.AddressActivity;
-import ru.mikhalev.vladimir.mvpauth.databinding.ActivityHomeBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.FragmentAccountBinding;
-import ru.mikhalev.vladimir.mvpauth.home.RootActivity;
+import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
 
 public class AccountFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
     public static final String TAG = "AccountFragment";
@@ -38,9 +37,9 @@ public class AccountFragment extends Fragment implements AppBarLayout.OnOffsetCh
     //endregion
 
     private void initToolbar() {
-        ActivityHomeBinding binding = (ActivityHomeBinding) getHomeActivity().getBinding();
-        binding.setToolbarTitle(getString(R.string.nav_profile));
-        binding.setLogoVisible(false);
+//        ActivityHomeBinding binding = (ActivityHomeBinding) getHomeActivity().getBinding();
+//        binding.setToolbarTitle(getString(R.string.nav_profile));
+//        binding.setLogoVisible(false);
     }
 
     private void initAppBar() {

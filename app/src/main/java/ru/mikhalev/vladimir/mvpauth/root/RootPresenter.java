@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.home;
+package ru.mikhalev.vladimir.mvpauth.root;
 
 import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.AbstractPresenter;
 
