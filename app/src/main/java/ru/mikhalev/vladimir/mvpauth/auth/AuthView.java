@@ -3,7 +3,6 @@ package ru.mikhalev.vladimir.mvpauth.auth;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
@@ -18,30 +17,21 @@ import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAuthBinding;
  * Developer Vladimir Mikhalev, 27.11.2016.
  */
 
-public class AuthView extends RelativeLayout implements IAuthView {
-    private AuthScreen mScreen;
+public class AuthView extends RelativeLayout implements IAuthView, IAuthActions {
 
-    @Inject
-    AuthScreen.AuthPresenter mPresenter;
-
-    @Inject
-    AuthViewModel mViewModel;
-
+    @Inject AuthScreen.AuthPresenter mPresenter;
+    @Inject AuthViewModel mViewModel;
     private ScreenAuthBinding mBinding;
     private int mInputState;
 
-    private Animation mCardInAnimation = AnimationUtils.loadAnimation(getContext(),
-            R.anim.card_in_animation);
-    private Animation mCardOutAnimation = AnimationUtils.loadAnimation(getContext(),
-            R.anim.card_out_animation);
 
     public AuthView(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (!isInEditMode()) {
-            mScreen = Flow.getKey(this);
+            AuthScreen screen = Flow.getKey(this);
             DaggerService.<AuthScreen.Component>getDaggerComponent(context).inject(this);
-            if (mScreen != null) {
-                mInputState = mScreen.getInputState();
+            if (screen != null) {
+                mInputState = screen.getInputState();
             }
         }
     }
@@ -76,9 +66,10 @@ public class AuthView extends RelativeLayout implements IAuthView {
 
 
     //region =============== Events ==============
+    @Override
     public void clickOnLogin() {
         if (mInputState == AuthInputState.IDLE) {
-            mBinding.authCard.startAnimation(mCardInAnimation);
+            mBinding.authCard.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.card_in_animation));
             mInputState = AuthInputState.LOGIN;
             mBinding.setInputState(mInputState);
         } else if (mViewModel.isValid()) {
@@ -86,20 +77,24 @@ public class AuthView extends RelativeLayout implements IAuthView {
         }
     }
 
+    @Override
     public void clickOnShowCatalog() {
         mPresenter.clickOnShowCatalog();
     }
 
+    @Override
     public void clickOnVk(View view) {
         view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_animation));
         mPresenter.clickOnVk();
     }
 
+    @Override
     public void clickOnFb(View view) {
         view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_animation));
         mPresenter.clickOnFb();
     }
 
+    @Override
     public void clickOnTwitter(View view) {
         view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_animation));
         mPresenter.clickOnTwitter();
@@ -111,14 +106,12 @@ public class AuthView extends RelativeLayout implements IAuthView {
 
     @Override
     public void showCatalogScreen() {
-//        DaggerService.unregisterScope(AuthScope.class);
-//        Flow.get(this).set(new CatalogScreen());
     }
 
     @Override
     public boolean viewOnBackPressed() {
         if (mInputState == AuthInputState.LOGIN) {
-            mBinding.authCard.startAnimation(mCardOutAnimation);
+            mBinding.authCard.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.card_out_animation));
             mInputState = AuthInputState.IDLE;
             mBinding.setInputState(mInputState);
             return true;

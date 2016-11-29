@@ -10,7 +10,7 @@
 
         <variable
             name="actionsHandler"
-            type="ru.mikhalev.vladimir.mvpauth.auth.AuthView"/>
+            type="ru.mikhalev.vladimir.mvpauth.auth.IAuthActions"/>
 
         <variable
             name="viewModel"

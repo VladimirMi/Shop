@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="actionsHandler"
+            type="ru.mikhalev.vladimir.mvpauth.catalog.ICatalogActions"/>
+
+    </data>
+
+    <ru.mikhalev.vladimir.mvpauth.catalog.CatalogView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/product_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/pager_indicator"/>
+
+        <com.rd.PageIndicatorView
+            android:id="@id/pager_indicator"
+            style="@style/PageIndicator"
+            android:layout_above="@+id/btn_wrapper"
+            app:piv_viewPager="@id/product_pager"/>
+
+        <LinearLayout
+            android:id="@id/btn_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/add_to_card_btn"
+                style="@style/CustomButton"
+                android:layout_marginBottom="@dimen/spacing_normal_16"
+                bind:onClick="@{actionsHandler::clickOnAddGoodsToBasket}"
+                android:text="@string/catalog.add"
+                android:theme="@style/EnterButton"/>
+
+        </LinearLayout>
+    </ru.mikhalev.vladimir.mvpauth.catalog.CatalogView>
+</layout>

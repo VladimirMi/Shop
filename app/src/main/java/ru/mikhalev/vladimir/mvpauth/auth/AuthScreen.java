@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 
 import dagger.Provides;
+import flow.Flow;
 import mortar.MortarScope;
 import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AuthScope;
 import ru.mikhalev.vladimir.mvpauth.flow.AbsScreen;
@@ -75,13 +77,10 @@ public class AuthScreen extends AbsScreen<RootActivity.Component> {
     }
     //endregion
 
-    public class AuthPresenter extends ViewPresenter<AuthView> implements IAuthPresenter {
+    class AuthPresenter extends ViewPresenter<AuthView> implements IAuthPresenter {
 
-        @Inject
-        AuthModel mAuthModel;
-
-        @Inject
-        RootPresenter mRootPresenter;
+        @Inject AuthModel mAuthModel;
+        @Inject RootPresenter mRootPresenter;
 
         @Override
         protected void onEnterScope(MortarScope scope) {
@@ -145,7 +144,7 @@ public class AuthScreen extends AbsScreen<RootActivity.Component> {
                 if (getRootView() != null) {
                     getRootView().hideLoad();
                 }
-                getView().showCatalogScreen();
+                Flow.get(getView()).set(new CatalogScreen());
             }
         }
 

@@ -9,8 +9,6 @@ import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
  */
 
 public interface ICatalogView extends IView {
-    void showAddToCartMessage(ProductDto product);
-    void showCatalogView(List<ProductDto> productList);
-    void showAuthScreen();
+    void showCatalogView(List<ProductViewModel> productList);
     void updateProductCounter(int i);
 }

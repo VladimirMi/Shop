@@ -10,7 +10,7 @@
 
         <variable
             name="actionsHandler"
-            type="ru.mikhalev.vladimir.mvpauth.auth.AuthView"/>
+            type="ru.mikhalev.vladimir.mvpauth.auth.IAuthActions"/>
 
         <variable
             name="viewModel"
@@ -28,12 +28,12 @@
 
 
         <LinearLayout
-            android:id="@id/auth_panel"
+            android:id="@+id/auth_panel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/spacing_large_56"
             android:layout_marginLeft="@dimen/spacing_largest_84"
-            android:layout_toLeftOf="@id/social_wrapper"
+            android:layout_toLeftOf="@+id/social_wrapper"
             android:gravity="bottom"
             android:orientation="vertical">
 
@@ -99,7 +99,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/social_wrapper"
+            android:id="@id/social_wrapper"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"

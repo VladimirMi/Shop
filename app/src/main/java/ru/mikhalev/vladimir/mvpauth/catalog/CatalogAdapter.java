@@ -1,26 +1,27 @@
 package ru.mikhalev.vladimir.mvpauth.catalog;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.content.Context;
+import android.support.v4.view.PagerAdapter;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import mortar.MortarScope;
+import ru.mikhalev.vladimir.mvpauth.R;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.
  */
 
-public class CatalogAdapter extends FragmentStatePagerAdapter {
-    private List<ProductDto> mProductList = new ArrayList<>();
+public class CatalogAdapter extends PagerAdapter {
+    private static final String TAG = "CatalogAdapter";
+    private List<ProductViewModel> mProductList = new ArrayList<>();
 
-    public CatalogAdapter(FragmentManager fm) {
-        super(fm);
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-        return ProductFragment.newInstance(mProductList.get(position));
+    public CatalogAdapter() {
     }
 
     @Override
@@ -28,8 +29,30 @@ public class CatalogAdapter extends FragmentStatePagerAdapter {
         return mProductList.size();
     }
 
-    public void addItem(ProductDto product) {
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+        return view.equals(object);
+    }
+
+    public void addItem(ProductViewModel product) {
         mProductList.add(product);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        ProductViewModel product = mProductList.get(position);
+        Context productContext = CatalogScreen.Factory.createProductContext(product, container.getContext());
+        View newView = LayoutInflater.from(productContext).inflate(R.layout.screen_product, container, false);
+        container.addView(newView);
+        return newView;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        MortarScope screenScope = MortarScope.getScope(((View) object).getContext());
+        screenScope.destroy();
+        container.removeView((View) object);
+        Log.e(TAG, "destroyItem with name: " + screenScope.getName());
     }
 }

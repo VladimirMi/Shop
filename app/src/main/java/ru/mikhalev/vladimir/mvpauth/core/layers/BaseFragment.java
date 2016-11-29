@@ -38,6 +38,11 @@ public class BaseFragment extends Fragment implements IRootView {
         return null;
     }
 
+    @Override
+    public void setBasketCounter(int count) {
+
+    }
+
     public RootActivity getRootActivity() {
         return (RootActivity) getActivity();
     }

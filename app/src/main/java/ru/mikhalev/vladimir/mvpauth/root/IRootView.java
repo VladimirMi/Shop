@@ -19,4 +19,6 @@ public interface IRootView extends IView {
 
     @Nullable
     IView getCurrentScreen();
+
+    void setBasketCounter(int count);
 }

@@ -58,7 +58,8 @@
             <FrameLayout
                 android:id="@+id/root_frame"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="?android:actionBarSize"/>
 
         </android.support.design.widget.CoordinatorLayout>
 

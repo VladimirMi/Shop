@@ -10,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,6 +85,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
         mPresenter.takeView(this);
         mPresenter.initView();
         mBinding.appbar.setVisibility(View.GONE);
+        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 //        initToolbar();
 //        initDrawer();
     }
@@ -201,10 +203,6 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 //        replaceFragment(fragment, AuthFragment.TAG, true);
 //    }
 
-    public void setBasketCounter(int count) {
-        mBasketBinding.setCount(count);
-    }
-
     //region ==================== IRootView ========================
 
     @Override
@@ -244,6 +242,11 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     @Override
     public boolean viewOnBackPressed() {
         return false;
+    }
+
+    @Override
+    public void setBasketCounter(int count) {
+        mBasketBinding.setCount(count);
     }
 
     //endregion
