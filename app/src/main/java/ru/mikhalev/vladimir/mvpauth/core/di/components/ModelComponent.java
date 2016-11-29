@@ -4,7 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import ru.mikhalev.vladimir.mvpauth.core.di.modules.ModelModule;
-import ru.mikhalev.vladimir.mvpauth.core.layers.model.AbstractModel;
+import ru.mikhalev.vladimir.mvpauth.core.layers.model.AbsModel;
 
 /**
  * Developer Vladimir Mikhalev, 06.11.2016.
@@ -13,5 +13,5 @@ import ru.mikhalev.vladimir.mvpauth.core.layers.model.AbstractModel;
 @Component(modules = ModelModule.class)
 @Singleton
 public interface ModelComponent {
-    void inject(AbstractModel model);
+    void inject(AbsModel model);
 }
