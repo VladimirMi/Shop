@@ -1,15 +1,26 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <import type="ru.mikhalev.vladimir.mvpauth.account.AccountView.STATE"/>
+
+        <variable
+            name="viewModel"
+            type="ru.mikhalev.vladimir.mvpauth.account.AccountViewModel"/>
+
         <variable
             name="actionsHandler"
             type="ru.mikhalev.vladimir.mvpauth.account.IAccountActions"/>
+
+        <variable
+            name="viewState"
+            type="int"/>
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <ru.mikhalev.vladimir.mvpauth.account.AccountView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_primary">
@@ -22,45 +33,37 @@
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
-                        android:background="@drawable/account_header_bg"
-                        android:layout_marginBottom="@dimen/half_profile_avatar_size"
-                        tools:ignore="ContentDescription"/>
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                android:background="@drawable/account_header_bg">
 
                     <TextView
                         style="@style/CustomText"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/spacing_large_56"
-                        android:text="@string/account.username.sample"
+                        android:text="@{viewModel.fullname}"
                         android:textColor="@color/color_primary"
-                        android:textSize="@dimen/font_larger_24"/>
+                        android:textSize="@dimen/font_larger_24"
+                        tools:text="@string/account.username.sample"/>
 
-                    <ImageView
-                        android:id="@+id/avatar"
-                        android:layout_width="@dimen/profile_avatar_size"
-                        android:layout_height="@dimen/profile_avatar_size"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:elevation="@dimen/profile_avatar_elevation"
-                        android:src="@drawable/user_avatar"
-                        tools:ignore="ContentDescription,UnusedAttribute"/>
-
-                </FrameLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/profile_avatar_size"
+            android:layout_height="@dimen/profile_avatar_size"
+            android:elevation="@dimen/profile_avatar_elevation"
+            bind:avatar="@{viewModel.avatar}"
+            app:layout_anchor="@id/appbar_account"
+            app:layout_anchorGravity="center_horizontal"
+            tools:ignore="ContentDescription,UnusedAttribute"
+            tools:src="@drawable/user_avatar"/>
 
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/half_profile_avatar_size"
             android:paddingLeft="@dimen/spacing_normal_16"
             android:paddingRight="@dimen/spacing_normal_16"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -74,6 +77,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_normal_16"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <ImageView
+                        style="@style/Icon.Account"
+                        android:src="@drawable/ic_font_download_black_24dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/account.username.title"
+                        style="@style/CustomText.AccountLabel">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/CustomText.AccountValue"
+                            android:text="@{viewModel.phone}"
+                            android:inputType="phone"
+                            tools:text="@string/account.username.sample"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal_16"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -81,21 +115,21 @@
                         android:src="@drawable/ic_phone_black_24dp"
                         tools:ignore="ContentDescription"/>
 
-                    <LinearLayout
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:orientation="vertical">
+                        android:hint="@string/account.phone.title"
+                        style="@style/CustomText.AccountLabel">
 
-                        <TextView
-                            style="@style/CustomText.AccountLabel"
-                            android:text="@string/account.phone.title"/>
-
-                        <TextView
+                        <android.support.design.widget.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             style="@style/CustomText.AccountValue"
-                            android:text="@string/account.phone.sample"/>
+                            android:text="@{viewModel.phone}"
+                            android:inputType="phone"
+                            tools:text="@string/account.phone.sample"/>
 
-                    </LinearLayout>
+                    </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
 
@@ -115,25 +149,31 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal_16"
                     android:text="@string/account.address.add"
+                    bind:onClick="@{actionsHandler::clickOnAddAddress}"
                     android:theme="@style/EnterButton"/>
 
                 <TextView
                     style="@style/CustomText.AccountTitle"
                     android:text="@string/account.push.title"/>
 
-                <Switch
+                <android.support.v7.widget.SwitchCompat
                     style="@style/CustomSwitch"
+                    android:checked="@{viewModel.orderNotification}"
+                    android:onCheckedChanged="@{(switch, isChecked) -> actionsHandler.switchOrder(isChecked)}"
                     android:text="@string/account.order.notify"/>
 
-                <Switch
+                <android.support.v7.widget.SwitchCompat
                     style="@style/CustomSwitch"
+                    android:checked="@{viewModel.promoNotification}"
+                    android:onCheckedChanged="@{(switch, isChecked) -> actionsHandler.switchPromo(isChecked)}"
                     android:text="@string/account.extra.notify"/>
+
 
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
 
-    </android.support.design.widget.CoordinatorLayout>
+    </ru.mikhalev.vladimir.mvpauth.account.AccountView>
 </layout>
 

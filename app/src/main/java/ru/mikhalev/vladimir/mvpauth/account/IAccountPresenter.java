@@ -8,6 +8,10 @@ public interface IAccountPresenter {
 
     void clickOnAddress();
 
+    void clickOnAddAddress();
+
+    void removeAddress();
+
     void switchViewState();
 
     void switchOrder(boolean isCheked);

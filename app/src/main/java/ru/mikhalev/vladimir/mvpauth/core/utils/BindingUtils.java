@@ -36,6 +36,11 @@ public class BindingUtils {
         MyGlideModule.setUserAvatar(resId, imageView);
     }
 
+    @BindingAdapter("avatar")
+    public static void bindAvatar(ImageView imageView, String path) {
+        MyGlideModule.setUserAvatar(path, imageView);
+    }
+
     @BindingAdapter("font")
     public static void bindFont(TextView textView, String fontName) {
         Typeface tf = Typeface.createFromAsset(textView.getContext().getAssets(),

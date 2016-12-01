@@ -2,13 +2,13 @@ package ru.mikhalev.vladimir.mvpauth.catalog;
 
 import java.util.List;
 
-import ru.mikhalev.vladimir.mvpauth.core.layers.model.AbsModel;
+import ru.mikhalev.vladimir.mvpauth.core.layers.model.AbstractModel;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.
  */
 
-public class CatalogModel extends AbsModel {
+public class CatalogModel extends AbstractModel {
 
     public List<ProductViewModel> getProductList() {
         return mDataManager.getProductList();

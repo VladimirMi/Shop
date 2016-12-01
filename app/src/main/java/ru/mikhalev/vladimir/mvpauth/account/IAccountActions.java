@@ -5,4 +5,18 @@ package ru.mikhalev.vladimir.mvpauth.account;
  */
 
 public interface IAccountActions {
+
+    void switchViewState();
+
+    void clickOnAddress();
+
+    void clickOnAddAddress();
+
+    void switchOrder(boolean isCheked);
+
+    void switchPromo(boolean isCheked);
+
+    void takePhoto();
+
+    void removeAddress();
 }

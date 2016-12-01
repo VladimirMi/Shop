@@ -1,11 +1,22 @@
 package ru.mikhalev.vladimir.mvpauth.core.managers;
 
 
+import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
+import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.account.AccountViewModel;
+import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
+import ru.mikhalev.vladimir.mvpauth.catalog.Catalog;
 import ru.mikhalev.vladimir.mvpauth.catalog.ProductViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.App;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
@@ -13,26 +24,28 @@ import ru.mikhalev.vladimir.mvpauth.core.di.components.DataManagerComponent;
 import ru.mikhalev.vladimir.mvpauth.core.di.modules.LocaleModule;
 import ru.mikhalev.vladimir.mvpauth.core.di.modules.NetworkModule;
 import ru.mikhalev.vladimir.mvpauth.core.network.api.RestService;
+import ru.mikhalev.vladimir.mvpauth.core.utils.RawUtils;
 
 public class DataManager {
+    private static final String TAG = "DataManager";
     @Inject
     PreferencesManager mPreferencesManager;
     @Inject
     RestService mRestService;
+    @Inject
+    Context mContext;
 
 
     private List<ProductViewModel> mMockProductList = new ArrayList<>();
+    private AccountViewModel mockAccount;
 
     public DataManager() {
         DaggerService.getComponent(DataManagerComponent.class,
                 App.getAppComponent(),
                 new LocaleModule(),
                 new NetworkModule()).inject(this);
-        generateMockData();
-    }
-
-    public PreferencesManager getPreferencesManager() {
-        return mPreferencesManager;
+        generateMockCatalog();
+        generateMockAccount();
     }
 
     public boolean isAuthUser() {
@@ -58,17 +71,48 @@ public class DataManager {
         return mMockProductList;
     }
 
-    private void generateMockData() {
-        mMockProductList.add(new ProductViewModel(1, "LG MS-2595GIS", "http://mdata.yandex.net/i?path=b1017020219_img_id151065237584951211.jpeg&size=9", "Отдельно стоящая микроволновая печь", 12299, 1));
-        mMockProductList.add(new ProductViewModel(2, "Microsoft Xbox One 500 ГБ", "http://mdata.yandex.net/i?path=b0315200439_img_id8312843205844878861.jpeg&size=9", "Стационарная игровая приставка", 19989, 1));
-        mMockProductList.add(new ProductViewModel(3, "Samsung UE32J4000AU", "http://mdata.yandex.net/i?path=b0528113945_img_id383163117745284423.jpeg&size=9", "ЖК-телевизор, 720p HD", 17989, 1));
-        mMockProductList.add(new ProductViewModel(4, "Palit GeForce GTX 1060 1506Mhz PCI-E 3.0 6144Mb 8000Mhz 192 bit DVI HDMI HDCP", "http://mdata.yandex.net/i?path=b0720170635_img_id894639973318463136.jpeg&size=9", "Видеокарта NVIDIA GeForce GTX 1060", 20990, 1));
-        mMockProductList.add(new ProductViewModel(5, "Xiaomi Redmi 3", "http://mdata.yandex.net/i?path=b0201213211_img_id8890851960327700873.jpeg", "Смартфон, Android 5.1", 13559, 1));
-        mMockProductList.add(new ProductViewModel(6, "HGST HUC156060CSS204", "http://mdata.yandex.net/i?path=b1221154653_img_id8182254918959210372.jpeg&size=9", "Жесткий диск для сервера", 25980, 1));
-        mMockProductList.add(new ProductViewModel(7, "Smart Balance Wheel SUV 10", "http://mdata.yandex.net/i?path=b0721165228_img_id1146336079498735060.jpeg&size=9", "Гироскутер", 12400, 1));
-        mMockProductList.add(new ProductViewModel(8, "Makita HR2450", "http://mdata.yandex.net/i?path=b1221162808_img_id7519836334746001621.jpeg", "Перфоратор мощностью 780 Вт", 7206, 1));
-        mMockProductList.add(new ProductViewModel(9, "Casio GWG-1000-1A3", "http://mdata.yandex.net/i?path=b0908180932_img_id3349079021650035138.jpeg", "Кварцевые наручные часы", 57490, 1));
-        mMockProductList.add(new ProductViewModel(10, "Рекурсивный арбалет Man Kung MK-80 A4AL Оса", "http://cdn.e96.ru/assets/images/catalog/bows_crossbows_slingshots/arbalety/589396/man-kung-mk-80-a4al-osa_2092141.jpg", "Арбалет-пистолет \\\"Оса\\\" MK-80 A4AL (алюминий, черный, с рычагом)", 2390, 1));
+    private void generateMockCatalog() {
+        mMockProductList = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.goods), Catalog.class).getGoods();
+    }
 
+    private void generateMockAccount() {
+        mockAccount = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.account), AccountViewModel.class);
+        saveProfileInfo(mockAccount.getFullname(), mockAccount.getPhone());
+        saveAvatarPhoto(Uri.parse(mockAccount.getAvatar()));
+        saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY, mockAccount.isOrderNotification());
+        saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_PROMO_KEY, mockAccount.isPromoNotification());
+        for (AddressDto addressDto : mockAccount.getAddresses()) {
+            addAddress(addressDto);
+        }
+    }
+
+    public Map<String, String> getAccountProfileInfo() {
+        return mPreferencesManager.getUserAccountProfileInfo();
+    }
+
+    public Map<String, Boolean> getAccountSettings() {
+        return mPreferencesManager.getAccountSettings();
+    }
+
+    // TODO: 01.12.2016 implement
+    public ArrayList<AddressDto> getAccountAddresses() {
+        return mockAccount.getAddresses();
+    }
+
+    public void saveAccountSetting(String notificationPromoKey, boolean isChecked) {
+        mPreferencesManager.saveAccountSetting(notificationPromoKey, isChecked);
+    }
+
+    public void addAddress(AddressDto addressDto) {
+        mPreferencesManager.addAddress(addressDto);
+    }
+
+    public void saveProfileInfo(String name, String phone) {
+        mPreferencesManager.saveProfileInfo(name, phone);
+    }
+
+    public void saveAvatarPhoto(Uri photoUri) {
+        Log.e(TAG, "saveAvatarPhoto: with path " + photoUri.toString());
+        mPreferencesManager.saveAvatarPhoto(photoUri.toString());
     }
 }

@@ -3,6 +3,9 @@ package ru.mikhalev.vladimir.mvpauth.address;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Developer Vladimir Mikhalev 29.11.2016
  */
@@ -10,11 +13,19 @@ import android.os.Parcelable;
 public class AddressDto implements Parcelable {
     private int id;
     private String name;
+
+    @SerializedName("street")
+    @Expose
     private String street;
+
     private String house;
     private String apartment;
     private int floor;
+
+    @SerializedName("comment")
+    @Expose
     private String comment;
+
     private boolean favorite;
 
     public AddressDto(int id, String name, String street, String house, String apartment, int floor, String comment) {

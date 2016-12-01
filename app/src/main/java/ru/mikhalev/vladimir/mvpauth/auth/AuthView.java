@@ -1,10 +1,14 @@
 package ru.mikhalev.vladimir.mvpauth.auth;
 
 import android.content.Context;
+import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import javax.inject.Inject;
 
@@ -18,6 +22,15 @@ import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAuthBinding;
  */
 
 public class AuthView extends RelativeLayout implements IAuthView, IAuthActions {
+
+    @IntDef({
+            STATE.LOGIN,
+            STATE.IDLE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface STATE {
+        int LOGIN = 0;
+        int IDLE = 1;
+    }
 
     @Inject AuthScreen.AuthPresenter mPresenter;
     @Inject AuthViewModel mViewModel;
@@ -68,9 +81,9 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
     //region =============== Events ==============
     @Override
     public void clickOnLogin() {
-        if (mInputState == AuthInputState.IDLE) {
+        if (mInputState == STATE.IDLE) {
             mBinding.authCard.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.card_in_animation));
-            mInputState = AuthInputState.LOGIN;
+            mInputState = STATE.LOGIN;
             mBinding.setInputState(mInputState);
         } else if (mViewModel.isValid()) {
             mPresenter.clickOnLogin(mViewModel);
@@ -110,9 +123,9 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
 
     @Override
     public boolean viewOnBackPressed() {
-        if (mInputState == AuthInputState.LOGIN) {
+        if (mInputState == STATE.LOGIN) {
             mBinding.authCard.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.card_out_animation));
-            mInputState = AuthInputState.IDLE;
+            mInputState = STATE.IDLE;
             mBinding.setInputState(mInputState);
             return true;
         }

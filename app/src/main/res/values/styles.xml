@@ -164,8 +164,6 @@
     <style name="CustomText.AccountValue">
         <item name="android:textColor">@color/grey</item>
         <item name="android:textSize">@dimen/font_normal_16</item>
-        <item name="android:paddingTop">@dimen/spacing_tiny_4</item>
-        <item name="android:paddingBottom">@dimen/spacing_tiny_4</item>
     </style>
 
     <style name="HorizontalDivider">

@@ -10,11 +10,9 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -26,7 +24,9 @@ import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 import ru.mikhalev.vladimir.mvpauth.BuildConfig;
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.account.AccountScreen;
 import ru.mikhalev.vladimir.mvpauth.auth.AuthScreen;
+import ru.mikhalev.vladimir.mvpauth.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.RootScope;
@@ -84,10 +84,10 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
         mPresenter.takeView(this);
         mPresenter.initView();
-        mBinding.appbar.setVisibility(View.GONE);
-        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-//        initToolbar();
-//        initDrawer();
+//        mBinding.appbar.setVisibility(View.GONE);
+//        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        initToolbar();
+        initDrawer();
     }
 
     @Override
@@ -160,17 +160,14 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Object key = null;
         switch (item.getItemId()) {
             case R.id.nav_accout:
-                if (!item.isChecked()) {
-//                    replaceFragment(new AccountFragment(), AccountFragment.TAG, true);
-                }
+                key = new AccountScreen();
                 break;
 
             case R.id.nav_catalog:
-                if (!item.isChecked()) {
-//                    mFragmentManager.popBackStack();
-                }
+                key = new CatalogScreen();
                 break;
 
             case R.id.nav_favorite:
@@ -183,25 +180,15 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
                 break;
         }
 
+        if (key != null) {
+            Flow.get(this).set(key);
+        }
+
         item.setChecked(true);
         mBinding.drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-//    private void replaceFragment(Fragment fragment, String tag, boolean addToBackStack) {
-//        FragmentTransaction ft = mFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, fragment, tag);
-//        if (addToBackStack) {
-//            ft.addToBackStack(null);
-//        }
-//        ft.commit();
-//        isExitEnabled = false;
-//    }
-
-//    public void showAuthFragment() {
-//        AuthFragment fragment = new AuthFragment();
-//        replaceFragment(fragment, AuthFragment.TAG, true);
-//    }
 
     //region ==================== IRootView ========================
 

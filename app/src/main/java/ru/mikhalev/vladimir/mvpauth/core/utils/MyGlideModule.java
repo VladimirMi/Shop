@@ -63,4 +63,22 @@ public class MyGlideModule implements GlideModule {
                     }
                 });
     }
+
+    public static void setUserAvatar(String path, ImageView view) {
+        Glide.with(view.getContext())
+                .load(path)
+                .asBitmap()
+                .centerCrop()
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .into(new BitmapImageViewTarget(view) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        view.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
+    }
 }

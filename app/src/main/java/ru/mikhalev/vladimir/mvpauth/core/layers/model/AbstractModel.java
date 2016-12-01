@@ -10,11 +10,11 @@ import ru.mikhalev.vladimir.mvpauth.core.managers.DataManager;
  * Developer Vladimir Mikhalev, 06.11.2016.
  */
 
-public abstract class AbsModel {
+public abstract class AbstractModel {
     @Inject
     protected DataManager mDataManager;
 
-    public AbsModel() {
+    public AbstractModel() {
         DaggerService.getComponent(ModelComponent.class).inject(this );
     }
 }

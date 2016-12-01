@@ -27,13 +27,13 @@ import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
 @Screen(R.layout.screen_auth)
 public class AuthScreen extends AbsScreen<RootActivity.Component> {
 
-    private int mInputState = AuthInputState.IDLE;
+    private int mInputState = AuthView.STATE.IDLE;
 
     public int getInputState() {
         return mInputState;
     }
 
-    public void setInputState(int inputState) {
+    public void setInputState(@AuthView.STATE int inputState) {
         this.mInputState = inputState;
     }
 

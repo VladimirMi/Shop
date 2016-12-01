@@ -43,9 +43,10 @@
     <string name="product.price">Стоимость</string>
 
     <!-- Account -->
+    <string name="account.username.title">Имя пользователя</string>
     <string name="account.username.sample">Евгений Максимович</string>
     <string name="account.phone.title">Телефон:</string>
-    <string name="account.phone.sample">+7(909)987-45-15</string>
+    <string name="account.phone.sample">+7 (909) 987-45-15</string>
     <string name="account.delivery.title">Адрес доставки:</string>
     <string name="account.home.title">Дом:</string>
     <string name="account.home.sample">ул.Пушкина, д.Колотушкина</string>
