@@ -1,6 +1,7 @@
 package ru.mikhalev.vladimir.mvpauth.account;
 
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -8,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Map;
 
+import ru.mikhalev.vladimir.mvpauth.BR;
 import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
 import ru.mikhalev.vladimir.mvpauth.core.managers.PreferencesManager;
 
@@ -20,6 +22,7 @@ public class AccountViewModel extends BaseObservable {
 
     @SerializedName("fullname")
     @Expose
+    @Bindable
     private String fullname;
 
     @SerializedName("avatar")
@@ -67,6 +70,7 @@ public class AccountViewModel extends BaseObservable {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
+        notifyPropertyChanged(BR.fullname);
     }
 
     public String getAvatar() {

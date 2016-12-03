@@ -113,6 +113,8 @@ public class DataManager {
 
     public void saveAvatarPhoto(Uri photoUri) {
         Log.e(TAG, "saveAvatarPhoto: with path " + photoUri.toString());
-        mPreferencesManager.saveAvatarPhoto(photoUri.toString());
+        if (photoUri != null) {
+            mPreferencesManager.saveAvatarPhoto(photoUri.toString());
+        }
     }
 }

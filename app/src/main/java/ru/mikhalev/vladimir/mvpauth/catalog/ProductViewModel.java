@@ -18,25 +18,25 @@ public class ProductViewModel extends BaseObservable {
 
     @SerializedName("id")
     @Expose
-    private int id;
+    int id;
 
     @SerializedName("name")
     @Expose
-    private String productName;
+    String productName;
 
     @SerializedName("image_url")
     @Expose
-    private String imageUrl;
+    String imageUrl;
 
     @SerializedName("description")
     @Expose
-    private String description;
+    String description;
 
     @SerializedName("price")
     @Expose
-    private int price;
+    int price;
 
-    private int count;
+    int count;
 
     public ProductViewModel() {
         this.count = 1;

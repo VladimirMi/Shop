@@ -25,7 +25,6 @@ import mortar.bundler.BundleServiceRunner;
 import ru.mikhalev.vladimir.mvpauth.BuildConfig;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.account.AccountScreen;
-import ru.mikhalev.vladimir.mvpauth.auth.AuthScreen;
 import ru.mikhalev.vladimir.mvpauth.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
@@ -52,7 +51,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     @Override
     protected void attachBaseContext(Context newBase) {
         newBase = Flow.configure(newBase, this)
-                .defaultKey(new AuthScreen())
+                .defaultKey(new AccountScreen())
                 .dispatcher(new TreeKeyDispatcher(this))
                 .install();
         super.attachBaseContext(newBase);

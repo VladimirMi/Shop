@@ -119,7 +119,8 @@ public class AccountScreen extends AbsScreen<RootActivity.Component> {
         public void switchViewState() {
             if (getViewState() == AccountView.STATE.EDIT && getView() != null) {
                 mAccountModel.saveProfileInfo(getView().getUserName(), getView().getUserPhone());
-                mAccountModel.saveAvatarPhoto(mAvatarUri);
+                // TODO: 02.12.2016 check if avatar is changed
+//                mAccountModel.saveAvatarPhoto(mAvatarUri);
             }
             getView().changeState();
         }

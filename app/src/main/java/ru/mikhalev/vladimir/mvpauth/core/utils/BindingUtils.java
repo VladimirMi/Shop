@@ -3,7 +3,6 @@ package ru.mikhalev.vladimir.mvpauth.core.utils;
 import android.databinding.BindingAdapter;
 import android.databinding.BindingConversion;
 import android.graphics.Typeface;
-import android.support.annotation.DrawableRes;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +13,7 @@ import android.widget.TextView;
  */
 
 public class BindingUtils {
+    private static final String TAG = "BindingUtils";
 
     @BindingAdapter("onClick")
     public static void bindOnClick(View view, Runnable runnable) {
@@ -29,11 +29,6 @@ public class BindingUtils {
     @BindingAdapter("image")
     public static void bindImage(ImageView imageView, String path) {
         MyGlideModule.setImage(path, imageView);
-    }
-
-    @BindingAdapter("avatar")
-    public static void bindAvatar(ImageView imageView, @DrawableRes int resId) {
-        MyGlideModule.setUserAvatar(resId, imageView);
     }
 
     @BindingAdapter("avatar")
