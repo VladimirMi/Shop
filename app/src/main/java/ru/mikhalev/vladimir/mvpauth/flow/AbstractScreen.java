@@ -9,8 +9,8 @@ import ru.mikhalev.vladimir.mvpauth.mortar.ScreenScoper;
  * Developer Vladimir Mikhalev, 27.11.2016.
  */
 
-public abstract class AbsScreen<T> extends ClassKey {
-    private static final String TAG = "AbsScreen";
+public abstract class AbstractScreen<T> extends ClassKey {
+    private static final String TAG = "AbstractScreen";
     public String getScopeName() {
         return getClass().getName();
     }

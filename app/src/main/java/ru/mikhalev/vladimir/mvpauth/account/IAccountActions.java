@@ -14,5 +14,5 @@ public interface IAccountActions {
 
     void switchPromo(boolean isCheked);
 
-    void takePhoto();
+    void changeAvatar();
 }

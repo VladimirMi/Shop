@@ -96,8 +96,8 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
     }
 
     @Override
-    public void takePhoto() {
-        mPresenter.takePhoto();
+    public void changeAvatar() {
+        mPresenter.changeAvatar();
     }
 
     //endregion

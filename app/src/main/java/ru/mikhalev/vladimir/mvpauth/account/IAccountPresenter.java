@@ -18,7 +18,7 @@ public interface IAccountPresenter {
 
     void switchPromo(boolean isCheked);
 
-    void takePhoto();
+    void changeAvatar();
 
     void chooseCamera();
 

@@ -7,12 +7,14 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 
 import dagger.Provides;
+import flow.Flow;
 import mortar.MortarScope;
 import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.address.AddressScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.core.di.scopes.CatalogScope;
-import ru.mikhalev.vladimir.mvpauth.flow.AbsScreen;
+import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AccountScope;
+import ru.mikhalev.vladimir.mvpauth.flow.AbstractScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
 import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
@@ -23,7 +25,7 @@ import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
  */
 
 @Screen(R.layout.screen_account)
-public class AccountScreen extends AbsScreen<RootActivity.Component> {
+public class AccountScreen extends AbstractScreen<RootActivity.Component> {
     private static final String TAG = "AccountScreen";
 
     private int mViewState = AccountView.STATE.PREVIEW;
@@ -49,13 +51,13 @@ public class AccountScreen extends AbsScreen<RootActivity.Component> {
     @dagger.Module
     public class Module {
         @Provides
-        @CatalogScope
+        @AccountScope
         AccountScreen.AccountPresenter provideAccountPresenter() {
             return new AccountScreen.AccountPresenter();
         }
 
         @Provides
-        @CatalogScope
+        @AccountScope
         AccountModel provideAccountModel() {
             return new AccountModel();
         }
@@ -63,11 +65,13 @@ public class AccountScreen extends AbsScreen<RootActivity.Component> {
 
     @dagger.Component(dependencies = RootActivity.Component.class,
             modules = AccountScreen.Module.class)
-    @CatalogScope
+    @AccountScope
     public interface Component {
         void inject(AccountScreen.AccountPresenter presenter);
 
         void inject(AccountView view);
+
+        AccountModel getAccountModel();
     }
 
     //endregion
@@ -103,11 +107,12 @@ public class AccountScreen extends AbsScreen<RootActivity.Component> {
         @Override
         public void editAddress(int position) {
             // TODO: 01.12.2016 flow - open address screen
+
         }
 
         @Override
         public void clickOnAddAddress() {
-            // TODO: 01.12.2016 flow - open new address screen
+            Flow.get(getView()).set(new AddressScreen());
         }
 
         @Override
@@ -136,7 +141,7 @@ public class AccountScreen extends AbsScreen<RootActivity.Component> {
         }
 
         @Override
-        public void takePhoto() {
+        public void changeAvatar() {
             if (getView() != null) {
                 getView().showPhotoSourceDialog();
             }

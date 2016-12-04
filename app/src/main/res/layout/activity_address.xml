@@ -158,8 +158,17 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/point_map_button"
-            style="@style/CustomButton"
+            style="@style/ShowButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal_16"
+            android:text="@string/address_point_map"
+            android:theme="@style/EnterButton"
+            app:layout_anchor="@+id/address_container"
+            app:layout_anchorGravity="bottom"/>
+
+        <Button
+            style="@style/EnterButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_normal_16"

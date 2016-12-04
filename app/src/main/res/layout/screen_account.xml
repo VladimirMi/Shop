@@ -64,6 +64,7 @@
                 android:elevation="@dimen/profile_avatar_elevation"
                 app:elevation="@dimen/profile_avatar_elevation"
                 bind:avatar="@{viewModel.avatar}"
+                bind:onClick="@{actionsHandler::changeAvatar}"
                 android:alpha="@{viewState == STATE.PREVIEW ? 1.0f : 0.8f}"
                 tools:ignore="ContentDescription,UnusedAttribute"
                 tools:src="@drawable/user_avatar"/>

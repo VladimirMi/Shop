@@ -56,7 +56,7 @@ public class TreeKeyDispatcher implements Dispatcher, KeyChanger {
         }
 
         Context flowContext = traversal.createContext(inKey, mActivity);
-        Context mortarContext = ScreenScoper.getScreenScope((AbsScreen) inKey).createContext(flowContext);
+        Context mortarContext = ScreenScoper.getScreenScope((AbstractScreen) inKey).createContext(flowContext);
         contexts = Collections.singletonMap(inKey, mortarContext);
         changeKey(outState, inState, traversal.direction, contexts, callback);
     }
@@ -75,7 +75,7 @@ public class TreeKeyDispatcher implements Dispatcher, KeyChanger {
         screen = inKey.getClass().getAnnotation(Screen.class);
         if (screen == null) {
             throw new IllegalStateException("@Screen annotation is missing on screen " +
-                    ((AbsScreen) inKey).getScopeName());
+                    ((AbstractScreen) inKey).getScopeName());
         } else {
             int layout = screen.value();
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -84,8 +84,8 @@ public class TreeKeyDispatcher implements Dispatcher, KeyChanger {
             incomingState.restore(newView);
 
             // TODO: 27.11.2016 unregister screen scope
-            if (((AbsScreen) outKey) != null) {
-                ((AbsScreen) outKey).unregisterScope();
+            if (outKey != null && !(inKey instanceof TreeKey)) {
+                ((AbstractScreen) outKey).unregisterScope();
             }
 
             if (mRootFrame.getChildAt(0) != null) {

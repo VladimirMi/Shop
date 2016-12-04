@@ -14,7 +14,7 @@ import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AuthScope;
-import ru.mikhalev.vladimir.mvpauth.flow.AbsScreen;
+import ru.mikhalev.vladimir.mvpauth.flow.AbstractScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
 import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
@@ -25,7 +25,7 @@ import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
  */
 
 @Screen(R.layout.screen_auth)
-public class AuthScreen extends AbsScreen<RootActivity.Component> {
+public class AuthScreen extends AbstractScreen<RootActivity.Component> {
 
     private int mInputState = AuthView.STATE.IDLE;
 

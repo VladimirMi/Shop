@@ -10,7 +10,7 @@ import java.util.Map;
 
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.flow.AbsScreen;
+import ru.mikhalev.vladimir.mvpauth.flow.AbstractScreen;
 
 /**
  * Developer Vladimir Mikhalev, 27.11.2016.
@@ -20,7 +20,7 @@ public class ScreenScoper {
     private static final String TAG = "ScreenScoper";
     private static Map<String, MortarScope> sScopeMap = new HashMap<>();
 
-    public static MortarScope getScreenScope(AbsScreen screen) {
+    public static MortarScope getScreenScope(AbstractScreen screen) {
         if (!sScopeMap.containsKey(screen.getScopeName())) {
             Log.e(TAG, "getScreenScope: create new scope");
             return createScreenScope(screen);
@@ -51,7 +51,7 @@ public class ScreenScoper {
     }
 
     @Nullable
-    private static String getParentScopeName(AbsScreen screen) {
+    private static String getParentScopeName(AbstractScreen screen) {
         try {
             String genericName = ((Class) ((ParameterizedType) screen.getClass().getGenericSuperclass()).
                     getActualTypeArguments()[0]).getName();
@@ -68,7 +68,7 @@ public class ScreenScoper {
         }
     }
 
-    private static MortarScope createScreenScope(AbsScreen screen) {
+    private static MortarScope createScreenScope(AbstractScreen screen) {
         Log.e(TAG, "createScreenScope: with name : " + screen.getScopeName());
         String parentScopeName = getParentScopeName(screen);
         MortarScope parentScope = sScopeMap.get(parentScopeName);
