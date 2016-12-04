@@ -4,8 +4,10 @@ import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -23,17 +25,16 @@ import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAccountBinding;
 public class AccountView extends CoordinatorLayout implements IAccountView, IAccountActions {
     private static final String TAG = "AccountView";
 
-    @IntDef({STATE.IDLE, STATE.EDIT})
+    @IntDef({STATE.PREVIEW, STATE.EDIT})
     @Retention(RetentionPolicy.SOURCE)
     public @interface STATE {
-        int IDLE = 0;
+        int PREVIEW = 0;
         int EDIT = 1;
     }
 
     @Inject AccountScreen.AccountPresenter mPresenter;
     private ScreenAccountBinding mBinding;
     private AccountScreen mScreen;
-    private AccountViewModel mAccountViewModel;
 
     public AccountView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -80,11 +81,6 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
     }
 
     @Override
-    public void clickOnAddress() {
-        mPresenter.clickOnAddress();
-    }
-
-    @Override
     public void clickOnAddAddress() {
         mPresenter.clickOnAddAddress();
     }
@@ -104,12 +100,6 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
         mPresenter.takePhoto();
     }
 
-    // TODO: 01.12.2016 remove with swipe
-    @Override
-    public void removeAddress() {
-        mPresenter.removeAddress();
-    }
-
     //endregion
 
     private void showViewFromState() {
@@ -117,9 +107,35 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
     }
 
     public void initView(AccountViewModel viewModel) {
-        Log.e(TAG, "initView: with path " + viewModel.getAvatar());
-        mAccountViewModel = viewModel;
-        mBinding.setViewModel(mAccountViewModel);
+        mBinding.setViewModel(viewModel);
+        initAddressList(viewModel);
+        initSwipe();
+    }
+
+    private void initAddressList(AccountViewModel viewModel) {
+        AddressListAdapter adapter = new AddressListAdapter(viewModel.getAddresses());
+        LinearLayoutManager lm = new LinearLayoutManager(getContext());
+        mBinding.addressList.setLayoutManager(lm);
+        mBinding.addressList.setAdapter(adapter);
+    }
+
+
+    private void initSwipe() {
+        ItemSwipeCallback swipeCallback = new ItemSwipeCallback(getContext(), 0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+
+                if (direction == ItemTouchHelper.LEFT) {
+                    mPresenter.removeAddress(position); // TODO: 29.11.2016 get address object
+                } else {
+                    mPresenter.editAddress(position); // TODO: 29.11.2016
+                }
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCallback);
+        itemTouchHelper.attachToRecyclerView(mBinding.addressList);
     }
 
     //region ==================== IAccountView ========================
@@ -127,7 +143,7 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
     @Override
     public void changeState() {
         if (mScreen.getViewState() == STATE.EDIT) {
-            mScreen.setViewState(STATE.IDLE);
+            mScreen.setViewState(STATE.PREVIEW);
         } else {
             mScreen.setViewState(STATE.EDIT);
         }
@@ -158,12 +174,12 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
 
     @Override
     public String getUserName() {
-        return mAccountViewModel.getFullname();
+        return String.valueOf(mBinding.fullname.getText());
     }
 
     @Override
     public String getUserPhone() {
-        return mAccountViewModel.getPhone();
+        return String.valueOf(mBinding.phone.getText());
     }
 
     @Override

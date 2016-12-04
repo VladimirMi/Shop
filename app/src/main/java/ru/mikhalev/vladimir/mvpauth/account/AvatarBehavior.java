@@ -28,7 +28,6 @@ public class AvatarBehavior extends AppBarLayout.ScrollingViewBehavior {
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
-        CoordinatorLayout.LayoutParams lp = ((CoordinatorLayout.LayoutParams) child.getLayoutParams());
         float scale = dependency.getBottom() / mInitialAvatarCenterY;
         child.setScaleX(scale);
         child.setScaleY(scale);

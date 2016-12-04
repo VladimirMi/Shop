@@ -26,7 +26,7 @@ import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
 public class AccountScreen extends AbsScreen<RootActivity.Component> {
     private static final String TAG = "AccountScreen";
 
-    private int mViewState = AccountView.STATE.IDLE;
+    private int mViewState = AccountView.STATE.PREVIEW;
 
     public int getViewState() {
         return mViewState;
@@ -101,7 +101,7 @@ public class AccountScreen extends AbsScreen<RootActivity.Component> {
         //region ==================== IAccountPresenter ========================
 
         @Override
-        public void clickOnAddress() {
+        public void editAddress(int position) {
             // TODO: 01.12.2016 flow - open address screen
         }
 
@@ -111,7 +111,7 @@ public class AccountScreen extends AbsScreen<RootActivity.Component> {
         }
 
         @Override
-        public void removeAddress() {
+        public void removeAddress(int position) {
             mAccountModel.removeAddress();
         }
 

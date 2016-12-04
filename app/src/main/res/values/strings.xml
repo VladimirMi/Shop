@@ -53,6 +53,8 @@
     <string name="account.comment.title">Комментарий:</string>
     <string name="account.comment.sample">Без комментариев</string>
     <string name="account.address.add">Добавить адрес</string>
+    <string name="account.address.remove">Удалить</string>
+    <string name="account.address.edit">Редактировать</string>
     <string name="account.push.title">Push-уведомления:</string>
     <string name="account.order.notify">Уведомлять о статусе заказа</string>
     <string name="account.extra.notify">Уведомлять о акциях и спец. предложениях</string>

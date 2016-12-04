@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import ru.mikhalev.vladimir.mvpauth.BR;
-import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
+import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.managers.PreferencesManager;
 
 /**
@@ -43,9 +43,9 @@ public class AccountViewModel extends BaseObservable {
 
     @SerializedName("addresses")
     @Expose
-    private ArrayList<AddressDto> addresses;
+    private ArrayList<AddressViewModel> addresses;
 
-    public AccountViewModel(Map<String, String> accountProfileInfo, ArrayList<AddressDto> accountAddresses, Map<String, Boolean> accountSettings) {
+    public AccountViewModel(Map<String, String> accountProfileInfo, ArrayList<AddressViewModel> accountAddresses, Map<String, Boolean> accountSettings) {
         this.fullname = accountProfileInfo.get(PreferencesManager.ACCOUNT.FULL_NAME_KEY);
         this.avatar = accountProfileInfo.get(PreferencesManager.ACCOUNT.AVATAR_KEY);
         this.phone = accountProfileInfo.get(PreferencesManager.ACCOUNT.PHONE_KEY);
@@ -105,11 +105,11 @@ public class AccountViewModel extends BaseObservable {
         this.promoNotification = promoNotification;
     }
 
-    public ArrayList<AddressDto> getAddresses() {
+    public ArrayList<AddressViewModel> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(ArrayList<AddressDto> addresses) {
+    public void setAddresses(ArrayList<AddressViewModel> addresses) {
         this.addresses = addresses;
     }
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
+import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
 
 public class PreferencesManager {
     private final SharedPreferences mSharedPreferences;
@@ -69,7 +69,7 @@ public class PreferencesManager {
     }
 
     // TODO: 01.12.2016 implement saving addresses
-    public void addAddress(AddressDto addressDto) {
+    public void addAddress(AddressViewModel addressViewModel) {
 
     }
 
@@ -88,7 +88,7 @@ public class PreferencesManager {
     }
 
     // TODO: 01.12.2016 implement loading addresses
-    public ArrayList<AddressDto> getAccountAddresses() {
+    public ArrayList<AddressViewModel> getAccountAddresses() {
         return null;
     }
 

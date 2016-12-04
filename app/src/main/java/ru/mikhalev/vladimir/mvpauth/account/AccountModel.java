@@ -5,7 +5,7 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.Map;
 
-import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
+import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.layers.model.AbstractModel;
 import ru.mikhalev.vladimir.mvpauth.core.managers.PreferencesManager;
 
@@ -36,8 +36,8 @@ public class AccountModel extends AbstractModel {
         mDataManager.saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY, isChecked);
     }
 
-    public void addAddress(AddressDto addressDto) {
-        mDataManager.addAddress(addressDto);
+    public void addAddress(AddressViewModel addressViewModel) {
+        mDataManager.addAddress(addressViewModel);
     }
 
     // TODO: 01.12.2016 remove address
@@ -49,7 +49,7 @@ public class AccountModel extends AbstractModel {
         return mDataManager.getAccountProfileInfo();
     }
 
-    private ArrayList<AddressDto> getAccountAddresses() {
+    private ArrayList<AddressViewModel> getAccountAddresses() {
         return mDataManager.getAccountAddresses();
     }
 

@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * Developer Vladimir Mikhalev 29.11.2016
  */
 
-public class AddressDto implements Parcelable {
+public class AddressViewModel implements Parcelable {
     private int id;
     private String name;
 
@@ -28,7 +28,7 @@ public class AddressDto implements Parcelable {
 
     private boolean favorite;
 
-    public AddressDto(int id, String name, String street, String house, String apartment, int floor, String comment) {
+    public AddressViewModel(int id, String name, String street, String house, String apartment, int floor, String comment) {
         this.id = id;
         this.name = name;
         this.street = street;
@@ -100,7 +100,7 @@ public class AddressDto implements Parcelable {
 
     //region ==================== Parcelable ========================
 
-    protected AddressDto(Parcel in) {
+    protected AddressViewModel(Parcel in) {
         id = in.readInt();
         name = in.readString();
         street = in.readString();
@@ -111,15 +111,15 @@ public class AddressDto implements Parcelable {
         favorite = in.readByte() != 0;
     }
 
-    public static final Creator<AddressDto> CREATOR = new Creator<AddressDto>() {
+    public static final Creator<AddressViewModel> CREATOR = new Creator<AddressViewModel>() {
         @Override
-        public AddressDto createFromParcel(Parcel in) {
-            return new AddressDto(in);
+        public AddressViewModel createFromParcel(Parcel in) {
+            return new AddressViewModel(in);
         }
 
         @Override
-        public AddressDto[] newArray(int size) {
-            return new AddressDto[size];
+        public AddressViewModel[] newArray(int size) {
+            return new AddressViewModel[size];
         }
     };
 

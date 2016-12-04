@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="ru.mikhalev.vladimir.mvpauth.address.AddressViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:onClick="">
+
+        <ImageView
+            style="@style/Icon.Account"
+            android:src="@drawable/ic_place_black_24dp"
+            tools:ignore="ContentDescription"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/CustomText.AccountLabel"
+                android:text="@string/account.home.title"/>
+
+            <TextView
+                style="@style/CustomText.AccountValue"
+                android:text="@{viewModel.street}"
+                tools:text="@string/account.home.sample"/>
+
+            <TextView
+                style="@style/CustomText.AccountLabel"
+                android:text="@string/account.comment.title"/>
+
+            <TextView
+                style="@style/CustomText.AccountValue"
+                android:text="@{viewModel.comment}"
+                tools:text="@string/account.comment.sample"/>
+
+            <View
+                style="@style/HorizontalDivider"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

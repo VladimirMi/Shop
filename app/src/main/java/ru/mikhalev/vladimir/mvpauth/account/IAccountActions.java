@@ -8,8 +8,6 @@ public interface IAccountActions {
 
     void switchViewState();
 
-    void clickOnAddress();
-
     void clickOnAddAddress();
 
     void switchOrder(boolean isCheked);
@@ -17,6 +15,4 @@ public interface IAccountActions {
     void switchPromo(boolean isCheked);
 
     void takePhoto();
-
-    void removeAddress();
 }

@@ -6,11 +6,11 @@ package ru.mikhalev.vladimir.mvpauth.account;
 
 public interface IAccountPresenter {
 
-    void clickOnAddress();
+    void editAddress(int position);
 
     void clickOnAddAddress();
 
-    void removeAddress();
+    void removeAddress(int position);
 
     void switchViewState();
 
@@ -23,5 +23,4 @@ public interface IAccountPresenter {
     void chooseCamera();
 
     void chooseGallery();
-
 }

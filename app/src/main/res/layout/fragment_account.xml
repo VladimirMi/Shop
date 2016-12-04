@@ -99,7 +99,7 @@
                     style="@style/CustomText.AccountTitle"
                     android:text="@string/account.delivery.title"/>
 
-                <include layout="@layout/address_item"/>
+                <include layout="@layout/item_address"/>
 
                 <Button
                     android:id="@+id/add_address_button"

@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.account.AccountViewModel;
-import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
+import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
 import ru.mikhalev.vladimir.mvpauth.catalog.Catalog;
 import ru.mikhalev.vladimir.mvpauth.catalog.ProductViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.App;
@@ -81,8 +81,8 @@ public class DataManager {
         saveAvatarPhoto(Uri.parse(mockAccount.getAvatar()));
         saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY, mockAccount.isOrderNotification());
         saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_PROMO_KEY, mockAccount.isPromoNotification());
-        for (AddressDto addressDto : mockAccount.getAddresses()) {
-            addAddress(addressDto);
+        for (AddressViewModel addressViewModel : mockAccount.getAddresses()) {
+            addAddress(addressViewModel);
         }
     }
 
@@ -95,7 +95,7 @@ public class DataManager {
     }
 
     // TODO: 01.12.2016 implement
-    public ArrayList<AddressDto> getAccountAddresses() {
+    public ArrayList<AddressViewModel> getAccountAddresses() {
         return mockAccount.getAddresses();
     }
 
@@ -103,8 +103,8 @@ public class DataManager {
         mPreferencesManager.saveAccountSetting(notificationPromoKey, isChecked);
     }
 
-    public void addAddress(AddressDto addressDto) {
-        mPreferencesManager.addAddress(addressDto);
+    public void addAddress(AddressViewModel addressViewModel) {
+        mPreferencesManager.addAddress(addressViewModel);
     }
 
     public void saveProfileInfo(String name, String phone) {
