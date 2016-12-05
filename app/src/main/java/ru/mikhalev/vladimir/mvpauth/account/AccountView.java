@@ -32,9 +32,11 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
         int EDIT = 1;
     }
 
-    @Inject AccountScreen.AccountPresenter mPresenter;
+    @Inject
+    AccountScreen.AccountPresenter mPresenter;
     private ScreenAccountBinding mBinding;
     private AccountScreen mScreen;
+    private AddressListAdapter mAdapter;
 
     public AccountView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -42,6 +44,10 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
             DaggerService.<AccountScreen.Component>getDaggerComponent(getContext()).inject(this);
             mScreen = Flow.getKey(this);
         }
+    }
+
+    public AddressListAdapter getAdapter() {
+        return mAdapter;
     }
 
     //region =============== Lifecycle ==============
@@ -106,17 +112,18 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
         mBinding.setViewState(mScreen.getViewState());
     }
 
-    public void initView(AccountViewModel viewModel) {
+    public void initView(AccountDto viewModel) {
         mBinding.setViewModel(viewModel);
         initAddressList(viewModel);
         initSwipe();
     }
 
-    private void initAddressList(AccountViewModel viewModel) {
-        AddressListAdapter adapter = new AddressListAdapter(viewModel.getAddresses());
+    private void initAddressList(AccountDto viewModel) {
+//        mAdapter = new AddressListAdapter(viewModel.getAddresses());
+        mAdapter = new AddressListAdapter();
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         mBinding.addressList.setLayoutManager(lm);
-        mBinding.addressList.setAdapter(adapter);
+        mBinding.addressList.setAdapter(mAdapter);
     }
 
 
@@ -127,15 +134,35 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
                 int position = viewHolder.getAdapterPosition();
 
                 if (direction == ItemTouchHelper.LEFT) {
-                    mPresenter.removeAddress(position); // TODO: 29.11.2016 get address object
+                    showRemoveAddressDialog(position);
                 } else {
-                    mPresenter.editAddress(position); // TODO: 29.11.2016
+                    showEditAddressDialog(position);
                 }
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCallback);
         itemTouchHelper.attachToRecyclerView(mBinding.addressList);
+    }
+
+    private void showRemoveAddressDialog(int position) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Удалить адрес")
+                .setMessage("Вы уверены что хотите удалить данный адрес?")
+                .setPositiveButton("Удалить", (dialog, i) -> mPresenter.removeAddress(position))
+                .setNegativeButton("Отмена", (dialog, i) -> dialog.cancel())
+                .setOnCancelListener(dialog -> mAdapter.notifyDataSetChanged())
+                .show();
+    }
+
+    private void showEditAddressDialog(int position) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Перейти к редактированию адреса")
+                .setMessage("Вы уверены что хотите редактировать данный адрес?")
+                .setPositiveButton("Редактировать", (dialog, i) -> mPresenter.editAddress(position))
+                .setNegativeButton("Отмена", (dialog, i) -> dialog.cancel())
+                .setOnCancelListener(dialog -> mAdapter.notifyDataSetChanged())
+                .show();
     }
 
     //region ==================== IAccountView ========================

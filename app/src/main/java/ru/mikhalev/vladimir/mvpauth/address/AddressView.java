@@ -1,22 +1,24 @@
 package ru.mikhalev.vladimir.mvpauth.address;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import javax.inject.Inject;
 
+import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAddressBinding;
 
 /**
  * Developer Vladimir Mikhalev, 04.12.2016.
  */
-public class AddressView extends RelativeLayout implements IAddressView {
+public class AddressView extends RelativeLayout implements IAddressView, IAddressActions {
     @Inject
     AddressScreen.AddressPresenter mPresenter;
-
     private ScreenAddressBinding mBinding;
+    private int mAddressId;
 
     public AddressView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -54,11 +56,28 @@ public class AddressView extends RelativeLayout implements IAddressView {
 
     //region =============== Events ==============
 
-    void clickOnAddAddress() {
+    @Override
+    public void clickOnAddAddress() {
         mPresenter.clickOnAddAddress();
     }
 
     //endregion
+
+    //endregion
+
+    public void initView(@Nullable AddressDto address) {
+        mBinding.setActionsHandler(this);
+        if (address != null) {
+            mAddressId = address.getId();
+            mBinding.setViewModel(address);
+            mBinding.addAddress.setText(getContext().getString(R.string.address_save));
+        } else {
+            // FIXME: 05.12.2016 ???
+            mAddressId = 777;
+            mBinding.setViewModel(new AddressDto(mAddressId));
+            mBinding.addAddress.setText(getContext().getString(R.string.address_add));
+        }
+    }
 
     //region =============== IAddressView ==============
 
@@ -68,8 +87,8 @@ public class AddressView extends RelativeLayout implements IAddressView {
     }
 
     @Override
-    public AddressViewModel getUserAddress() {
-        return null;
+    public AddressDto getUserAddress() {
+        return mBinding.getViewModel();
     }
 
     @Override

@@ -9,16 +9,21 @@ import javax.inject.Inject;
 import dagger.Provides;
 import flow.Flow;
 import mortar.MortarScope;
-import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
 import ru.mikhalev.vladimir.mvpauth.address.AddressScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AccountScope;
+import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.SubscribePresenter;
 import ru.mikhalev.vladimir.mvpauth.flow.AbstractScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
 import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
 import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
+import rx.Subscription;
+
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -77,11 +82,22 @@ public class AccountScreen extends AbstractScreen<RootActivity.Component> {
     //endregion
 
 
-    public class AccountPresenter extends ViewPresenter<AccountView> implements IAccountPresenter {
+    public class AccountPresenter extends SubscribePresenter<AccountView> implements IAccountPresenter {
 
-        @Inject AccountModel mAccountModel;
-        @Inject RootPresenter mRootPresenter;
+        @Inject
+        AccountModel mAccountModel;
+        @Inject
+        RootPresenter mRootPresenter;
         private Uri mAvatarUri;
+        private Subscription mAddressSub;
+        private Subscription mSettingsSub;
+
+        @Nullable
+        protected IRootView getRootView() {
+            return mRootPresenter.getView();
+        }
+
+        //region =============== Lifecycle ==============
 
         @Override
         protected void onEnterScope(MortarScope scope) {
@@ -93,31 +109,77 @@ public class AccountScreen extends AbstractScreen<RootActivity.Component> {
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             if (getView() != null) {
-                getView().initView(mAccountModel.getAccountViewModel());
+                getView().initView(mAccountModel.getAccountDto());
+                subscribeOnAddressesObs();
             }
         }
 
-        @Nullable
-        private IRootView getRootView() {
-            return mRootPresenter.getView();
+        @Override
+        protected void onSave(Bundle outState) {
+            super.onSave(outState);
+            mAddressSub.unsubscribe();
         }
+
+        @Override
+        protected void onExitScope() {
+            super.onExitScope();
+        }
+
+        //endregion
+
+
+        //region =============== Subscription ==============
+
+        private void subscribeOnAddressesObs() {
+            mAddressSub = subscribe(mAccountModel.getAddressObs(), new ViewSubscriber<AddressDto>() {
+                @Override
+                public void onNext(AddressDto addressDto) {
+                    if (getView() != null) {
+                        getView().getAdapter().addItem(addressDto);
+                    }
+                }
+            });
+        }
+
+        private void updateListView() {
+            getView().getAdapter().reloadAdapter();
+            subscribeOnAddressesObs();
+        }
+
+        private void subscribeOnSettingsObs() {
+            mSettingsSub = subscribe(mAccountModel.getAccountSettingsObs(), new ViewSubscriber<AccountSettingsDto>() {
+                @Override
+                public void onNext(AccountSettingsDto accountSettingsDto) {
+                    if (getView() != null) {
+
+                    }
+                }
+            });
+        }
+
+        //endregion
+
 
         //region ==================== IAccountPresenter ========================
 
         @Override
         public void editAddress(int position) {
-            // TODO: 01.12.2016 flow - open address screen
-
+            if (getView() != null) {
+                Flow.get(getView()).set(new AddressScreen(mAccountModel.getAddressFromPosition(position)));
+            }
         }
 
         @Override
         public void clickOnAddAddress() {
-            Flow.get(getView()).set(new AddressScreen());
+            if (getView() != null) {
+                Flow.get(getView()).set(new AddressScreen(null));
+            }
         }
 
         @Override
         public void removeAddress(int position) {
-            mAccountModel.removeAddress();
+            mAccountModel.removeAddress(mAccountModel.getAddressFromPosition(position));
+            updateListView();
         }
 
         @Override
@@ -150,8 +212,16 @@ public class AccountScreen extends AbstractScreen<RootActivity.Component> {
         @Override
         public void chooseCamera() {
             if (getRootView() != null) {
-                getRootView().showMessage("chooseCamera");
-                // TODO: 01.12.2016 choose from camera
+                String[] permissions = new String[]{CAMERA, WRITE_EXTERNAL_STORAGE};
+                if (mRootPresenter.checkPermissionsAndRequestIfNotGranted(permissions,
+                        mRootPresenter.REQUEST_PERMISSION_CAMERA)) {
+                    mPhotoFile = createFileForPhoto();
+                    if (mPhotoFile == null) {
+                        getRootView().showMessage("Фотография не может быть создана");
+                        return;
+                    }
+                    takePhotoFromCamera();
+                }
             }
         }
 

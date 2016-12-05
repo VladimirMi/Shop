@@ -6,7 +6,21 @@
   "promoNotification": "false",
   "addresses": [
     {
-      "street": "ул.Пушкина, д.Колотушкина",
+      "id": 0,
+      "name": "Дом",
+      "street": "Пушкина",
+      "house": "21",
+      "apartment": "73",
+      "floor": "3",
+      "comment": "Без комментариев"
+    },
+    {
+      "id": 1,
+      "name": "Работа",
+      "street": "Ленина",
+      "house": "50",
+      "apartment": "99",
+      "floor": "9",
       "comment": "Без комментариев"
     }
   ]

@@ -9,5 +9,5 @@ import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
 public interface IAddressView extends IView {
     void showInputError();
 
-    AddressViewModel getUserAddress();
+    AddressDto getUserAddress();
 }

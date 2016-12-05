@@ -1,6 +1,8 @@
 package ru.mikhalev.vladimir.mvpauth.address;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
@@ -23,6 +25,13 @@ import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 
 @Screen(R.layout.screen_address)
 public class AddressScreen extends AbstractScreen<AccountScreen.Component> implements TreeKey {
+    @Nullable
+    private AddressDto mAddressDto;
+
+    public AddressScreen(@Nullable AddressDto addressDto) {
+        mAddressDto = addressDto;
+    }
+
     @Override
     public Object createScreenComponent(AccountScreen.Component parentComponent) {
         return DaggerAddressScreen_Component.builder()
@@ -35,6 +44,24 @@ public class AddressScreen extends AbstractScreen<AccountScreen.Component> imple
     @Override
     public Object getParentKey() {
         return new AccountScreen();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (mAddressDto != null) {
+            return o instanceof AddressScreen && mAddressDto.equals(((AddressScreen) o).mAddressDto);
+        } else {
+            return super.equals(o);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        if (mAddressDto != null) {
+            return mAddressDto.hashCode();
+        } else {
+            return super.hashCode();
+        }
     }
 
     //region =============== DI ==============
@@ -71,11 +98,18 @@ public class AddressScreen extends AbstractScreen<AccountScreen.Component> imple
         }
 
         @Override
-        public void clickOnAddAddress() {
-            // TODO: 04.12.2016 save address in model
+        protected void onLoad(Bundle savedInstanceState) {
+            super.onLoad(savedInstanceState);
             if (getView() != null) {
-                mAccountModel.addAddress(getView().getUserAddress());
-                boolean goBack = Flow.get(getView()).goBack();
+                getView().initView(mAddressDto);
+            }
+        }
+
+        @Override
+        public void clickOnAddAddress() {
+            if (getView() != null) {
+                mAccountModel.updateOrInsertAddress(getView().getUserAddress());
+                Flow.get(getView()).goBack();
             }
         }
     }

@@ -5,9 +5,10 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.Map;
 
-import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
+import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
 import ru.mikhalev.vladimir.mvpauth.core.layers.model.AbstractModel;
 import ru.mikhalev.vladimir.mvpauth.core.managers.PreferencesManager;
+import rx.Observable;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -15,8 +16,45 @@ import ru.mikhalev.vladimir.mvpauth.core.managers.PreferencesManager;
 
 public class AccountModel extends AbstractModel {
 
-    public AccountViewModel getAccountViewModel() {
-        return new AccountViewModel(getAccountProfileInfo(), getAccountAddresses(), getAccountSettings());
+    //region =============== Addresses ==============
+
+    public Observable<AddressDto> getAddressObs() {
+        return Observable.from(getAccountAddresses());
+    }
+
+    public ArrayList<AddressDto> getAccountAddresses() {
+        return mDataManager.getAccountAddresses();
+    }
+
+    public void updateOrInsertAddress(AddressDto address) {
+        mDataManager.updateOrInsertAddress(address);
+    }
+
+
+    public void removeAddress(AddressDto address) {
+        mDataManager.removeAddress(address);
+    }
+
+    public AddressDto getAddressFromPosition(int position) {
+        return getAccountAddresses().get(position);
+    }
+
+    //endregion
+
+    //region =============== Settings ==============
+
+    public Observable<AccountSettingsDto> getAccountSettingsObs() {
+        return Observable.just(getAccountSettings());
+    }
+
+    private AccountSettingsDto getAccountSettings() {
+        return new AccountSettingsDto(mDataManager.getAccountSettings());
+    }
+
+    //endregion
+
+    public AccountDto getAccountDto() {
+        return null; //new AccountDto(getAccountProfileInfo(), getAccountAddresses(), getAccountSettings());
     }
 
     public void saveProfileInfo(String name, String phone) {
@@ -36,24 +74,8 @@ public class AccountModel extends AbstractModel {
         mDataManager.saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY, isChecked);
     }
 
-    public void addAddress(AddressViewModel addressViewModel) {
-        mDataManager.addAddress(addressViewModel);
-    }
-
-    // TODO: 01.12.2016 remove address
-    public void removeAddress() {
-
-    }
-
     private Map<String, String> getAccountProfileInfo() {
         return mDataManager.getAccountProfileInfo();
     }
 
-    private ArrayList<AddressViewModel> getAccountAddresses() {
-        return mDataManager.getAccountAddresses();
-    }
-
-    private Map<String, Boolean> getAccountSettings() {
-        return mDataManager.getAccountSettings();
-    }
 }

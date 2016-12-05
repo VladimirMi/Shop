@@ -14,8 +14,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.account.AccountViewModel;
-import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
+import ru.mikhalev.vladimir.mvpauth.account.AccountDto;
+import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
 import ru.mikhalev.vladimir.mvpauth.catalog.Catalog;
 import ru.mikhalev.vladimir.mvpauth.catalog.ProductViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.App;
@@ -37,7 +37,7 @@ public class DataManager {
 
 
     private List<ProductViewModel> mMockProductList = new ArrayList<>();
-    private AccountViewModel mockAccount;
+    private AccountDto mockAccount;
 
     public DataManager() {
         DaggerService.getComponent(DataManagerComponent.class,
@@ -76,35 +76,40 @@ public class DataManager {
     }
 
     private void generateMockAccount() {
-        mockAccount = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.account), AccountViewModel.class);
+        mockAccount = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.account), AccountDto.class);
         saveProfileInfo(mockAccount.getFullname(), mockAccount.getPhone());
         saveAvatarPhoto(Uri.parse(mockAccount.getAvatar()));
         saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY, mockAccount.isOrderNotification());
         saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_PROMO_KEY, mockAccount.isPromoNotification());
-        for (AddressViewModel addressViewModel : mockAccount.getAddresses()) {
-            addAddress(addressViewModel);
+    }
+
+    // TODO: 01.12.2016 implement real
+    public ArrayList<AddressDto> getAccountAddresses() {
+        return mockAccount.getAddresses();
+    }
+
+    public void updateOrInsertAddress(AddressDto address) {
+        if (mockAccount.getAddresses().contains(address)) {
+            mockAccount.getAddresses().set(mockAccount.getAddresses().indexOf(address), address);
+        } else {
+            mockAccount.getAddresses().add(address);
         }
     }
 
-    public Map<String, String> getAccountProfileInfo() {
-        return mPreferencesManager.getUserAccountProfileInfo();
+    public void removeAddress(AddressDto addressDto) {
+        mockAccount.getAddresses().remove(addressDto);
     }
 
     public Map<String, Boolean> getAccountSettings() {
         return mPreferencesManager.getAccountSettings();
     }
 
-    // TODO: 01.12.2016 implement
-    public ArrayList<AddressViewModel> getAccountAddresses() {
-        return mockAccount.getAddresses();
-    }
-
     public void saveAccountSetting(String notificationPromoKey, boolean isChecked) {
         mPreferencesManager.saveAccountSetting(notificationPromoKey, isChecked);
     }
 
-    public void addAddress(AddressViewModel addressViewModel) {
-        mPreferencesManager.addAddress(addressViewModel);
+    public Map<String, String> getAccountProfileInfo() {
+        return mPreferencesManager.getUserAccountProfileInfo();
     }
 
     public void saveProfileInfo(String name, String phone) {

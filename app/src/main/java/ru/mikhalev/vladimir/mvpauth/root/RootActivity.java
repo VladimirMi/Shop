@@ -141,7 +141,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     @Override
     public void onBackPressed() {
-        if (getCurrentScreen() != null && !getCurrentScreen().viewOnBackPressed() && Flow.get(this).goBack()) {
+        if (getCurrentScreen() != null && !getCurrentScreen().viewOnBackPressed() && !Flow.get(this).goBack()) {
             super.onBackPressed();
         }
 //        if (mBinding.drawer.isDrawerOpen(GravityCompat.START)) {

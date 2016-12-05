@@ -7,14 +7,13 @@
 
         <variable
             name="viewModel"
-            type="ru.mikhalev.vladimir.mvpauth.address.AddressViewModel"/>
+            type="ru.mikhalev.vladimir.mvpauth.address.AddressDto"/>
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:onClick="">
+        android:orientation="horizontal">
 
         <ImageView
             style="@style/Icon.Account"
@@ -33,7 +32,7 @@
 
             <TextView
                 style="@style/CustomText.AccountValue"
-                android:text="@{viewModel.street}"
+                android:text="@{viewModel.toString()}"
                 tools:text="@string/account.home.sample"/>
 
             <TextView

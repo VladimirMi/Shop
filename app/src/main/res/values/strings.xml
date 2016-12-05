@@ -60,13 +60,17 @@
     <string name="account.extra.notify">Уведомлять о акциях и спец. предложениях</string>
 
     <!-- AddressScreen -->
-    <string name="address_screen_label">Добавить адрес доставки</string>
-    <string name="address_delivery_location">Название места доставки</string>
-    <string name="address_street">Улица</string>
-    <string name="address_home">Дом</string>
-    <string name="address_apartment">Квартира</string>
-    <string name="address_floor">Этаж</string>
-    <string name="address_comment">Комментарий</string>
-    <string name="address_point_map">Указать на карте</string>
+    <string name="address.label.add">Добавить адрес доставки</string>
+    <string name="address.delivery">Название места доставки</string>
+    <string name="address.street">Улица</string>
+    <string name="address.home">Дом</string>
+    <string name="address.apartment">Квартира</string>
+    <string name="address.floor">Этаж</string>
+    <string name="address.comment">Комментарий</string>
+    <string name="address.add">Добавить</string>
+    <string name="address.save">Сохранить</string>
+    <string name="address.map">Указать на карте</string>
+
+
     <string name="progress_show_text">Пожлуйста, подождите</string>
 </resources>

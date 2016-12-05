@@ -2,14 +2,9 @@ package ru.mikhalev.vladimir.mvpauth.core;
 
 
 import android.app.Application;
-import android.content.Context;
-
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
-import ru.mikhalev.vladimir.mvpauth.BuildConfig;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
 import ru.mikhalev.vladimir.mvpauth.core.di.modules.AppModule;
@@ -21,13 +16,6 @@ public class App extends Application {
     private MortarScope mRootScope;
     private MortarScope mRootActivityScope;
     private RootActivity.Component mRootActivityComponent;
-
-    private RefWatcher refWatcher;
-
-    public static RefWatcher getRefWatcher(Context context) {
-        App application = (App) context.getApplicationContext();
-        return application.refWatcher;
-    }
 
     @Override
     public Object getSystemService(String name) {
@@ -54,10 +42,6 @@ public class App extends Application {
 
         ScreenScoper.registerScope(mRootScope);
         ScreenScoper.registerScope(mRootActivityScope);
-
-        if (BuildConfig.DEBUG) {
-            refWatcher = LeakCanary.install(this);
-        }
     }
 
     private void createRootActivityComponent() {

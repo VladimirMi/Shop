@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+        xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="ru.mikhalev.vladimir.mvpauth.address.AddressDto"/>
+
+        <variable
+            name="actionsHandler"
+            type="ru.mikhalev.vladimir.mvpauth.address.IAddressActions"/>
+    </data>
 
     <ru.mikhalev.vladimir.mvpauth.address.AddressView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -34,12 +45,13 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/address_delivery_location">
+                        android:hint="@string/address.delivery">
 
                         <android.support.design.widget.TextInputEditText
                             style="@style/CustomEditText"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.name}"/>
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -60,35 +72,36 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/address_street">
+                        android:hint="@string/address.street">
 
                         <android.support.design.widget.TextInputEditText
                             style="@style/CustomEditText"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.street}"/>
 
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/values"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal_16"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="@string/address_home">
+                        android:hint="@string/address.home">
 
                         <android.support.design.widget.TextInputEditText
                             style="@style/CustomEditText.AddressNumber"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.house}"/>
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -98,12 +111,13 @@
                         android:layout_marginLeft="@dimen/spacing_medium_32"
                         android:layout_marginRight="@dimen/spacing_medium_32"
                         android:layout_weight="1"
-                        android:hint="@string/address_apartment">
+                        android:hint="@string/address.apartment">
 
                         <android.support.design.widget.TextInputEditText
                             style="@style/CustomEditText.AddressNumber"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.apartment}"/>
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -111,30 +125,40 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="@string/address_floor">
+                        android:hint="@string/address.floor">
 
                         <android.support.design.widget.TextInputEditText
                             style="@style/CustomEditText.AddressNumber"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.floor}"/>
 
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/comment"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal_16"
-                    android:hint="@string/address_comment">
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
-                    <android.support.design.widget.TextInputEditText
-                        style="@style/CustomEditText"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/comment"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:hint="@string/address.comment">
 
-                </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputEditText
+                            style="@style/CustomEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.comment}"/>
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
@@ -142,7 +166,8 @@
             android:id="@+id/add_address"
             style="@style/CustomButton"
             android:layout_alignParentBottom="true"
-            android:text="@string/address_point_map"
+            android:text="@string/address.add"
+            bind:onClick="@{actionsHandler::clickOnAddAddress}"
             android:theme="@style/EnterButton"/>
     </ru.mikhalev.vladimir.mvpauth.address.AddressView>
 

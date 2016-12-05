@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
+import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
 import ru.mikhalev.vladimir.mvpauth.databinding.ItemAddressBinding;
 
 /**
@@ -15,10 +15,9 @@ import ru.mikhalev.vladimir.mvpauth.databinding.ItemAddressBinding;
 
 public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.ViewHolder> {
 
-    private final ArrayList<AddressViewModel> mAddresses;
+    private ArrayList<AddressDto> mAddresses = new ArrayList<>();
 
-    public AddressListAdapter(ArrayList<AddressViewModel> addresses) {
-        mAddresses = addresses;
+    public AddressListAdapter() {
     }
 
     @Override
@@ -38,6 +37,16 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         return mAddresses.size();
     }
 
+    public void addItem(AddressDto address) {
+        mAddresses.add(address);
+        notifyDataSetChanged();
+    }
+
+    public void reloadAdapter() {
+        mAddresses.clear();
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemAddressBinding mBinding;
@@ -47,8 +56,8 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
             mBinding = binding;
         }
 
-        public void bind(AddressViewModel viewModel) {
-            mBinding.setViewModel(viewModel);
+        public void bind(AddressDto addressDto) {
+            mBinding.setViewModel(addressDto);
         }
     }
 }

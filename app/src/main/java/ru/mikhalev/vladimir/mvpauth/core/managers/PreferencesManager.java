@@ -5,11 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.StringDef;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
 
 public class PreferencesManager {
     private final SharedPreferences mSharedPreferences;
@@ -22,9 +19,7 @@ public class PreferencesManager {
             ACCOUNT.NOTIFICATION_ORDER_KEY,
             ACCOUNT.NOTIFICATION_PROMO_KEY})
     public @interface ACCOUNT {
-
         String FULL_NAME_KEY = "PROFILE_FULL_NAME_KEY";
-
         String AVATAR_KEY = "PROFILE_AVATAR_KEY";
         String PHONE_KEY = "PROFILE_PHONE_KEY";
         String NOTIFICATION_ORDER_KEY = "NOTIFICATION_ORDER_KEY";
@@ -68,11 +63,6 @@ public class PreferencesManager {
         editor.apply();
     }
 
-    // TODO: 01.12.2016 implement saving addresses
-    public void addAddress(AddressViewModel addressViewModel) {
-
-    }
-
     public void saveAvatarPhoto(String photoPath) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(ACCOUNT.AVATAR_KEY, photoPath);
@@ -87,11 +77,6 @@ public class PreferencesManager {
         return result;
     }
 
-    // TODO: 01.12.2016 implement loading addresses
-    public ArrayList<AddressViewModel> getAccountAddresses() {
-        return null;
-    }
-
     public Map<String, Boolean> getAccountSettings() {
         Map<String, Boolean> result = new HashMap<>();
         for (String key : USER_SETTINGS) {
@@ -99,7 +84,6 @@ public class PreferencesManager {
         }
         return result;
     }
-
 
     public void clearAllData() {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
