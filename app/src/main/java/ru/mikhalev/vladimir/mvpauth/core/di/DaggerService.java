@@ -1,13 +1,8 @@
 package ru.mikhalev.vladimir.mvpauth.core.di;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Developer Vladimir Mikhalev, 03.11.2016.
@@ -21,44 +16,17 @@ public class DaggerService {
         return (T) context.getSystemService(SERVICE_NAME);
     }
 
+//    public static void unregisterScope(Class<? extends Annotation> scopeAnnotation) {
+//        Iterator<Map.Entry<Class, Object>> iterator = sComponentMap.entrySet().iterator();
+//        while (iterator.hasNext()) {
+//            Map.Entry<Class, Object> entry = iterator.next();
+//            if (entry.getKey().isAnnotationPresent(scopeAnnotation)) {
+//                iterator.remove();
+//            }
+//        }
+//    }
 
-    private static Map<Class, Object> sComponentMap = new HashMap<>();
-
-    private static void registerComponent(Class classComponent, Object daggerComponent) {
-        sComponentMap.put(classComponent, daggerComponent);
-    }
-
-    public static void unregisterScope(Class<? extends Annotation> scopeAnnotation) {
-        Iterator<Map.Entry<Class, Object>> iterator = sComponentMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Class, Object> entry = iterator.next();
-            if (entry.getKey().isAnnotationPresent(scopeAnnotation)) {
-                iterator.remove();
-            }
-        }
-    }
-
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public static <T> T getComponent(Class<T> componentClass, Object... dependencies) {
-        T component = (T) sComponentMap.get(componentClass);
-        if (component == null) {
-            component = createDaggerComponent(componentClass, dependencies);
-            registerComponent(componentClass, component);
-        }
-        return component;
-    }
-
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public static <T> T getProductComponent(Class<T> componentClass, Object... dependencies) {
-
-        T component = createDaggerComponent(componentClass, dependencies);
-
-        return component;
-    }
-
-    private static <T> T createDaggerComponent(Class<T> componentClass, Object... dependencies) {
+    public static <T> T createDaggerComponent(Class<T> componentClass, Object... dependencies) {
         String fqn = componentClass.getName();
 
         String packageName = componentClass.getPackage().getName();

@@ -93,17 +93,21 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
 
     @Override
     public void switchOrder(boolean isCheked) {
-        mPresenter.switchOrder(isCheked);
+        mBinding.getViewModel().setOrderNotification(isCheked);
+        mPresenter.switchNotification();
     }
 
     @Override
     public void switchPromo(boolean isCheked) {
-        mPresenter.switchPromo(isCheked);
+        mBinding.getViewModel().setPromoNotification(isCheked);
+        mPresenter.switchNotification();
     }
 
     @Override
     public void changeAvatar() {
-        mPresenter.changeAvatar();
+        if (mBinding.getViewState() == STATE.EDIT) {
+            mPresenter.changeAvatar();
+        }
     }
 
     //endregion
@@ -112,14 +116,12 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
         mBinding.setViewState(mScreen.getViewState());
     }
 
-    public void initView(AccountDto viewModel) {
-        mBinding.setViewModel(viewModel);
-        initAddressList(viewModel);
+    public void initView() {
+        initAddressList();
         initSwipe();
     }
 
-    private void initAddressList(AccountDto viewModel) {
-//        mAdapter = new AddressListAdapter(viewModel.getAddresses());
+    public void initAddressList() {
         mAdapter = new AddressListAdapter();
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         mBinding.addressList.setLayoutManager(lm);
@@ -167,6 +169,15 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
 
     //region ==================== IAccountView ========================
 
+    public void setViewModel(AccountDto viewModel) {
+        mBinding.setViewModel(viewModel);
+    }
+
+    @Override
+    public AccountDto getViewModel() {
+        return mBinding.getViewModel();
+    }
+
     @Override
     public void changeState() {
         if (mScreen.getViewState() == STATE.EDIT) {
@@ -197,16 +208,6 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
             }
         });
         alertDialog.show();
-    }
-
-    @Override
-    public String getUserName() {
-        return String.valueOf(mBinding.fullname.getText());
-    }
-
-    @Override
-    public String getUserPhone() {
-        return String.valueOf(mBinding.phone.getText());
     }
 
     @Override

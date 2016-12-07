@@ -39,7 +39,7 @@ public class AuthViewModel extends BaseObservable {
     Context mContext;
 
     AuthViewModel() {
-        DaggerService.getComponent(AppComponent.class).inject(this);
+        DaggerService.createDaggerComponent(AppComponent.class).inject(this);
     }
 
     private void validate(@FIELD int field) {

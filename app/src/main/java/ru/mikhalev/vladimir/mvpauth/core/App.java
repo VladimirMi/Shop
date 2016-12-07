@@ -15,7 +15,7 @@ public class App extends Application {
     private static AppComponent sAppComponent;
     private MortarScope mRootScope;
     private MortarScope mRootActivityScope;
-    private RootActivity.Component mRootActivityComponent;
+    private static RootActivity.Component sRootActivityComponent;
 
     @Override
     public Object getSystemService(String name) {
@@ -27,7 +27,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        sAppComponent = DaggerService.getComponent(AppComponent.class,
+        sAppComponent = DaggerService.createDaggerComponent(AppComponent.class,
                 new AppModule(getApplicationContext()));
 
         mRootScope = MortarScope.buildRootScope()
@@ -36,7 +36,7 @@ public class App extends Application {
 
         createRootActivityComponent();
         mRootActivityScope = mRootScope.buildChild()
-                .withService(DaggerService.SERVICE_NAME, mRootActivityComponent)
+                .withService(DaggerService.SERVICE_NAME, sRootActivityComponent)
                 .withService(BundleServiceRunner.SERVICE_NAME, new BundleServiceRunner())
                 .build(RootActivity.class.getName());
 
@@ -45,11 +45,15 @@ public class App extends Application {
     }
 
     private void createRootActivityComponent() {
-        mRootActivityComponent = DaggerService.getComponent(RootActivity.Component.class,
+        sRootActivityComponent = DaggerService.createDaggerComponent(RootActivity.Component.class,
                 new RootActivity.Module(), getAppComponent());
     }
 
     public static AppComponent getAppComponent() {
         return sAppComponent;
+    }
+
+    public static RootActivity.Component getRootActivityComponent() {
+        return sRootActivityComponent;
     }
 }

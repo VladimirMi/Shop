@@ -81,4 +81,8 @@ public class MyGlideModule implements GlideModule {
                     }
                 });
     }
+
+    public static void setUserAvatarWithAlpha(String path, ImageView imageView, float alpha) {
+
+    }
 }

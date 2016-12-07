@@ -15,6 +15,6 @@ public abstract class AbstractModel {
     protected DataManager mDataManager;
 
     public AbstractModel() {
-        DaggerService.getComponent(ModelComponent.class).inject(this );
+        DaggerService.createDaggerComponent(ModelComponent.class).inject(this);
     }
 }

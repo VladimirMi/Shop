@@ -12,8 +12,5 @@ public interface IAccountView extends IView {
 
     void showPhotoSourceDialog();
 
-    String getUserName();
-
-    String getUserPhone();
-
+    AccountDto getViewModel();
 }

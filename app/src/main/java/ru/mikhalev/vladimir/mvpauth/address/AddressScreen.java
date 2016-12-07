@@ -14,7 +14,6 @@ import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.account.AccountModel;
 import ru.mikhalev.vladimir.mvpauth.account.AccountScreen;
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AddressScope;
 import ru.mikhalev.vladimir.mvpauth.flow.AbstractScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
@@ -79,7 +78,7 @@ public class AddressScreen extends AbstractScreen<AccountScreen.Component> imple
             modules = AddressScreen.Module.class)
     @AddressScope
     public interface Component {
-        void inject(AddressPresenter presenter);
+//        void inject(AddressPresenter presenter);
 
         void inject(AddressView view);
     }
@@ -94,7 +93,7 @@ public class AddressScreen extends AbstractScreen<AccountScreen.Component> imple
         @Override
         protected void onEnterScope(MortarScope scope) {
             super.onEnterScope(scope);
-            ((AddressScreen.Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
+//            ((AddressScreen.Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
         }
 
         @Override

@@ -50,34 +50,33 @@
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout
+        <ImageView
+            android:id="@+id/avatar"
             android:layout_width="@dimen/profile_avatar_size"
             android:layout_height="@dimen/profile_avatar_size"
+            android:clickable="true"
+            android:elevation="@dimen/profile_avatar_elevation"
+            app:elevation="@dimen/profile_avatar_elevation"
+            app:layout_behavior=".account.AvatarBehavior"
             app:layout_anchor="@id/appbar_account"
             app:layout_anchorGravity="center_horizontal"
-            app:layout_behavior=".account.AvatarBehavior">
+            bind:avatar="@{viewModel.avatar}"
+            bind:alpha="@{viewState == STATE.PREVIEW ? 1.0f : 0.8f}"
+            bind:onClick="@{actionsHandler::changeAvatar}"
+            tools:ignore="ContentDescription,UnusedAttribute"
+            android:background="@drawable/ic_add_white_24dp"
+            tools:src="@drawable/user_avatar"/>
 
-            <ImageView
-                android:id="@+id/avatar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:elevation="@dimen/profile_avatar_elevation"
-                app:elevation="@dimen/profile_avatar_elevation"
-                bind:avatar="@{viewModel.avatar}"
-                bind:onClick="@{actionsHandler::changeAvatar}"
-                android:alpha="@{viewState == STATE.PREVIEW ? 1.0f : 0.8f}"
-                tools:ignore="ContentDescription,UnusedAttribute"
-                tools:src="@drawable/user_avatar"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:elevation="@dimen/profile_avatar_elevation"
-                app:elevation="@dimen/profile_avatar_elevation"
-                android:visibility="@{viewState == STATE.EDIT}"
-                android:src="@drawable/ic_add_white_24dp"
-                tools:ignore="ContentDescription,UnusedAttribute"/>
-        </FrameLayout>
+        <!--<ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:elevation="@dimen/profile_avatar_elevation"
+            android:src="@drawable/ic_add_white_24dp"
+            android:visibility="@{viewState == STATE.EDIT}"
+            app:elevation="@dimen/profile_avatar_elevation"
+            tools:ignore="ContentDescription,UnusedAttribute"/>-->
 
 
         <android.support.v4.widget.NestedScrollView
@@ -118,7 +117,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="@{viewState == STATE.EDIT}"
-                            android:inputType="phone"
+                            android:inputType="text"
                             android:text="@={viewModel.fullname}"
                             tools:text="@string/account.username.sample"/>
 

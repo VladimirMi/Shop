@@ -2,8 +2,11 @@ package ru.mikhalev.vladimir.mvpauth.root;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -14,7 +17,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import javax.inject.Inject;
 
@@ -24,25 +26,30 @@ import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 import ru.mikhalev.vladimir.mvpauth.BuildConfig;
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.account.AccountDto;
+import ru.mikhalev.vladimir.mvpauth.account.AccountModel;
 import ru.mikhalev.vladimir.mvpauth.account.AccountScreen;
 import ru.mikhalev.vladimir.mvpauth.catalog.CatalogScreen;
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.core.App;
 import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.RootScope;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.BaseActivity;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
-import ru.mikhalev.vladimir.mvpauth.core.utils.MyGlideModule;
 import ru.mikhalev.vladimir.mvpauth.databinding.ActivityRootBinding;
+import ru.mikhalev.vladimir.mvpauth.databinding.DrawerHeaderBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.ToolbarBasketItemBinding;
 import ru.mikhalev.vladimir.mvpauth.flow.TreeKeyDispatcher;
-import ru.mikhalev.vladimir.mvpauth.splash.SplashActivity;
 
 public class RootActivity extends BaseActivity implements IRootView, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "RootActivity";
+
+    @Inject
+    RootPresenter mRootPresenter;
+
     private ProgressDialog mProgressDialog;
     private ActivityRootBinding mBinding;
+    private DrawerHeaderBinding mDrawerBinding;
     private ToolbarBasketItemBinding mBasketBinding;
-    @Inject RootPresenter mPresenter;
     private boolean isExitEnabled = false;
 
     //region ==================== Life cycle ========================
@@ -78,11 +85,10 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
         BundleServiceRunner.getBundleServiceRunner(this).onCreate(savedInstanceState);
 
-        DaggerService.getComponent(RootActivity.Component.class,
-                new RootActivity.Module()).inject(this);
+        App.getRootActivityComponent().inject(this);
 
-        mPresenter.takeView(this);
-        mPresenter.initView();
+        mRootPresenter.takeView(this);
+        mRootPresenter.initView();
 //        mBinding.appbar.setVisibility(View.GONE);
 //        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         initToolbar();
@@ -97,13 +103,13 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     @Override
     protected void onResume() {
-        mPresenter.takeView(this);
+        mRootPresenter.takeView(this);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        mPresenter.dropView();
+        mRootPresenter.dropView();
         super.onPause();
     }
 
@@ -132,11 +138,14 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     private void initDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mBinding.drawer, mBinding.toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
-        mBinding.drawer.addDrawerListener(toggle);
-        mBinding.navigationView.setNavigationItemSelectedListener(this);
         toggle.syncState();
-        ImageView avatar = (ImageView) mBinding.navigationView.getHeaderView(0).findViewById(R.id.avatar);
-        MyGlideModule.setUserAvatar(R.drawable.user_avatar, avatar);
+        mBinding.drawer.addDrawerListener(toggle);
+
+        mBinding.navigationView.setNavigationItemSelectedListener(this);
+
+        mDrawerBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.drawer_header,
+                mBinding.navigationView, false);
+        mBinding.navigationView.addHeaderView(mDrawerBinding.getRoot());
     }
 
     @Override
@@ -191,6 +200,12 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     //region ==================== IRootView ========================
 
+
+    @Override
+    public void setDrawer(AccountDto accountDto) {
+        mDrawerBinding.setViewModel(accountDto);
+    }
+
     @Override
     public void showMessage(String message) {
         Snackbar.make(mBinding.getRoot(), message, Snackbar.LENGTH_LONG).show();
@@ -235,7 +250,32 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
         mBasketBinding.setCount(count);
     }
 
+    @Override
+    public void showPermissionSnackbar() {
+        Snackbar.make(mBinding.getRoot(), "Для корректной работы необходимо дать требуемые разрешения", Snackbar.LENGTH_LONG)
+                .setAction("Разрешить", view -> openApplicationSettings()).show();
+    }
+
+    @Override
+    public void openApplicationSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.parse("package:" + getPackageName()));
+        startActivityForResult(intent, RootPresenter.REQUEST_SETTINGS_INTENT);
+    }
     //endregion
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mRootPresenter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mRootPresenter.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
 
     //region ==================== DI ========================
@@ -247,15 +287,24 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
         RootPresenter provideRootPresenter() {
             return new RootPresenter();
         }
+
+        @Provides
+        @RootScope
+        AccountModel provideAccountModel() {
+            return new AccountModel();
+        }
     }
 
-    @dagger.Component(dependencies = AppComponent.class, modules = Module.class)
+    @dagger.Component(dependencies = AppComponent.class, modules = RootActivity.Module.class)
     @RootScope
     public interface Component {
         void inject(RootActivity view);
 
-        void inject(SplashActivity view);
+        void inject(RootPresenter view);
+
         RootPresenter getRootPresenter();
+
+        AccountModel getAccountModel();
     }
     //endregion
 }

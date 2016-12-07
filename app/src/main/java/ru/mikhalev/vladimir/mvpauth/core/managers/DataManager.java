@@ -2,8 +2,6 @@ package ru.mikhalev.vladimir.mvpauth.core.managers;
 
 
 import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -40,7 +38,7 @@ public class DataManager {
     private AccountDto mockAccount;
 
     public DataManager() {
-        DaggerService.getComponent(DataManagerComponent.class,
+        DaggerService.createDaggerComponent(DataManagerComponent.class,
                 App.getAppComponent(),
                 new LocaleModule(),
                 new NetworkModule()).inject(this);
@@ -78,7 +76,7 @@ public class DataManager {
     private void generateMockAccount() {
         mockAccount = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.account), AccountDto.class);
         saveProfileInfo(mockAccount.getFullname(), mockAccount.getPhone());
-        saveAvatarPhoto(Uri.parse(mockAccount.getAvatar()));
+        saveAvatarPhoto(mockAccount.getAvatar());
         saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY, mockAccount.isOrderNotification());
         saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_PROMO_KEY, mockAccount.isPromoNotification());
     }
@@ -116,10 +114,7 @@ public class DataManager {
         mPreferencesManager.saveProfileInfo(name, phone);
     }
 
-    public void saveAvatarPhoto(Uri photoUri) {
-        Log.e(TAG, "saveAvatarPhoto: with path " + photoUri.toString());
-        if (photoUri != null) {
-            mPreferencesManager.saveAvatarPhoto(photoUri.toString());
-        }
+    public void saveAvatarPhoto(String photoPath) {
+        mPreferencesManager.saveAvatarPhoto(photoPath);
     }
 }

@@ -3,6 +3,14 @@
           package="ru.mikhalev.vladimir.mvpauth">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature
+        android:name="android.hardware.Camera2"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.Camera2.autofocus"
+        android:required="false"/>
 
     <application
         android:name=".core.App"
@@ -23,6 +31,15 @@
         <activity
             android:name=".root.RootActivity"
             android:windowSoftInputMode="adjustPan"/>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="ru.mikhalev.vladimir.mvpauth.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
         <meta-data
             android:name="ru.mikhalev.vladimir.mvpauth.core.utils.MyGlideModule"
             android:value="GlideModule"/>

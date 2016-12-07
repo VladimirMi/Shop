@@ -2,6 +2,7 @@ package ru.mikhalev.vladimir.mvpauth.root;
 
 import android.support.annotation.Nullable;
 
+import ru.mikhalev.vladimir.mvpauth.account.AccountDto;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
 
 /**
@@ -21,4 +22,10 @@ public interface IRootView extends IView {
     IView getCurrentScreen();
 
     void setBasketCounter(int count);
+
+    void showPermissionSnackbar();
+
+    void openApplicationSettings();
+
+    void setDrawer(AccountDto accountDto);
 }

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="ru.mikhalev.vladimir.mvpauth.R.drawable"/>
+        <variable
+            name="viewModel"
+            type="ru.mikhalev.vladimir.mvpauth.account.AccountDto"/>
     </data>
 
     <RelativeLayout
@@ -22,6 +24,7 @@
             android:id="@+id/avatar"
             android:layout_width="@dimen/drawer_avatar_size"
             android:layout_height="@dimen/drawer_avatar_size"
+            bind:avatar="@{viewModel.avatar}"
             tools:src="@drawable/user_avatar"/>
 
         <TextView
@@ -29,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:maxLines="1"
+            android:text="@{viewModel.fullname}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font_normal_16"
             app:font="@{@string/font_roboto_regular}"

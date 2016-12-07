@@ -14,9 +14,7 @@ public interface IAccountPresenter {
 
     void switchViewState();
 
-    void switchOrder(boolean isCheked);
-
-    void switchPromo(boolean isCheked);
+    void switchNotification();
 
     void changeAvatar();
 

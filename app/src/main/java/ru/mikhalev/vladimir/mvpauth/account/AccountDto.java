@@ -22,7 +22,6 @@ public class AccountDto extends BaseObservable {
 
     @SerializedName("fullname")
     @Expose
-    @Bindable
     private String fullname;
 
     @SerializedName("avatar")
@@ -45,13 +44,12 @@ public class AccountDto extends BaseObservable {
     @Expose
     private ArrayList<AddressDto> addresses;
 
-    public AccountDto(Map<String, String> accountProfileInfo, ArrayList<AddressDto> accountAddresses, Map<String, Boolean> accountSettings) {
+    public AccountDto(Map<String, String> accountProfileInfo, Map<String, Boolean> accountSettings) {
         this.fullname = accountProfileInfo.get(PreferencesManager.ACCOUNT.FULL_NAME_KEY);
         this.avatar = accountProfileInfo.get(PreferencesManager.ACCOUNT.AVATAR_KEY);
         this.phone = accountProfileInfo.get(PreferencesManager.ACCOUNT.PHONE_KEY);
         this.orderNotification = accountSettings.get(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY);
         this.promoNotification = accountSettings.get(PreferencesManager.ACCOUNT.NOTIFICATION_PROMO_KEY);
-        this.addresses = accountAddresses;
     }
 
     //region ==================== Getters and setters ========================
@@ -64,6 +62,7 @@ public class AccountDto extends BaseObservable {
         this.id = id;
     }
 
+    @Bindable
     public String getFullname() {
         return fullname;
     }
@@ -73,36 +72,44 @@ public class AccountDto extends BaseObservable {
         notifyPropertyChanged(BR.fullname);
     }
 
+    @Bindable
     public String getAvatar() {
         return avatar;
     }
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+        notifyPropertyChanged(BR.avatar);
     }
 
+    @Bindable
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+        notifyPropertyChanged(BR.phone);
     }
 
+    @Bindable
     public boolean isOrderNotification() {
         return orderNotification;
     }
 
     public void setOrderNotification(boolean orderNotification) {
         this.orderNotification = orderNotification;
+        notifyPropertyChanged(BR.orderNotification);
     }
 
+    @Bindable
     public boolean isPromoNotification() {
         return promoNotification;
     }
 
     public void setPromoNotification(boolean promoNotification) {
         this.promoNotification = promoNotification;
+        notifyPropertyChanged(BR.promoNotification);
     }
 
     public ArrayList<AddressDto> getAddresses() {
