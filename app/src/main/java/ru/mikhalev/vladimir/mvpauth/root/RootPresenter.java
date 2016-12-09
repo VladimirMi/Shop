@@ -9,8 +9,8 @@ import android.support.v4.content.ContextCompat;
 
 import javax.inject.Inject;
 
-import ru.mikhalev.vladimir.mvpauth.account.AccountDto;
 import ru.mikhalev.vladimir.mvpauth.account.AccountModel;
+import ru.mikhalev.vladimir.mvpauth.account.AccountViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.App;
 import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.AbstractPresenter;
 import rx.Subscriber;
@@ -22,15 +22,11 @@ import rx.subjects.PublishSubject;
  * Developer Vladimir Mikhalev, 06.11.2016.
  */
 public class RootPresenter extends AbstractPresenter<IRootView> implements IRootPresenter {
+    @SuppressWarnings("unused")
     private static final String TAG = "RootPresenter";
-    public static final int REQUEST_CAMERA_PERMISSION = 1;
-    public static final int REQUEST_READ_EXTERNAL_STORAGE_PERMISSION = 4;
 
-    public static final int REQUEST_CAMERA_INTENT = 3;
-    public static final int REQUEST_GALLERY_INTENT = 5;
-    public static final int REQUEST_SETTINGS_INTENT = 6;
-
-    private PublishSubject<RequestPermissionsDto> mRequestPermissionsDtoObs = PublishSubject.create();
+    private PublishSubject<ActivityResultDto> mActivityResultSubject = PublishSubject.create();
+    private PublishSubject<PermissionResultDto> mPermissionResultSubject = PublishSubject.create();
     @Inject
     AccountModel mAccountModel;
 
@@ -38,8 +34,12 @@ public class RootPresenter extends AbstractPresenter<IRootView> implements IRoot
         App.getRootActivityComponent().inject(this);
     }
 
-    public PublishSubject<RequestPermissionsDto> getRequestPermissionsDtoObs() {
-        return mRequestPermissionsDtoObs;
+    public PublishSubject<ActivityResultDto> getActivityResultSubject() {
+        return mActivityResultSubject;
+    }
+
+    public PublishSubject<PermissionResultDto> getPermissionResultSubject() {
+        return mPermissionResultSubject;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class RootPresenter extends AbstractPresenter<IRootView> implements IRoot
         mAccountModel.getAccountSubject()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<AccountDto>() {
+                .subscribe(new Subscriber<AccountViewModel>() {
                     @Override
                     public void onCompleted() {
 
@@ -61,9 +61,9 @@ public class RootPresenter extends AbstractPresenter<IRootView> implements IRoot
                     }
 
                     @Override
-                    public void onNext(AccountDto accountDto) {
+                    public void onNext(AccountViewModel accountViewModel) {
                         if (getView() != null) {
-                            getView().setDrawer(accountDto);
+                            getView().setDrawer(accountViewModel);
                         }
                     }
                 });
@@ -72,9 +72,13 @@ public class RootPresenter extends AbstractPresenter<IRootView> implements IRoot
     }
 
     public void checkPermissionsAndRequestIfNotGranted(@NonNull String[] permissions, int requestCode) {
+
         boolean allGranted = true;
         for (String permission : permissions) {
-            int grantedCode = ContextCompat.checkSelfPermission(((RootActivity) getView()), permission);
+            int grantedCode = 0;
+            if (getView() != null) {
+                grantedCode = ContextCompat.checkSelfPermission(((RootActivity) getView()), permission);
+            }
             if (grantedCode == PackageManager.PERMISSION_DENIED) {
                 allGranted = false;
                 break;
@@ -87,7 +91,7 @@ public class RootPresenter extends AbstractPresenter<IRootView> implements IRoot
                 ActivityCompat.requestPermissions(((RootActivity) getView()), permissions, requestCode);
             }
         }
-        mRequestPermissionsDtoObs.onNext(new RequestPermissionsDto(requestCode, allGranted));
+        mPermissionResultSubject.onNext(new PermissionResultDto(requestCode, allGranted));
     }
 
     @Override
@@ -95,16 +99,18 @@ public class RootPresenter extends AbstractPresenter<IRootView> implements IRoot
         boolean allGranted = true;
         for (int grantResult : grantResults) {
             if (grantResult == PackageManager.PERMISSION_DENIED) {
-                getView().showPermissionSnackbar();
+                if (getView() != null) {
+                    getView().showPermissionSnackbar();
+                }
                 allGranted = false;
                 break;
             }
-            mRequestPermissionsDtoObs.onNext(new RequestPermissionsDto(requestCode, allGranted));
         }
+        mPermissionResultSubject.onNext(new PermissionResultDto(requestCode, allGranted));
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        mRequestPermissionsDtoObs.onNext(new RequestPermissionsDto(requestCode, resultCode, intent));
+        mActivityResultSubject.onNext(new ActivityResultDto(requestCode, resultCode, intent));
     }
 }

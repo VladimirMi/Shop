@@ -2,7 +2,7 @@ package ru.mikhalev.vladimir.mvpauth.root;
 
 import android.support.annotation.Nullable;
 
-import ru.mikhalev.vladimir.mvpauth.account.AccountDto;
+import ru.mikhalev.vladimir.mvpauth.account.AccountViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
 
 /**
@@ -27,5 +27,13 @@ public interface IRootView extends IView {
 
     void openApplicationSettings();
 
-    void setDrawer(AccountDto accountDto);
+    void setDrawer(AccountViewModel accountViewModel);
+
+    void hideToolbar();
+
+    void lockDrawer();
+
+    void showToolbar();
+
+    void unlockDrawer();
 }

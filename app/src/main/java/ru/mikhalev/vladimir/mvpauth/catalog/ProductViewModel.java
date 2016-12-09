@@ -1,17 +1,17 @@
 package ru.mikhalev.vladimir.mvpauth.catalog;
 
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import ru.mikhalev.vladimir.mvpauth.BR;
+import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 
 /**
  * Developer Vladimir Mikhalev 27.10.2016
  */
-public class ProductViewModel extends BaseObservable {
+public class ProductViewModel extends BaseViewModel {
 
     @SerializedName("id")
     @Expose

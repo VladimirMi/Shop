@@ -3,8 +3,8 @@ package ru.mikhalev.vladimir.mvpauth.account;
 import java.util.ArrayList;
 import java.util.Map;
 
-import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
-import ru.mikhalev.vladimir.mvpauth.core.layers.model.AbstractModel;
+import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
+import ru.mikhalev.vladimir.mvpauth.core.layers.model.BaseModel;
 import ru.mikhalev.vladimir.mvpauth.core.managers.PreferencesManager;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
@@ -13,21 +13,19 @@ import rx.subjects.BehaviorSubject;
  * Developer Vladimir Mikhalev 29.11.2016
  */
 
-public class AccountModel extends AbstractModel {
-    private BehaviorSubject<AccountDto> mAccountSubject = BehaviorSubject.create();
+public class AccountModel extends BaseModel {
+    @SuppressWarnings("unused")
+    private static final String TAG = "AccountModel";
+    private BehaviorSubject<AccountViewModel> mAccountSubject = BehaviorSubject.create(getAccountDto());
 
-    public AccountModel() {
-        mAccountSubject.onNext(getAccountDto());
-    }
-
-    public BehaviorSubject<AccountDto> getAccountSubject() {
+    public BehaviorSubject<AccountViewModel> getAccountSubject() {
         return mAccountSubject;
     }
 
     //region ==================== Account ========================
 
-    public AccountDto getAccountDto() {
-        return new AccountDto(getAccountProfileInfo(), getAccountSettings());
+    public AccountViewModel getAccountDto() {
+        return new AccountViewModel(getAccountProfileInfo(), getAccountSettings());
     }
 
     private Map<String, String> getAccountProfileInfo() {
@@ -38,7 +36,7 @@ public class AccountModel extends AbstractModel {
         return mDataManager.getAccountSettings();
     }
 
-    public void saveAccount(AccountDto viewModel) {
+    public void saveAccount(AccountViewModel viewModel) {
         mDataManager.saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY, viewModel.isOrderNotification());
         mDataManager.saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_PROMO_KEY, viewModel.isPromoNotification());
         mDataManager.saveAvatarPhoto(viewModel.getAvatar());
@@ -50,24 +48,24 @@ public class AccountModel extends AbstractModel {
 
     //region =============== Addresses ==============
 
-    public Observable<AddressDto> getAddressObs() {
-        return Observable.from(getAccountAddresses());
+    public Observable<AddressViewModel> getAddressObs() {
+        return Observable.from(getAccountAddresses()).compose(mAsyncTransformer.transform());
     }
 
-    private ArrayList<AddressDto> getAccountAddresses() {
+    private ArrayList<AddressViewModel> getAccountAddresses() {
         return mDataManager.getAccountAddresses();
     }
 
-    public void updateOrInsertAddress(AddressDto address) {
+    public void updateOrInsertAddress(AddressViewModel address) {
         mDataManager.updateOrInsertAddress(address);
     }
 
 
-    public void removeAddress(AddressDto address) {
+    public void removeAddress(AddressViewModel address) {
         mDataManager.removeAddress(address);
     }
 
-    public AddressDto getAddressFromPosition(int position) {
+    public AddressViewModel getAddressFromPosition(int position) {
         return getAccountAddresses().get(position);
     }
 

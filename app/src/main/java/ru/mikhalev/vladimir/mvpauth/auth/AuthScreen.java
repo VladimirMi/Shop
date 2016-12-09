@@ -14,7 +14,7 @@ import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AuthScope;
-import ru.mikhalev.vladimir.mvpauth.flow.AbstractScreen;
+import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
 import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
@@ -25,7 +25,7 @@ import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
  */
 
 @Screen(R.layout.screen_auth)
-public class AuthScreen extends AbstractScreen<RootActivity.Component> {
+public class AuthScreen extends BaseScreen<RootActivity.Component> {
 
     private int mInputState = AuthView.STATE.IDLE;
 
@@ -93,7 +93,12 @@ public class AuthScreen extends AbstractScreen<RootActivity.Component> {
             super.onLoad(savedInstanceState);
             if (getView() != null) {
                 if (checkUserAuth()) {
-                    getView().showCatalogScreen();
+                    clickOnShowCatalog();
+                    return;
+                }
+                if (getRootView() != null) {
+                    getRootView().hideToolbar();
+                    getRootView().lockDrawer();
                 }
             }
         }
@@ -143,6 +148,8 @@ public class AuthScreen extends AbstractScreen<RootActivity.Component> {
                 // TODO: 27-Oct-16 if update data complete start catalog screen
                 if (getRootView() != null) {
                     getRootView().hideLoad();
+                    getRootView().showToolbar();
+                    getRootView().unlockDrawer();
                 }
                 Flow.get(getView()).set(new CatalogScreen());
             }

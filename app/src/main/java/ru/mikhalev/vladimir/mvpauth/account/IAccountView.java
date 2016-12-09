@@ -11,6 +11,4 @@ public interface IAccountView extends IView {
     void changeState();
 
     void showPhotoSourceDialog();
-
-    AccountDto getViewModel();
 }

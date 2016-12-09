@@ -36,9 +36,9 @@ public class BindingUtils {
         MyGlideModule.setUserAvatar(path, imageView);
     }
 
-    @BindingAdapter({"avatar", "alpha"})
-    public static void bindAvatarWithAlpha(ImageView imageView, String path, float alpha) {
-        MyGlideModule.setUserAvatarWithAlpha(path, imageView, alpha);
+    @BindingAdapter({"avatar", "border_width"})
+    public static void bindAvatarWithBorder(ImageView imageView, String path, float border) {
+        MyGlideModule.setUserAvatarWithBorder(path, imageView, border);
     }
 
     @BindingAdapter("font")

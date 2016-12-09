@@ -1,18 +1,18 @@
 package ru.mikhalev.vladimir.mvpauth.address;
 
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import ru.mikhalev.vladimir.mvpauth.BR;
+import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
  */
 
-public class AddressDto extends BaseObservable {
+public class AddressViewModel extends BaseViewModel {
     @SerializedName("id")
     @Expose
     private int id;
@@ -43,7 +43,7 @@ public class AddressDto extends BaseObservable {
 
     private boolean favorite;
 
-    public AddressDto(int id) {
+    public AddressViewModel(int id) {
         this.id = id;
     }
 

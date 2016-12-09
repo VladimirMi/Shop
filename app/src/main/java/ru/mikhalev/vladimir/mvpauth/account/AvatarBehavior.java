@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -23,7 +22,6 @@ public class AvatarBehavior extends AppBarLayout.ScrollingViewBehavior {
     @Override
     public boolean onMeasureChild(CoordinatorLayout parent, View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         mInitialAvatarCenterY = child.getY() + child.getHeight() / 2;
-        Log.e(TAG, "onMeasureChild: " + mInitialAvatarCenterY);
         return super.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
     }
 

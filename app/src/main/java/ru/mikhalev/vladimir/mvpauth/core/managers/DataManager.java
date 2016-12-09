@@ -12,8 +12,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.account.AccountDto;
-import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
+import ru.mikhalev.vladimir.mvpauth.account.AccountViewModel;
+import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
 import ru.mikhalev.vladimir.mvpauth.catalog.Catalog;
 import ru.mikhalev.vladimir.mvpauth.catalog.ProductViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.App;
@@ -35,7 +35,7 @@ public class DataManager {
 
 
     private List<ProductViewModel> mMockProductList = new ArrayList<>();
-    private AccountDto mockAccount;
+    private AccountViewModel mockAccount;
 
     public DataManager() {
         DaggerService.createDaggerComponent(DataManagerComponent.class,
@@ -48,7 +48,7 @@ public class DataManager {
 
     public boolean isAuthUser() {
 //        return !mPreferencesManager.getAuthToken().equals(ConstantManager.INVALID_TOKEN);
-        return true;
+        return false;
     }
 
     public void loginUser(String email, String password) {
@@ -74,7 +74,7 @@ public class DataManager {
     }
 
     private void generateMockAccount() {
-        mockAccount = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.account), AccountDto.class);
+        mockAccount = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.account), AccountViewModel.class);
         saveProfileInfo(mockAccount.getFullname(), mockAccount.getPhone());
         saveAvatarPhoto(mockAccount.getAvatar());
         saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY, mockAccount.isOrderNotification());
@@ -82,11 +82,11 @@ public class DataManager {
     }
 
     // TODO: 01.12.2016 implement real
-    public ArrayList<AddressDto> getAccountAddresses() {
+    public ArrayList<AddressViewModel> getAccountAddresses() {
         return mockAccount.getAddresses();
     }
 
-    public void updateOrInsertAddress(AddressDto address) {
+    public void updateOrInsertAddress(AddressViewModel address) {
         if (mockAccount.getAddresses().contains(address)) {
             mockAccount.getAddresses().set(mockAccount.getAddresses().indexOf(address), address);
         } else {
@@ -94,8 +94,8 @@ public class DataManager {
         }
     }
 
-    public void removeAddress(AddressDto addressDto) {
-        mockAccount.getAddresses().remove(addressDto);
+    public void removeAddress(AddressViewModel addressViewModel) {
+        mockAccount.getAddresses().remove(addressViewModel);
     }
 
     public Map<String, Boolean> getAccountSettings() {

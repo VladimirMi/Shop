@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import flow.Flow;
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAuthBinding;
 
@@ -55,9 +56,6 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
     protected void onFinishInflate() {
         super.onFinishInflate();
         mBinding = ScreenAuthBinding.bind(this);
-        mBinding.setViewModel(mViewModel);
-        mBinding.setInputState(mInputState);
-        mBinding.setActionsHandler(this);
     }
 
     @Override
@@ -117,9 +115,15 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
 
     //region =============== IAuthView ==============
 
+
     @Override
-    public void showCatalogScreen() {
+    public void setViewModel(BaseViewModel viewModel) {
+        mBinding.setViewModel((AuthViewModel) viewModel);
+        // TODO: 09.12.2016 move inputState to viewmodel
+        mBinding.setInputState(mInputState);
+        mBinding.setActionsHandler(this);
     }
+
 
     @Override
     public boolean viewOnBackPressed() {

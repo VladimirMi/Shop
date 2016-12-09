@@ -6,11 +6,12 @@
     <data>
 
         <import type="ru.mikhalev.vladimir.mvpauth.account.AccountView.STATE"/>
+
         <import type="ru.mikhalev.vladimir.mvpauth.R"/>
 
         <variable
             name="viewModel"
-            type="ru.mikhalev.vladimir.mvpauth.account.AccountDto"/>
+            type="ru.mikhalev.vladimir.mvpauth.account.AccountViewModel"/>
 
         <variable
             name="actionsHandler"
@@ -50,33 +51,34 @@
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <ImageView
-            android:id="@+id/avatar"
+        <FrameLayout
             android:layout_width="@dimen/profile_avatar_size"
             android:layout_height="@dimen/profile_avatar_size"
             android:clickable="true"
             android:elevation="@dimen/profile_avatar_elevation"
             app:elevation="@dimen/profile_avatar_elevation"
-            app:layout_behavior=".account.AvatarBehavior"
             app:layout_anchor="@id/appbar_account"
             app:layout_anchorGravity="center_horizontal"
-            bind:avatar="@{viewModel.avatar}"
-            bind:alpha="@{viewState == STATE.PREVIEW ? 1.0f : 0.8f}"
+            app:layout_behavior=".account.AvatarBehavior"
             bind:onClick="@{actionsHandler::changeAvatar}"
-            tools:ignore="ContentDescription,UnusedAttribute"
-            android:background="@drawable/ic_add_white_24dp"
-            tools:src="@drawable/user_avatar"/>
+            tools:ignore="ContentDescription,UnusedAttribute">
 
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="@{viewState == STATE.PREVIEW ? 1.0f : 0.8f}"
+                bind:avatar="@{viewModel.avatar}"
+                bind:border_width="@{@dimen/profile_avatar_border}"
+                tools:src="@drawable/user_avatar"/>
 
-        <!--<ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="false"
-            android:elevation="@dimen/profile_avatar_elevation"
-            android:src="@drawable/ic_add_white_24dp"
-            android:visibility="@{viewState == STATE.EDIT}"
-            app:elevation="@dimen/profile_avatar_elevation"
-            tools:ignore="ContentDescription,UnusedAttribute"/>-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_add_white_24dp"
+                android:visibility="@{viewState == STATE.EDIT}"/>
+
+        </FrameLayout>
 
 
         <android.support.v4.widget.NestedScrollView

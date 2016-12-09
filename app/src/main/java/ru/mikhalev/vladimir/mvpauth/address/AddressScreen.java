@@ -15,7 +15,7 @@ import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.account.AccountModel;
 import ru.mikhalev.vladimir.mvpauth.account.AccountScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AddressScope;
-import ru.mikhalev.vladimir.mvpauth.flow.AbstractScreen;
+import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 
 /**
@@ -23,12 +23,12 @@ import ru.mikhalev.vladimir.mvpauth.flow.Screen;
  */
 
 @Screen(R.layout.screen_address)
-public class AddressScreen extends AbstractScreen<AccountScreen.Component> implements TreeKey {
+public class AddressScreen extends BaseScreen<AccountScreen.Component> implements TreeKey {
     @Nullable
-    private AddressDto mAddressDto;
+    private AddressViewModel mAddressViewModel;
 
-    public AddressScreen(@Nullable AddressDto addressDto) {
-        mAddressDto = addressDto;
+    public AddressScreen(@Nullable AddressViewModel addressViewModel) {
+        mAddressViewModel = addressViewModel;
     }
 
     @Override
@@ -47,8 +47,8 @@ public class AddressScreen extends AbstractScreen<AccountScreen.Component> imple
 
     @Override
     public boolean equals(Object o) {
-        if (mAddressDto != null) {
-            return o instanceof AddressScreen && mAddressDto.equals(((AddressScreen) o).mAddressDto);
+        if (mAddressViewModel != null) {
+            return o instanceof AddressScreen && mAddressViewModel.equals(((AddressScreen) o).mAddressViewModel);
         } else {
             return super.equals(o);
         }
@@ -56,8 +56,8 @@ public class AddressScreen extends AbstractScreen<AccountScreen.Component> imple
 
     @Override
     public int hashCode() {
-        if (mAddressDto != null) {
-            return mAddressDto.hashCode();
+        if (mAddressViewModel != null) {
+            return mAddressViewModel.hashCode();
         } else {
             return super.hashCode();
         }
@@ -100,7 +100,7 @@ public class AddressScreen extends AbstractScreen<AccountScreen.Component> imple
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             if (getView() != null) {
-                getView().initView(mAddressDto);
+                getView().initView(mAddressViewModel);
             }
         }
 

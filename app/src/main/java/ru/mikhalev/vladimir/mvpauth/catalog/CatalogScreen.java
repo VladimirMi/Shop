@@ -14,7 +14,7 @@ import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.auth.AuthScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.CatalogScope;
-import ru.mikhalev.vladimir.mvpauth.flow.AbstractScreen;
+import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
 import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
@@ -24,7 +24,7 @@ import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
  * Developer Vladimir Mikhalev 29.11.2016
  */
 @Screen(R.layout.screen_catalog)
-public class CatalogScreen extends AbstractScreen<RootActivity.Component> {
+public class CatalogScreen extends BaseScreen<RootActivity.Component> {
     @Override
     public Object createScreenComponent(RootActivity.Component parentComponent) {
         return DaggerCatalogScreen_Component.builder()

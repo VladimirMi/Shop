@@ -82,7 +82,12 @@ public class MyGlideModule implements GlideModule {
                 });
     }
 
-    public static void setUserAvatarWithAlpha(String path, ImageView imageView, float alpha) {
-
+    public static void setUserAvatarWithBorder(String path, ImageView view, float border) {
+        Glide.with(view.getContext())
+                .load(path)
+                .bitmapTransform(new CircleTransformation(view.getContext(), border))
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(view);
     }
 }

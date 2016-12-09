@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAddressBinding;
 
@@ -65,7 +66,7 @@ public class AddressView extends RelativeLayout implements IAddressView, IAddres
 
     //endregion
 
-    public void initView(@Nullable AddressDto address) {
+    public void initView(@Nullable AddressViewModel address) {
         mBinding.setActionsHandler(this);
         if (address != null) {
             mAddressId = address.getId();
@@ -74,12 +75,18 @@ public class AddressView extends RelativeLayout implements IAddressView, IAddres
         } else {
             // FIXME: 05.12.2016 ???
             mAddressId = 777;
-            mBinding.setViewModel(new AddressDto(mAddressId));
+            mBinding.setViewModel(new AddressViewModel(mAddressId));
             mBinding.addAddress.setText(getContext().getString(R.string.address_add));
         }
     }
 
     //region =============== IAddressView ==============
+
+
+    @Override
+    public void setViewModel(BaseViewModel viewModel) {
+        mBinding.setViewModel((AddressViewModel) viewModel);
+    }
 
     @Override
     public void showInputError() {
@@ -87,7 +94,7 @@ public class AddressView extends RelativeLayout implements IAddressView, IAddres
     }
 
     @Override
-    public AddressDto getUserAddress() {
+    public AddressViewModel getUserAddress() {
         return mBinding.getViewModel();
     }
 

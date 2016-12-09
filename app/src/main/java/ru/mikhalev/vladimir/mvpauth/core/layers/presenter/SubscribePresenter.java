@@ -1,23 +1,22 @@
 package ru.mikhalev.vladimir.mvpauth.core.layers.presenter;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.ViewGroup;
 
-import mortar.ViewPresenter;
+import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev, 05.12.2016.
  */
 
-public abstract class SubscribePresenter<V extends ViewGroup> extends ViewPresenter<V> {
-    private final String TAG = this.getClass().getSimpleName();
+public abstract class SubscribePresenter<V extends ViewGroup> extends BaseViewPresenter<V> {
 
     @Nullable
     protected abstract IRootView getRootView();
@@ -25,7 +24,7 @@ public abstract class SubscribePresenter<V extends ViewGroup> extends ViewPresen
     protected abstract class ViewSubscriber<T> extends Subscriber<T> {
         @Override
         public void onCompleted() {
-            Log.d(TAG, "onCompleted observable");
+            Timber.d("onCompleted");
         }
 
         @Override

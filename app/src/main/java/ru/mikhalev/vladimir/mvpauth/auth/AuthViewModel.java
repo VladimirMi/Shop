@@ -1,17 +1,12 @@
 package ru.mikhalev.vladimir.mvpauth.auth;
 
-import android.content.Context;
 import android.content.res.Resources;
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.IntDef;
 
-import javax.inject.Inject;
-
 import ru.mikhalev.vladimir.mvpauth.BR;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
+import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.utils.AppConfig;
 
 /**
@@ -19,7 +14,7 @@ import ru.mikhalev.vladimir.mvpauth.core.utils.AppConfig;
  * @since 06.11.16
  */
 
-public class AuthViewModel extends BaseObservable {
+public class AuthViewModel extends BaseViewModel {
 
     @IntDef({
             FIELD.EMAIL,
@@ -34,13 +29,6 @@ public class AuthViewModel extends BaseObservable {
 
     private String mEmailError = null;
     private String mPasswordError = null;
-
-    @Inject
-    Context mContext;
-
-    AuthViewModel() {
-        DaggerService.createDaggerComponent(AppComponent.class).inject(this);
-    }
 
     private void validate(@FIELD int field) {
         Resources resources = mContext.getResources();

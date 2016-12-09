@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 
 import javax.inject.Inject;
 
+import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenProductBinding;
 
@@ -68,6 +69,12 @@ public class ProductView extends LinearLayout implements IProductView, IProductA
     //endregion
 
     //region ==================== IProductView ========================
+
+
+    @Override
+    public void setViewModel(BaseViewModel viewModel) {
+        mBinding.setViewModel((ProductViewModel) viewModel);
+    }
 
     @Override
     public void showProductView(ProductViewModel productViewModel) {

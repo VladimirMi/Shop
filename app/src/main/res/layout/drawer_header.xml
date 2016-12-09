@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="ru.mikhalev.vladimir.mvpauth.account.AccountDto"/>
+            type="ru.mikhalev.vladimir.mvpauth.account.AccountViewModel"/>
     </data>
 
     <RelativeLayout

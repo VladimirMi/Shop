@@ -46,6 +46,7 @@
     <dimen name="drawer_header_height">160dp</dimen>
     <dimen name="drawer_avatar_size">64dp</dimen>
     <dimen name="profile_avatar_elevation">8dp</dimen>
+    <dimen name="profile_avatar_border">4dp</dimen>
     <dimen name="font_tiny_8">8sp</dimen>
 
 </resources>

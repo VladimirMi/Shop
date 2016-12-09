@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,15 +22,16 @@ import dagger.Provides;
 import flow.Flow;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
 import ru.mikhalev.vladimir.mvpauth.address.AddressScreen;
+import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AccountScope;
 import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.SubscribePresenter;
-import ru.mikhalev.vladimir.mvpauth.flow.AbstractScreen;
+import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
+import ru.mikhalev.vladimir.mvpauth.root.ActivityResultDto;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
-import ru.mikhalev.vladimir.mvpauth.root.RequestPermissionsDto;
+import ru.mikhalev.vladimir.mvpauth.root.PermissionResultDto;
 import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
 import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
 import rx.Observable;
@@ -44,7 +46,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
  */
 
 @Screen(R.layout.screen_account)
-public class AccountScreen extends AbstractScreen<RootActivity.Component> {
+public class AccountScreen extends BaseScreen<RootActivity.Component> {
     private static final String TAG = "AccountScreen";
 
     private int mViewState = AccountView.STATE.PREVIEW;
@@ -98,10 +100,11 @@ public class AccountScreen extends AbstractScreen<RootActivity.Component> {
         RootPresenter mRootPresenter;
         private Subscription mAddressSub;
         private Subscription mAccountSub;
+        private Subscription mPermissionResultSub;
         private Subscription mActivityResultSub;
         private File mPhotoFile;
-        private AccountDto mViewModel;
-        private String mCurrentPhotoPath;
+        private AccountViewModel mViewModel;
+        private String mCurrentAvatarPath;
 
         @Override
         @Nullable
@@ -116,6 +119,7 @@ public class AccountScreen extends AbstractScreen<RootActivity.Component> {
             super.onEnterScope(scope);
             ((AccountScreen.Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
             subscribeOnActivityResultObs();
+            subscribeOnPermissionResultObs();
         }
 
         @Override
@@ -140,70 +144,63 @@ public class AccountScreen extends AbstractScreen<RootActivity.Component> {
         protected void onExitScope() {
             super.onExitScope();
             mActivityResultSub.unsubscribe();
+            mPermissionResultSub.unsubscribe();
         }
 
         //endregion
 
 
         //region =============== Subscription ==============
+
         private void subscribeOnAccountSubject() {
-            mAccountSub = subscribe(mAccountModel.getAccountSubject(), new ViewSubscriber<AccountDto>() {
+            mAccountSub = subscribe(mAccountModel.getAccountSubject(), new ViewSubscriber<AccountViewModel>() {
                 @Override
-                public void onNext(AccountDto accountDto) {
-                    mViewModel = mAccountModel.getAccountDto();
-                    if (mCurrentPhotoPath != null) {
-                        mViewModel.setAvatar(mCurrentPhotoPath);
+                public void onNext(AccountViewModel accountViewModel) {
+                    if (mViewModel != null) {
+                        mViewModel.update(mViewModel);
+                    } else {
+                        mViewModel = accountViewModel;
+                        if (mCurrentAvatarPath != null) {
+                            mViewModel.setAvatar(mCurrentAvatarPath);
+                        }
+                        getView().setViewModel(mViewModel);
                     }
-                    getView().setViewModel(mViewModel);
                 }
             });
         }
 
 
         private void subscribeOnAddressesObs() {
-            mAddressSub = subscribe(mAccountModel.getAddressObs(), new ViewSubscriber<AddressDto>() {
+            mAddressSub = subscribe(mAccountModel.getAddressObs(), new ViewSubscriber<AddressViewModel>() {
                 @Override
-                public void onNext(AddressDto addressDto) {
+                public void onNext(AddressViewModel addressViewModel) {
                     if (getView() != null) {
-                        getView().getAdapter().addItem(addressDto);
+                        getView().getAdapter().addItem(addressViewModel);
                     }
                 }
             });
         }
 
-        private void subscribeOnActivityResultObs() {
-            Observable<RequestPermissionsDto> requestPermissionsObs = mRootPresenter.getRequestPermissionsDtoObs();
+        private void subscribeOnPermissionResultObs() {
+            Observable<PermissionResultDto> permissionResultObservable = mRootPresenter.getPermissionResultSubject()
+                    .filter(PermissionResultDto::isGranted);
 
-            requestPermissionsObs
-                    .filter(RequestPermissionsDto::isGranted)
-                    .filter(requestPermissionsDto -> requestPermissionsDto.getRequestCode() == REQUEST_CAMERA)
-                    .subscribe(requestPermissionsDto -> takePhotoFromCamera(), getRootView()::showError);
-
-            requestPermissionsObs
-                    .filter(RequestPermissionsDto::isGranted)
-                    .filter(requestPermissionsDto -> requestPermissionsDto.getRequestCode() == REQUEST_GALLERY)
-                    .subscribe(requestPermissionsDto -> takePhotoFromGallery(), getRootView()::showError);
-
-            Observable<String> resultObs = requestPermissionsObs
-                    .filter(requestPermissionsDto -> requestPermissionsDto.getResultCode() == Activity.RESULT_OK)
-                    .map(requestPermissionsDto -> {
-                        switch (requestPermissionsDto.getRequestCode()) {
-                            case REQUEST_CAMERA:
-                                return mPhotoFile.getAbsolutePath();
-                            case REQUEST_GALLERY:
-                                return requestPermissionsDto.getIntent().getData().toString();
-                            default:
-                                return null;
-                        }
-                    });
-
-            mActivityResultSub = subscribe(resultObs, new ViewSubscriber<String>() {
+            mPermissionResultSub = subscribe(permissionResultObservable, new ViewSubscriber<PermissionResultDto>() {
                 @Override
-                public void onNext(String result) {
-                    mCurrentPhotoPath = result;
-                    if (mViewModel != null) {
-                        mViewModel.setAvatar(mCurrentPhotoPath);
-                    }
+                public void onNext(PermissionResultDto dto) {
+                    handlePermissionResult(dto);
+                }
+            });
+        }
+
+        private void subscribeOnActivityResultObs() {
+            Observable<ActivityResultDto> activityResultObservable = mRootPresenter.getActivityResultSubject()
+                    .filter(activityResultDto -> activityResultDto.getResultCode() == Activity.RESULT_OK);
+
+            mActivityResultSub = subscribe(activityResultObservable, new ViewSubscriber<ActivityResultDto>() {
+                @Override
+                public void onNext(ActivityResultDto dto) {
+                    handleActivityResult(dto);
                 }
             });
         }
@@ -279,19 +276,18 @@ public class AccountScreen extends AbstractScreen<RootActivity.Component> {
         }
 
         private void takePhotoFromCamera() {
+            Log.e(TAG, "takePhotoFromCamera: ");
             mPhotoFile = createFileForPhoto();
             if (mPhotoFile == null) {
                 getRootView().showMessage("Фотография не может быть создана");
                 return;
             }
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (intent.resolveActivity(((RootActivity) getRootView()).getPackageManager()) != null) {
                 Uri photoURI = FileProvider.getUriForFile(((RootActivity) getRootView()),
                         "ru.mikhalev.vladimir.mvpauth.provider",
                         mPhotoFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 ((RootActivity) getRootView()).startActivityForResult(intent, REQUEST_CAMERA);
-            }
         }
 
         //endregion
@@ -305,6 +301,7 @@ public class AccountScreen extends AbstractScreen<RootActivity.Component> {
         }
 
         private void takePhotoFromGallery() {
+            Log.e(TAG, "takePhotoFromGallery: ");
             Intent intent = new Intent();
             intent.setType("image/*");
             if (Build.VERSION.SDK_INT < 19) {
@@ -320,5 +317,38 @@ public class AccountScreen extends AbstractScreen<RootActivity.Component> {
 
         //endregion
 
+        private void handlePermissionResult(PermissionResultDto permissionResultDto) {
+            switch (permissionResultDto.getRequestCode()) {
+                case REQUEST_CAMERA:
+                    takePhotoFromCamera();
+                    break;
+                case REQUEST_GALLERY:
+                    takePhotoFromGallery();
+                    break;
+            }
+        }
+
+        private void handleActivityResult(ActivityResultDto activityResultDto) {
+            Observable<String> resultObs = Observable.just(activityResultDto)
+                    .map(dto -> {
+                        switch (dto.getRequestCode()) {
+                            case REQUEST_CAMERA:
+                                return mPhotoFile.getAbsolutePath();
+                            case REQUEST_GALLERY:
+                                return dto.getIntent().getData().toString();
+                            default:
+                                return null;
+                        }
+                    });
+            subscribe(resultObs, new ViewSubscriber<String>() {
+                @Override
+                public void onNext(String s) {
+                    mCurrentAvatarPath = s;
+                    if (mViewModel != null) {
+                        mViewModel.setAvatar(mCurrentAvatarPath);
+                    }
+                }
+            });
+        }
     }
 }

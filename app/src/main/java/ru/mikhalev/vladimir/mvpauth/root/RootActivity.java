@@ -13,9 +13,11 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import javax.inject.Inject;
@@ -26,11 +28,13 @@ import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 import ru.mikhalev.vladimir.mvpauth.BuildConfig;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.account.AccountDto;
 import ru.mikhalev.vladimir.mvpauth.account.AccountModel;
 import ru.mikhalev.vladimir.mvpauth.account.AccountScreen;
+import ru.mikhalev.vladimir.mvpauth.account.AccountViewModel;
+import ru.mikhalev.vladimir.mvpauth.auth.AuthScreen;
 import ru.mikhalev.vladimir.mvpauth.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpauth.core.App;
+import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.RootScope;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.BaseActivity;
@@ -39,9 +43,11 @@ import ru.mikhalev.vladimir.mvpauth.databinding.ActivityRootBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.DrawerHeaderBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.ToolbarBasketItemBinding;
 import ru.mikhalev.vladimir.mvpauth.flow.TreeKeyDispatcher;
+import timber.log.Timber;
 
 public class RootActivity extends BaseActivity implements IRootView, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "RootActivity";
+    private static final int REQUEST_SETTINGS_INTENT = 123;
 
     @Inject
     RootPresenter mRootPresenter;
@@ -58,7 +64,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     @Override
     protected void attachBaseContext(Context newBase) {
         newBase = Flow.configure(newBase, this)
-                .defaultKey(new AccountScreen())
+                .defaultKey(new AuthScreen())
                 .dispatcher(new TreeKeyDispatcher(this))
                 .install();
         super.attachBaseContext(newBase);
@@ -89,8 +95,6 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
         mRootPresenter.takeView(this);
         mRootPresenter.initView();
-//        mBinding.appbar.setVisibility(View.GONE);
-//        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         initToolbar();
         initDrawer();
     }
@@ -140,11 +144,9 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
                 this, mBinding.drawer, mBinding.toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
         toggle.syncState();
         mBinding.drawer.addDrawerListener(toggle);
-
         mBinding.navigationView.setNavigationItemSelectedListener(this);
 
-        mDrawerBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.drawer_header,
-                mBinding.navigationView, false);
+        mDrawerBinding = DrawerHeaderBinding.inflate(getLayoutInflater(), mBinding.navigationView, false);
         mBinding.navigationView.addHeaderView(mDrawerBinding.getRoot());
     }
 
@@ -202,8 +204,8 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
 
     @Override
-    public void setDrawer(AccountDto accountDto) {
-        mDrawerBinding.setViewModel(accountDto);
+    public void setDrawer(AccountViewModel accountViewModel) {
+        mDrawerBinding.setViewModel(accountViewModel);
     }
 
     @Override
@@ -215,7 +217,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     public void showError(Throwable e) {
         showMessage(e.getLocalizedMessage());
         if (BuildConfig.DEBUG) {
-            e.printStackTrace();
+            Timber.e(e, e.getLocalizedMessage());
         } else {
             // TODO: 20-Oct-16 send error stacktrace to crashlytics
         }
@@ -260,8 +262,35 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     public void openApplicationSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                 Uri.parse("package:" + getPackageName()));
-        startActivityForResult(intent, RootPresenter.REQUEST_SETTINGS_INTENT);
+        startActivityForResult(intent, REQUEST_SETTINGS_INTENT);
     }
+
+    @Override
+    public void hideToolbar() {
+        mBinding.appbar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void lockDrawer() {
+        mBinding.drawer.closeDrawer(GravityCompat.START);
+        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    @Override
+    public void showToolbar() {
+        mBinding.appbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void unlockDrawer() {
+        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    @Override
+    public void setViewModel(BaseViewModel viewModel) {
+//        mBinding.setViewModel();
+    }
+
     //endregion
 
 

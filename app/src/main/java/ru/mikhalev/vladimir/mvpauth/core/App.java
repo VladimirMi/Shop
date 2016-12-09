@@ -5,11 +5,13 @@ import android.app.Application;
 
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
+import ru.mikhalev.vladimir.mvpauth.BuildConfig;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
 import ru.mikhalev.vladimir.mvpauth.core.di.modules.AppModule;
 import ru.mikhalev.vladimir.mvpauth.mortar.ScreenScoper;
 import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
+import timber.log.Timber;
 
 public class App extends Application {
     private static AppComponent sAppComponent;
@@ -42,6 +44,10 @@ public class App extends Application {
 
         ScreenScoper.registerScope(mRootScope);
         ScreenScoper.registerScope(mRootActivityScope);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 
     private void createRootActivityComponent() {

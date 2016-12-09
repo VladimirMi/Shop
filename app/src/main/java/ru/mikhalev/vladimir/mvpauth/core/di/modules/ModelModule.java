@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.mikhalev.vladimir.mvpauth.core.base.AsyncTransformer;
 import ru.mikhalev.vladimir.mvpauth.core.managers.DataManager;
 
 /**
@@ -16,5 +17,10 @@ public class ModelModule {
     @Singleton
     DataManager provideDataManager() {
         return new DataManager();
+    }
+
+    @Provides
+    AsyncTransformer provideAsyncTransformer() {
+        return AsyncTransformer.DEFAULT;
     }
 }

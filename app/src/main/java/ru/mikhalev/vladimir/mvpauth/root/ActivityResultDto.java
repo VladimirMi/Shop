@@ -4,30 +4,18 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 
 /**
- * Developer Vladimir Mikhalev 06.12.2016
+ * Developer Vladimir Mikhalev, 08.12.2016.
  */
-
-public class RequestPermissionsDto {
+public class ActivityResultDto {
     private int requestCode;
-    private boolean granted;
     private int resultCode;
     @Nullable
     private Intent intent;
 
-    public RequestPermissionsDto(int requestCode, boolean granted) {
-        this.requestCode = requestCode;
-        this.granted = granted;
-    }
-
-    public RequestPermissionsDto(int requestCode, int resultCode, @Nullable Intent intent) {
+    public ActivityResultDto(int requestCode, int resultCode, Intent intent) {
         this.requestCode = requestCode;
         this.resultCode = resultCode;
         this.intent = intent;
-    }
-
-
-    public boolean isGranted() {
-        return granted;
     }
 
     public int getRequestCode() {

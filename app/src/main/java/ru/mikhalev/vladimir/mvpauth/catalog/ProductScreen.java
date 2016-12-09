@@ -10,7 +10,7 @@ import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.ProductScope;
-import ru.mikhalev.vladimir.mvpauth.flow.AbstractScreen;
+import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 
 /**
@@ -18,7 +18,7 @@ import ru.mikhalev.vladimir.mvpauth.flow.Screen;
  */
 
 @Screen(R.layout.screen_product)
-public class ProductScreen extends AbstractScreen<CatalogScreen.Component> {
+public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
     private ProductViewModel mProductViewModel;
 
     public ProductScreen(ProductViewModel productViewModel) {

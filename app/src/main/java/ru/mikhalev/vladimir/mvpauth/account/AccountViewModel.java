@@ -1,6 +1,5 @@
 package ru.mikhalev.vladimir.mvpauth.account;
 
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.google.gson.annotations.Expose;
@@ -10,14 +9,15 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import ru.mikhalev.vladimir.mvpauth.BR;
-import ru.mikhalev.vladimir.mvpauth.address.AddressDto;
+import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
+import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.managers.PreferencesManager;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
  */
 
-public class AccountDto extends BaseObservable {
+public class AccountViewModel extends BaseViewModel {
     private int id;
 
     @SerializedName("fullname")
@@ -42,9 +42,9 @@ public class AccountDto extends BaseObservable {
 
     @SerializedName("addresses")
     @Expose
-    private ArrayList<AddressDto> addresses;
+    private ArrayList<AddressViewModel> addresses;
 
-    public AccountDto(Map<String, String> accountProfileInfo, Map<String, Boolean> accountSettings) {
+    public AccountViewModel(Map<String, String> accountProfileInfo, Map<String, Boolean> accountSettings) {
         this.fullname = accountProfileInfo.get(PreferencesManager.ACCOUNT.FULL_NAME_KEY);
         this.avatar = accountProfileInfo.get(PreferencesManager.ACCOUNT.AVATAR_KEY);
         this.phone = accountProfileInfo.get(PreferencesManager.ACCOUNT.PHONE_KEY);
@@ -112,12 +112,30 @@ public class AccountDto extends BaseObservable {
         notifyPropertyChanged(BR.promoNotification);
     }
 
-    public ArrayList<AddressDto> getAddresses() {
+    public ArrayList<AddressViewModel> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(ArrayList<AddressDto> addresses) {
+    public void setAddresses(ArrayList<AddressViewModel> addresses) {
         this.addresses = addresses;
+    }
+
+    public void update(AccountViewModel viewModel) {
+        if (!fullname.equals(viewModel.getFullname())) {
+            setFullname(viewModel.getFullname());
+        }
+        if (!phone.equals(viewModel.getPhone())) {
+            setPhone(viewModel.getPhone());
+        }
+        if (!avatar.equals(viewModel.getAvatar())) {
+            setAvatar(viewModel.getAvatar());
+        }
+        if (orderNotification != viewModel.isOrderNotification()) {
+            setOrderNotification(viewModel.isOrderNotification());
+        }
+        if (promoNotification != viewModel.isPromoNotification()) {
+            setPromoNotification(viewModel.isPromoNotification());
+        }
     }
 
     //endregion
