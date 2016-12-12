@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -17,7 +18,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 
 import javax.inject.Inject;
@@ -34,11 +34,11 @@ import ru.mikhalev.vladimir.mvpauth.account.AccountViewModel;
 import ru.mikhalev.vladimir.mvpauth.auth.AuthScreen;
 import ru.mikhalev.vladimir.mvpauth.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpauth.core.App;
-import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.RootScope;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.BaseActivity;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
+import ru.mikhalev.vladimir.mvpauth.core.utils.UIHelper;
 import ru.mikhalev.vladimir.mvpauth.databinding.ActivityRootBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.DrawerHeaderBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.ToolbarBasketItemBinding;
@@ -267,7 +267,10 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     @Override
     public void hideToolbar() {
-        mBinding.appbar.setVisibility(View.GONE);
+        getSupportActionBar().hide();
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) mBinding.rootFrame.getLayoutParams();
+        lp.setMargins(0, 0, 0, 0);
+        mBinding.rootFrame.setLayoutParams(lp);
     }
 
     @Override
@@ -278,17 +281,15 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     @Override
     public void showToolbar() {
-        mBinding.appbar.setVisibility(View.VISIBLE);
+        getSupportActionBar().show();
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) mBinding.rootFrame.getLayoutParams();
+        lp.setMargins(0, UIHelper.getActionBarHeight(this), 0, 0);
+        mBinding.rootFrame.setLayoutParams(lp);
     }
 
     @Override
     public void unlockDrawer() {
         mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
-
-    @Override
-    public void setViewModel(BaseViewModel viewModel) {
-//        mBinding.setViewModel();
     }
 
     //endregion

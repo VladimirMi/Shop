@@ -48,7 +48,7 @@ public class DataManager {
 
     public boolean isAuthUser() {
 //        return !mPreferencesManager.getAuthToken().equals(ConstantManager.INVALID_TOKEN);
-        return false;
+        return true;
     }
 
     public void loginUser(String email, String password) {

@@ -4,6 +4,9 @@ import android.content.res.Resources;
 import android.databinding.Bindable;
 import android.support.annotation.IntDef;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import ru.mikhalev.vladimir.mvpauth.BR;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
@@ -24,11 +27,22 @@ public class AuthViewModel extends BaseViewModel {
         int PASSWORD = 1;
     }
 
-    private String email = "";
-    private String password = "";
+    @IntDef({
+            STATE.LOGIN,
+            STATE.IDLE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface STATE {
+        int LOGIN = 0;
+        int IDLE = 1;
+    }
+
+    private String mEmail = "";
+    private String mPassword = "";
 
     private String mEmailError = null;
     private String mPasswordError = null;
+
+    private int mInputState = STATE.IDLE;
 
     private void validate(@FIELD int field) {
         Resources resources = mContext.getResources();
@@ -51,13 +65,13 @@ public class AuthViewModel extends BaseViewModel {
     }
 
     private boolean isValidEmail() {
-        return !email.isEmpty() &&
-                AppConfig.EMAIL_ADDRESS_VALIDATE.matcher(email).matches();
+        return !mEmail.isEmpty() &&
+                AppConfig.EMAIL_ADDRESS_VALIDATE.matcher(mEmail).matches();
     }
 
     private boolean isValidPassword() {
-        return !password.isEmpty() &&
-                AppConfig.PASSWORD_VALIDATE.matcher(password).matches();
+        return !mPassword.isEmpty() &&
+                AppConfig.PASSWORD_VALIDATE.matcher(mPassword).matches();
     }
 
     boolean isValid() {
@@ -67,22 +81,33 @@ public class AuthViewModel extends BaseViewModel {
         return mEmailError == null && mPasswordError == null;
     }
 
+    @Bindable
     public String getEmail() {
-        return email;
+        return mEmail;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.mEmail = email;
         validate(FIELD.EMAIL);
     }
 
     public String getPassword() {
-        return password;
+        return mPassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.mPassword = password;
         validate(FIELD.PASSWORD);
+    }
+
+    @Bindable
+    public int getInputState() {
+        return mInputState;
+    }
+
+    public void setInputState(int inputState) {
+        mInputState = inputState;
+        notifyPropertyChanged(BR.inputState);
     }
 
     @Bindable

@@ -15,7 +15,6 @@ import java.lang.annotation.RetentionPolicy;
 import javax.inject.Inject;
 
 import flow.Flow;
-import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAccountBinding;
 
@@ -169,12 +168,6 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
     }
 
     //region ==================== IAccountView ========================
-
-
-    @Override
-    public void setViewModel(BaseViewModel viewModel) {
-        mBinding.setViewModel((AccountViewModel) viewModel);
-    }
 
     @Override
     public void changeState() {

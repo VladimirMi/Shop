@@ -6,6 +6,6 @@ package ru.mikhalev.vladimir.mvpauth.catalog;
 
 public interface ICatalogPressenter {
     void clickOnBuyButton(int position);
-    boolean checkUserAuth();
 
+    boolean checkUserAuth();
 }

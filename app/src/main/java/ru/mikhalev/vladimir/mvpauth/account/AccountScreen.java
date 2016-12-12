@@ -163,7 +163,7 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
                         if (mCurrentAvatarPath != null) {
                             mViewModel.setAvatar(mCurrentAvatarPath);
                         }
-                        getView().setViewModel(mViewModel);
+//                        getView().setViewModel(mViewModel);
                     }
                 }
             });

@@ -8,7 +8,6 @@ import android.widget.RelativeLayout;
 import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAddressBinding;
 
@@ -81,12 +80,6 @@ public class AddressView extends RelativeLayout implements IAddressView, IAddres
     }
 
     //region =============== IAddressView ==============
-
-
-    @Override
-    public void setViewModel(BaseViewModel viewModel) {
-        mBinding.setViewModel((AddressViewModel) viewModel);
-    }
 
     @Override
     public void showInputError() {

@@ -1,22 +1,19 @@
 package ru.mikhalev.vladimir.mvpauth.auth;
 
 import android.content.Context;
-import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 import javax.inject.Inject;
 
 import flow.Flow;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAuthBinding;
+import timber.log.Timber;
+
 
 /**
  * Developer Vladimir Mikhalev, 27.11.2016.
@@ -24,28 +21,24 @@ import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAuthBinding;
 
 public class AuthView extends RelativeLayout implements IAuthView, IAuthActions {
 
-    @IntDef({
-            STATE.LOGIN,
-            STATE.IDLE})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface STATE {
-        int LOGIN = 0;
-        int IDLE = 1;
-    }
+    @Inject
+    AuthPresenter mPresenter;
 
-    @Inject AuthScreen.AuthPresenter mPresenter;
-    @Inject AuthViewModel mViewModel;
     private ScreenAuthBinding mBinding;
-    private int mInputState;
+    private AuthViewModel mViewModel;
 
+    public AuthViewModel getViewModel() {
+        return mViewModel;
+    }
 
     public AuthView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Timber.d("AuthView");
         if (!isInEditMode()) {
-            AuthScreen screen = Flow.getKey(this);
             DaggerService.<AuthScreen.Component>getDaggerComponent(context).inject(this);
+            AuthScreen screen = Flow.getKey(this);
             if (screen != null) {
-                mInputState = screen.getInputState();
+                mViewModel = screen.getViewModel();
             }
         }
     }
@@ -55,12 +48,14 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        Timber.d("onFinishInflate");
         mBinding = ScreenAuthBinding.bind(this);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        Timber.d("onAttachedToWindow");
         if (!isInEditMode()) {
             mPresenter.takeView(this);
         }
@@ -69,22 +64,24 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        Timber.d("onDetachedFromWindow");
         if (!isInEditMode()) {
             mPresenter.dropView(this);
         }
     }
+
     //endregion
 
 
     //region =============== Events ==============
+
     @Override
     public void clickOnLogin() {
-        if (mInputState == STATE.IDLE) {
+        if (mViewModel.getInputState() == AuthViewModel.STATE.IDLE) {
             mBinding.authCard.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.card_in_animation));
-            mInputState = STATE.LOGIN;
-            mBinding.setInputState(mInputState);
+            mViewModel.setInputState(AuthViewModel.STATE.LOGIN);
         } else if (mViewModel.isValid()) {
-            mPresenter.clickOnLogin(mViewModel);
+            mPresenter.clickOnLogin();
         }
     }
 
@@ -110,27 +107,22 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
         view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_animation));
         mPresenter.clickOnTwitter();
     }
+
     //endregion
 
 
     //region =============== IAuthView ==============
 
-
-    @Override
-    public void setViewModel(BaseViewModel viewModel) {
-        mBinding.setViewModel((AuthViewModel) viewModel);
-        // TODO: 09.12.2016 move inputState to viewmodel
-        mBinding.setInputState(mInputState);
+    public void initView() {
+        mBinding.setViewModel(mViewModel);
         mBinding.setActionsHandler(this);
     }
 
-
     @Override
     public boolean viewOnBackPressed() {
-        if (mInputState == STATE.LOGIN) {
+        if (mViewModel.getInputState() == AuthViewModel.STATE.LOGIN) {
             mBinding.authCard.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.card_out_animation));
-            mInputState = STATE.IDLE;
-            mBinding.setInputState(mInputState);
+            mViewModel.setInputState(AuthViewModel.STATE.IDLE);
             return true;
         }
         return false;

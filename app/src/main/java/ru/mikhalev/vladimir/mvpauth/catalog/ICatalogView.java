@@ -10,5 +10,6 @@ import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
 
 public interface ICatalogView extends IView {
     void showCatalogView(List<ProductViewModel> productList);
+
     void updateProductCounter(int i);
 }

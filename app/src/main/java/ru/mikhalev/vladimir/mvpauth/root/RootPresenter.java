@@ -96,6 +96,7 @@ public class RootPresenter extends AbstractPresenter<IRootView> implements IRoot
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // FIXME: 10.12.2016 grantResults length may be 0
         boolean allGranted = true;
         for (int grantResult : grantResults) {
             if (grantResult == PackageManager.PERMISSION_DENIED) {

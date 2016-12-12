@@ -2,7 +2,6 @@ package ru.mikhalev.vladimir.mvpauth.catalog;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +11,17 @@ import java.util.List;
 
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpauth.R;
+import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.
  */
 
 public class CatalogAdapter extends PagerAdapter {
-    private static final String TAG = "CatalogAdapter";
     private List<ProductViewModel> mProductList = new ArrayList<>();
 
     public CatalogAdapter() {
+
     }
 
     @Override
@@ -53,6 +53,6 @@ public class CatalogAdapter extends PagerAdapter {
         MortarScope screenScope = MortarScope.getScope(((View) object).getContext());
         screenScope.destroy();
         container.removeView((View) object);
-        Log.e(TAG, "destroyItem with name: " + screenScope.getName());
+        Timber.e("destroyItem");
     }
 }

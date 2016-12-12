@@ -6,5 +6,6 @@ package ru.mikhalev.vladimir.mvpauth.catalog;
 
 public interface IProductPresenter {
     void clickOnPlus();
+
     void clickOnMinus();
 }

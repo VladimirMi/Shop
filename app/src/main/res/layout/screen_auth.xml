@@ -6,7 +6,7 @@
 
     <data>
 
-        <import type="ru.mikhalev.vladimir.mvpauth.auth.AuthView.STATE"/>
+        <import type="ru.mikhalev.vladimir.mvpauth.auth.AuthViewModel.STATE"/>
 
         <variable
             name="actionsHandler"
@@ -15,10 +15,6 @@
         <variable
             name="viewModel"
             type="ru.mikhalev.vladimir.mvpauth.auth.AuthViewModel"/>
-
-        <variable
-            name="inputState"
-            type="int"/>
     </data>
 
     <ru.mikhalev.vladimir.mvpauth.auth.AuthView
@@ -61,7 +57,7 @@
                 style="@style/CustomCard.LoginCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{inputState == STATE.LOGIN}"
+                android:visibility="@{viewModel.inputState == STATE.LOGIN}"
                 tools:visibility="visible">
 
                 <LinearLayout
@@ -106,7 +102,7 @@
                 style="@style/CustomButton"
                 android:text="@string/auth.catalog"
                 bind:onClick="@{actionsHandler::clickOnShowCatalog}"
-                android:visibility="@{inputState == STATE.IDLE}"
+                android:visibility="@{viewModel.inputState == STATE.IDLE}"
                 android:theme="@style/ShowButton"/>
 
             <Button

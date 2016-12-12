@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenCatalogBinding;
 
@@ -66,12 +65,6 @@ public class CatalogView extends RelativeLayout implements ICatalogView, ICatalo
     //endregion
 
     //region ==================== ICatalogView ========================
-
-
-    @Override
-    public void setViewModel(BaseViewModel viewModel) {
-//        mBinding.setViewModel();
-    }
 
     @Override
     public void showCatalogView(List<ProductViewModel> productList) {

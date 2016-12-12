@@ -19,7 +19,6 @@ public class CatalogModel extends BaseModel {
     }
 
     public ProductViewModel getProductById(int productId) {
-        // TODO: 27-Oct-16 get product from manager
         return mDataManager.getProductById(productId);
     }
 
