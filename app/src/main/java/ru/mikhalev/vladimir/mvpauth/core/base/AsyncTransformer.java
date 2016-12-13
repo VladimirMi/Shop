@@ -15,7 +15,7 @@ public interface AsyncTransformer {
         @Override
         public <T> Observable.Transformer<T, T> transform() {
             return tObservable -> tObservable.subscribeOn(Schedulers.io())
-                    .subscribeOn(AndroidSchedulers.mainThread());
+                    .observeOn(AndroidSchedulers.mainThread());
         }
     };
 }

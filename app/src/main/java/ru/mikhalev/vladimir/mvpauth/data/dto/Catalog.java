@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.catalog;
+package ru.mikhalev.vladimir.mvpauth.data.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -15,9 +15,9 @@ public class Catalog {
 
     @SerializedName("goods")
     @Expose
-    private List<ProductViewModel> goods = new ArrayList<>();
+    private List<Product> goods = new ArrayList<>();
 
-    public List<ProductViewModel> getGoods() {
+    public List<Product> getGoods() {
         return goods;
     }
 }

@@ -1,11 +1,10 @@
 package ru.mikhalev.vladimir.mvpauth.account;
 
-import java.util.ArrayList;
 import java.util.Map;
 
-import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.layers.model.BaseModel;
-import ru.mikhalev.vladimir.mvpauth.core.managers.PreferencesManager;
+import ru.mikhalev.vladimir.mvpauth.data.dto.Address;
+import ru.mikhalev.vladimir.mvpauth.data.managers.PreferencesManager;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -14,8 +13,6 @@ import rx.subjects.BehaviorSubject;
  */
 
 public class AccountModel extends BaseModel {
-    @SuppressWarnings("unused")
-    private static final String TAG = "AccountModel";
     private BehaviorSubject<AccountViewModel> mAccountSubject = BehaviorSubject.create(getAccountDto());
 
     public BehaviorSubject<AccountViewModel> getAccountSubject() {
@@ -48,25 +45,21 @@ public class AccountModel extends BaseModel {
 
     //region =============== Addresses ==============
 
-    public Observable<AddressViewModel> getAddressObs() {
-        return Observable.from(getAccountAddresses()).compose(mAsyncTransformer.transform());
+    public Observable<Address> getAccountAddresses() {
+        return mDataManager.getAccountAddresses().compose(mAsyncTransformer.transform());
     }
 
-    private ArrayList<AddressViewModel> getAccountAddresses() {
-        return mDataManager.getAccountAddresses();
-    }
-
-    public void updateOrInsertAddress(AddressViewModel address) {
+    public void updateOrInsertAddress(Address address) {
         mDataManager.updateOrInsertAddress(address);
     }
 
 
-    public void removeAddress(AddressViewModel address) {
+    public void removeAddress(Observable<Address> address) {
         mDataManager.removeAddress(address);
     }
 
-    public AddressViewModel getAddressFromPosition(int position) {
-        return getAccountAddresses().get(position);
+    public Observable<Address> getAddressFromPosition(int position) {
+        return mDataManager.getAccountAddressFromPosition(position);
     }
 
     //endregion

@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.core.utils;
+package ru.mikhalev.vladimir.mvpauth.utils;
 
 
 import java.util.regex.Pattern;

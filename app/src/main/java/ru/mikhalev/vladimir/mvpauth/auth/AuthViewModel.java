@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 import ru.mikhalev.vladimir.mvpauth.BR;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
-import ru.mikhalev.vladimir.mvpauth.core.utils.AppConfig;
+import ru.mikhalev.vladimir.mvpauth.utils.AppConfig;
 
 /**
  * @author kenrube

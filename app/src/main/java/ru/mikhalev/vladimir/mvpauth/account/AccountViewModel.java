@@ -11,7 +11,7 @@ import java.util.Map;
 import ru.mikhalev.vladimir.mvpauth.BR;
 import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
-import ru.mikhalev.vladimir.mvpauth.core.managers.PreferencesManager;
+import ru.mikhalev.vladimir.mvpauth.data.managers.PreferencesManager;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016

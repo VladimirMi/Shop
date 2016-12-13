@@ -2,9 +2,6 @@ package ru.mikhalev.vladimir.mvpauth.catalog;
 
 import android.databinding.Bindable;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import ru.mikhalev.vladimir.mvpauth.BR;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
 
@@ -13,24 +10,10 @@ import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
  */
 public class ProductViewModel extends BaseViewModel {
 
-    @SerializedName("id")
-    @Expose
     private int id;
-
-    @SerializedName("name")
-    @Expose
     private String productName;
-
-    @SerializedName("image_url")
-    @Expose
     private String imageUrl;
-
-    @SerializedName("description")
-    @Expose
     private String description;
-
-    @SerializedName("price")
-    @Expose
     private int price;
 
     private int count;

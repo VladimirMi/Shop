@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.core.managers;
+package ru.mikhalev.vladimir.mvpauth.data.managers;
 
 import android.content.Context;
 import android.content.SharedPreferences;

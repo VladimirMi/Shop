@@ -41,7 +41,7 @@
                 android:resource="@xml/file_paths"/>
         </provider>
         <meta-data
-            android:name="ru.mikhalev.vladimir.mvpauth.core.utils.MyGlideModule"
+            android:name="ru.mikhalev.vladimir.mvpauth.utils.MyGlideModule"
             android:value="GlideModule"/>
     </application>
 

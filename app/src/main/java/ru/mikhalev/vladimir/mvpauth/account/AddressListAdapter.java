@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
+import ru.mikhalev.vladimir.mvpauth.data.dto.Address;
 import ru.mikhalev.vladimir.mvpauth.databinding.ItemAddressBinding;
 
 /**
@@ -15,9 +17,10 @@ import ru.mikhalev.vladimir.mvpauth.databinding.ItemAddressBinding;
 
 public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.ViewHolder> {
 
-    private ArrayList<AddressViewModel> mAddresses = new ArrayList<>();
+    private List<AddressViewModel> mAddresses = new ArrayList<>();
 
     public AddressListAdapter() {
+
     }
 
     @Override
@@ -37,8 +40,8 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         return mAddresses.size();
     }
 
-    public void addItem(AddressViewModel address) {
-        mAddresses.add(address);
+    public void addItem(Address address) {
+        mAddresses.add(new AddressViewModel(address));
         notifyDataSetChanged();
     }
 

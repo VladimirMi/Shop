@@ -1,7 +1,6 @@
 package ru.mikhalev.vladimir.mvpauth.address;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
@@ -65,18 +64,11 @@ public class AddressView extends RelativeLayout implements IAddressView, IAddres
 
     //endregion
 
-    public void initView(@Nullable AddressViewModel address) {
+    public void initView(AddressViewModel address) {
         mBinding.setActionsHandler(this);
-        if (address != null) {
-            mAddressId = address.getId();
-            mBinding.setViewModel(address);
-            mBinding.addAddress.setText(getContext().getString(R.string.address_save));
-        } else {
-            // FIXME: 05.12.2016 ???
-            mAddressId = 777;
-            mBinding.setViewModel(new AddressViewModel(mAddressId));
-            mBinding.addAddress.setText(getContext().getString(R.string.address_add));
-        }
+        mAddressId = address.getId();
+        mBinding.setViewModel(address);
+        mBinding.addAddress.setText(getContext().getString(R.string.address_save));
     }
 
     //region =============== IAddressView ==============

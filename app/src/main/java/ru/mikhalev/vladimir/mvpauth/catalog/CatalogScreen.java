@@ -14,6 +14,7 @@ import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.auth.AuthScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.CatalogScope;
+import ru.mikhalev.vladimir.mvpauth.data.dto.Product;
 import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
@@ -94,16 +95,18 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
         @Override
         public void clickOnBuyButton(int position) {
             if (getView() != null) {
-                if (checkUserAuth() && getRootView() != null) {
-                    getRootView().showMessage("Товар " + mCatalogModel.getProductList().get(position).getProductName()
-                            + " успешно добавлен в корзину");
-                    mCartCounter += mCatalogModel.getProductList().get(position).getCount();
-                    if (getRootView() != null) {
-                        getRootView().setBasketCounter(mCartCounter);
-                    }
-                } else {
-                    Flow.get(getView()).set(new AuthScreen());
-                }
+                mCatalogModel.getProductList()
+                        .filter(product -> product.getId() == position)
+                        .subscribe(product -> {
+                            if (checkUserAuth() && getRootView() != null) {
+                                getRootView().showMessage("Товар " + mCatalogModel.getProductFromPosition(position).getProductName()
+                                        + " успешно добавлен в корзину");
+                                mCartCounter += mCatalogModel.getProductFromPosition(position);
+                                getRootView().setBasketCounter(mCartCounter);
+                            } else {
+                                Flow.get(getView()).set(new AuthScreen());
+                            }
+                        });
             }
         }
 
@@ -114,11 +117,11 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
     }
 
     public static class Factory {
-        public static Context createProductContext(ProductViewModel productViewModel, Context parentContext) {
+        public static Context createProductContext(Product product, Context parentContext) {
             MortarScope parentScope = MortarScope.getScope(parentContext);
             MortarScope childScope = null;
-            ProductScreen productScreen = new ProductScreen(productViewModel);
-            String scopeName = String.format("%s_%d", productScreen.getScopeName(), productViewModel.getId());
+            ProductScreen productScreen = new ProductScreen(product);
+            String scopeName = String.format("%s_%d", productScreen.getScopeName(), product.getId());
 
             if (parentScope.findChild(scopeName) == null) {
                 childScope = parentScope.buildChild()

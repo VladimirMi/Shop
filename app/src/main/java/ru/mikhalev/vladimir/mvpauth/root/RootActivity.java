@@ -38,15 +38,14 @@ import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.RootScope;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.BaseActivity;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
-import ru.mikhalev.vladimir.mvpauth.core.utils.UIHelper;
 import ru.mikhalev.vladimir.mvpauth.databinding.ActivityRootBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.DrawerHeaderBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.ToolbarBasketItemBinding;
 import ru.mikhalev.vladimir.mvpauth.flow.TreeKeyDispatcher;
+import ru.mikhalev.vladimir.mvpauth.utils.UIHelper;
 import timber.log.Timber;
 
 public class RootActivity extends BaseActivity implements IRootView, NavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = "RootActivity";
     private static final int REQUEST_SETTINGS_INTENT = 123;
 
     @Inject

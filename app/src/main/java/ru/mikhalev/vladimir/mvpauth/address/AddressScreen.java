@@ -2,7 +2,6 @@ package ru.mikhalev.vladimir.mvpauth.address;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
@@ -15,6 +14,7 @@ import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.account.AccountModel;
 import ru.mikhalev.vladimir.mvpauth.account.AccountScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AddressScope;
+import ru.mikhalev.vladimir.mvpauth.data.dto.Address;
 import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 
@@ -24,11 +24,10 @@ import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 
 @Screen(R.layout.screen_address)
 public class AddressScreen extends BaseScreen<AccountScreen.Component> implements TreeKey {
-    @Nullable
-    private AddressViewModel mAddressViewModel;
+    private AddressViewModel mViewModel;
 
-    public AddressScreen(@Nullable AddressViewModel addressViewModel) {
-        mAddressViewModel = addressViewModel;
+    public AddressScreen(Address address) {
+        mViewModel = new AddressViewModel(address);
     }
 
     @Override
@@ -47,8 +46,8 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
 
     @Override
     public boolean equals(Object o) {
-        if (mAddressViewModel != null) {
-            return o instanceof AddressScreen && mAddressViewModel.equals(((AddressScreen) o).mAddressViewModel);
+        if (mViewModel != null) {
+            return o instanceof AddressScreen && mViewModel.equals(((AddressScreen) o).mViewModel);
         } else {
             return super.equals(o);
         }
@@ -56,8 +55,8 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
 
     @Override
     public int hashCode() {
-        if (mAddressViewModel != null) {
-            return mAddressViewModel.hashCode();
+        if (mViewModel != null) {
+            return mViewModel.hashCode();
         } else {
             return super.hashCode();
         }
@@ -100,14 +99,15 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             if (getView() != null) {
-                getView().initView(mAddressViewModel);
+                getView().initView(mViewModel);
             }
         }
 
+        @SuppressWarnings("CheckResult")
         @Override
         public void clickOnAddAddress() {
             if (getView() != null) {
-                mAccountModel.updateOrInsertAddress(getView().getUserAddress());
+                mAccountModel.updateOrInsertAddress(new Address(mViewModel));
                 Flow.get(getView()).goBack();
             }
         }

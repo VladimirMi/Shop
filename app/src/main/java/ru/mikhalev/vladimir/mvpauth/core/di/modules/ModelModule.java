@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import ru.mikhalev.vladimir.mvpauth.core.base.AsyncTransformer;
-import ru.mikhalev.vladimir.mvpauth.core.managers.DataManager;
+import ru.mikhalev.vladimir.mvpauth.data.managers.DataManager;
 
 /**
  * Developer Vladimir Mikhalev, 06.11.2016.

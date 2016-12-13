@@ -2,49 +2,31 @@ package ru.mikhalev.vladimir.mvpauth.address;
 
 import android.databinding.Bindable;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import ru.mikhalev.vladimir.mvpauth.BR;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
+import ru.mikhalev.vladimir.mvpauth.data.dto.Address;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
  */
 
 public class AddressViewModel extends BaseViewModel {
-    @SerializedName("id")
-    @Expose
     private int id;
-
-    @SerializedName("name")
-    @Expose
     private String name;
-
-    @SerializedName("street")
-    @Expose
     private String street;
-
-    @SerializedName("house")
-    @Expose
     private String house;
-
-    @SerializedName("apartment")
-    @Expose
     private String apartment;
-
-    @SerializedName("floor")
-    @Expose
     private String floor;
-
-    @SerializedName("comment")
-    @Expose
     private String comment;
-
     private boolean favorite;
 
-    public AddressViewModel(int id) {
-        this.id = id;
+    public AddressViewModel(Address address) {
+        this.name = address.getName();
+        this.street = address.getStreet();
+        this.house = address.getHouse();
+        this.apartment = address.getApartment();
+        this.floor = address.getFloor();
+        this.comment = address.getComment();
     }
 
     @Override

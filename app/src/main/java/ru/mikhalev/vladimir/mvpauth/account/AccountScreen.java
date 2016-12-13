@@ -23,10 +23,10 @@ import flow.Flow;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.address.AddressScreen;
-import ru.mikhalev.vladimir.mvpauth.address.AddressViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AccountScope;
 import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.SubscribePresenter;
+import ru.mikhalev.vladimir.mvpauth.data.dto.Address;
 import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 import ru.mikhalev.vladimir.mvpauth.root.ActivityResultDto;
@@ -171,11 +171,11 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
 
 
         private void subscribeOnAddressesObs() {
-            mAddressSub = subscribe(mAccountModel.getAddressObs(), new ViewSubscriber<AddressViewModel>() {
+            mAddressSub = subscribe(mAccountModel.getAccountAddresses(), new ViewSubscriber<Address>() {
                 @Override
-                public void onNext(AddressViewModel addressViewModel) {
+                public void onNext(Address address) {
                     if (getView() != null) {
-                        getView().getAdapter().addItem(addressViewModel);
+                        getView().getAdapter().addItem(address);
                     }
                 }
             });
@@ -212,14 +212,17 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
         @Override
         public void editAddress(int position) {
             if (getView() != null) {
-                Flow.get(getView()).set(new AddressScreen(mAccountModel.getAddressFromPosition(position)));
+                mAccountModel.getAddressFromPosition(position)
+                        .subscribe(Flow.get(getView())::set);
             }
         }
 
         @Override
         public void clickOnAddAddress() {
             if (getView() != null) {
-                Flow.get(getView()).set(new AddressScreen(null));
+                // TODO: 13.12.2016 generate new id
+                int id = 777;
+                Flow.get(getView()).set(new AddressScreen(new Address(id)));
             }
         }
 
