@@ -67,7 +67,7 @@
                             <TextView
                                 style="@style/CustomText.LabelPrice"
                                 android:layout_marginBottom="0dp"
-                                android:text="@string/product.price"/>
+                                android:text="@string/productRes.price"/>
 
                             <TextView
                                 style="@style/CustomText.ValuePrice"
@@ -86,7 +86,7 @@
                             <TextView
                                 style="@style/CustomText.LabelPrice"
                                 android:layout_marginBottom="0dp"
-                                android:text="@string/product.count"/>
+                                android:text="@string/productRes.count"/>
 
                             <LinearLayout
                                 android:layout_width="match_parent"

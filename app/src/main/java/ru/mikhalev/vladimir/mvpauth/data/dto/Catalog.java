@@ -15,9 +15,9 @@ public class Catalog {
 
     @SerializedName("goods")
     @Expose
-    private List<Product> goods = new ArrayList<>();
+    private List<ProductRes> goods = new ArrayList<>();
 
-    public List<Product> getGoods() {
+    public List<ProductRes> getGoods() {
         return goods;
     }
 }

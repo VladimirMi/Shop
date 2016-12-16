@@ -4,6 +4,7 @@ import android.databinding.Bindable;
 
 import ru.mikhalev.vladimir.mvpauth.BR;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
+import ru.mikhalev.vladimir.mvpauth.data.dto.ProductRes;
 
 /**
  * Developer Vladimir Mikhalev 27.10.2016
@@ -20,6 +21,10 @@ public class ProductViewModel extends BaseViewModel {
 
     public ProductViewModel() {
         this.count = 1;
+    }
+
+    public ProductViewModel(ProductRes productRes) {
+
     }
 
     public int getId() {

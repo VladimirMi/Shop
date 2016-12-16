@@ -67,6 +67,7 @@ dependencies {
 
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.3'
+    compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.2'
 
     compile 'com.jakewharton.timber:timber:4.4.0'
 }

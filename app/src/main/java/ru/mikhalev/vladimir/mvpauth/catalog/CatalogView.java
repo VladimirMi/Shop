@@ -18,6 +18,7 @@ public class CatalogView extends RelativeLayout implements ICatalogView, ICatalo
 
     @Inject CatalogScreen.CatalogPresenter mPresenter;
     private ScreenCatalogBinding mBinding;
+    private CatalogAdapter mAdapter;
 
     public CatalogView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -66,13 +67,18 @@ public class CatalogView extends RelativeLayout implements ICatalogView, ICatalo
 
     //region ==================== ICatalogView ========================
 
+    public void initView() {
+        mAdapter = new CatalogAdapter();
+        mBinding.productPager.setAdapter(mAdapter);
+    }
+
+    public CatalogAdapter getAdapter() {
+        return mAdapter;
+    }
+
     @Override
     public void showCatalogView(List<ProductViewModel> productList) {
-        CatalogAdapter adapter = new CatalogAdapter();
-        for (ProductViewModel product : productList) {
-            adapter.addItem(product);
-        }
-        mBinding.productPager.setAdapter(adapter);
+
     }
 
     @Override

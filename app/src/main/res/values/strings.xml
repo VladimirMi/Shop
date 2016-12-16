@@ -38,9 +38,9 @@
     <!-- Catalog -->
     <string name="catalog.add">В корзину</string>
 
-    <!-- Product -->
-    <string name="product.count">Количество</string>
-    <string name="product.price">Стоимость</string>
+    <!-- ProductRes -->
+    <string name="productRes.count">Количество</string>
+    <string name="productRes.price">Стоимость</string>
 
     <!-- Account -->
     <string name="account.username.title">Имя пользователя</string>

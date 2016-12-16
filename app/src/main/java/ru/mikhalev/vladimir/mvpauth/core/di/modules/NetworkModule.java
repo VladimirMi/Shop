@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.mikhalev.vladimir.mvpauth.core.network.api.RestService;
 import ru.mikhalev.vladimir.mvpauth.utils.AppConfig;
@@ -53,6 +54,7 @@ public class NetworkModule {
         return new Retrofit.Builder()
                 .baseUrl(AppConfig.BASE_URL)
                 .addConverterFactory(createConvertFactory())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(okHttp)
                 .build();
     }

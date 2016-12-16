@@ -3,14 +3,16 @@ package ru.mikhalev.vladimir.mvpauth.data.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import ru.mikhalev.vladimir.mvpauth.catalog.ProductViewModel;
+
 /**
  * Developer Vladimir Mikhalev, 13.12.2016.
  */
 
-public class Product {
-    @SerializedName("id")
+public class ProductRes {
+    @SerializedName("remoteId")
     @Expose
-    private int id;
+    private int remoteId;
 
     @SerializedName("name")
     @Expose
@@ -28,8 +30,13 @@ public class Product {
     @Expose
     private int price;
 
-    public int getId() {
-        return id;
+    private boolean active;
+
+    public ProductRes(ProductViewModel productViewModel) {
+    }
+
+    public int getRemoteId() {
+        return remoteId;
     }
 
     public String getProductName() {
@@ -62,5 +69,9 @@ public class Product {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

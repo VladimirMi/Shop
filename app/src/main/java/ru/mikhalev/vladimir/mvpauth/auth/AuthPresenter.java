@@ -59,7 +59,6 @@ class AuthPresenter extends SubscribePresenter<AuthView> implements IAuthPresent
 
         if (getRootView() != null) {
             getRootView().showLoad();
-            getRootView().showMessage("request for user auth");
         }
         Handler handler = new Handler();
         handler.postDelayed(this::clickOnShowCatalog, 3000);
@@ -100,6 +99,6 @@ class AuthPresenter extends SubscribePresenter<AuthView> implements IAuthPresent
 
     @Override
     public boolean checkUserAuth() {
-        return mAuthModel.isAuthUser();
+        return false;
     }
 }

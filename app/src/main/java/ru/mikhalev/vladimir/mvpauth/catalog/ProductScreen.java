@@ -10,7 +10,7 @@ import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.ProductScope;
-import ru.mikhalev.vladimir.mvpauth.data.dto.Product;
+import ru.mikhalev.vladimir.mvpauth.data.dto.ProductRes;
 import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 
@@ -22,8 +22,8 @@ import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
     private ProductViewModel mProductViewModel;
 
-    public ProductScreen(Product productViewModel) {
-        mProductViewModel = productViewModel;
+    public ProductScreen(ProductRes productRes) {
+        mProductViewModel = new ProductViewModel(productRes);
     }
 
     @Override
@@ -93,14 +93,14 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
         @Override
         public void clickOnPlus() {
             mProductViewModel.addProduct();
-            mCatalogModel.updateProduct(mProductViewModel);
+            mCatalogModel.updateProduct(new ProductRes(mProductViewModel));
         }
 
         @Override
         public void clickOnMinus() {
             if (mProductViewModel.getCount() > 1) {
                 mProductViewModel.deleteProduct();
-                mCatalogModel.updateProduct(mProductViewModel);
+                mCatalogModel.updateProduct(new ProductRes(mProductViewModel));
             }
         }
 
