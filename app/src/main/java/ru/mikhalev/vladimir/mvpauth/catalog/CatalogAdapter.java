@@ -11,7 +11,6 @@ import java.util.List;
 
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.data.dto.ProductRes;
 import timber.log.Timber;
 
 /**
@@ -19,7 +18,7 @@ import timber.log.Timber;
  */
 
 public class CatalogAdapter extends PagerAdapter {
-    private List<ProductRes> mProductResList = new ArrayList<>();
+    private List<ProductDto> mProductList = new ArrayList<>();
 
     public CatalogAdapter() {
 
@@ -27,7 +26,7 @@ public class CatalogAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mProductResList.size();
+        return mProductList.size();
     }
 
     @Override
@@ -35,15 +34,15 @@ public class CatalogAdapter extends PagerAdapter {
         return view.equals(object);
     }
 
-    public void addItem(ProductRes productRes) {
-        mProductResList.add(productRes);
+    public void addItem(ProductDto productDto) {
+        mProductList.add(productDto);
         notifyDataSetChanged();
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ProductRes productRes = mProductResList.get(position);
-        Context productContext = CatalogScreen.Factory.createProductContext(productRes, container.getContext());
+        ProductDto productDto = mProductList.get(position);
+        Context productContext = CatalogScreen.Factory.createProductContext(productDto, container.getContext());
         View newView = LayoutInflater.from(productContext).inflate(R.layout.screen_product, container, false);
         container.addView(newView);
         return newView;

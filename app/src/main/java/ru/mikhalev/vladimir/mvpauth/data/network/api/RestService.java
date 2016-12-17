@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.core.network.api;
+package ru.mikhalev.vladimir.mvpauth.data.network.api;
 
 import java.util.List;
 

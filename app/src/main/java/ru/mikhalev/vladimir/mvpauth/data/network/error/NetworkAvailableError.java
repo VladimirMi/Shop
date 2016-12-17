@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.core.network.error;
+package ru.mikhalev.vladimir.mvpauth.data.network.error;
 
 /**
  * Developer Vladimir Mikhalev 15.12.2016

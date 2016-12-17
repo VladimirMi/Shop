@@ -1,10 +1,9 @@
 package ru.mikhalev.vladimir.mvpauth.catalog;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
-
 import java.util.List;
 
 import ru.mikhalev.vladimir.mvpauth.core.layers.model.BaseModel;
+import ru.mikhalev.vladimir.mvpauth.data.dto.ProductLocalInfo;
 import ru.mikhalev.vladimir.mvpauth.data.dto.ProductRes;
 import rx.Observable;
 
@@ -13,10 +12,6 @@ import rx.Observable;
  */
 
 public class CatalogModel extends BaseModel {
-
-    public List<ProductRes> getProductList() {
-        return mDataManager.getProductList();
-    }
 
     public boolean isUserAuth() {
 //        return mDataManager.getAuthTokenPref();
@@ -27,19 +22,30 @@ public class CatalogModel extends BaseModel {
         mDataManager.updateProduct(productRes);
     }
 
-    public Observable<ProductRes> getProductFromPosition(int position) {
+    public Observable<ProductDto> getProductFromPosition(int position) {
         return mDataManager.getProductFromPosition(position);
     }
 
-    @RxLogObservable
+    public Observable<ProductDto> getProductsObs() {
+        Observable<ProductDto> disk = fromDisk();
+        Observable<ProductRes> network = fromNetwork();
+        Observable<ProductLocalInfo> local = network.flatMap(productRes -> mDataManager.getProductLocalInfoObs(productRes));
+
+        Observable<ProductDto> productFromNetwork = Observable.zip(network, local, ProductDto::new);
+        return Observable.merge(disk, productFromNetwork)
+                .compose(mAsyncTransformer.transform());
+    }
+
+    //    @RxLogObservable
     public Observable<ProductRes> fromNetwork() {
         return mDataManager.getProductsFromNetwork();
     }
 
-    @RxLogObservable
-    public Observable<ProductRes> fromDisk() {
+    // TODO: 17.12.2016 move to datamanager
+//    @RxLogObservable
+    public Observable<ProductDto> fromDisk() {
         return Observable.defer(() -> {
-            List<ProductRes> diskData = mDataManager.getProductsFromDB();
+            List<ProductDto> diskData = mDataManager.getProductsFromDB();
             return diskData == null ?
                     Observable.empty() :
                     Observable.from(diskData);

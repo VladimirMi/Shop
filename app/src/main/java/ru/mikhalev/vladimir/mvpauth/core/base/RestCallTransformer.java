@@ -1,10 +1,8 @@
 package ru.mikhalev.vladimir.mvpauth.core.base;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
-
 import retrofit2.Response;
-import ru.mikhalev.vladimir.mvpauth.core.network.error.ErrorUtils;
-import ru.mikhalev.vladimir.mvpauth.core.network.error.NetworkAvailableError;
+import ru.mikhalev.vladimir.mvpauth.data.network.error.ErrorUtils;
+import ru.mikhalev.vladimir.mvpauth.data.network.error.NetworkAvailableError;
 import ru.mikhalev.vladimir.mvpauth.utils.ConstantManager;
 import ru.mikhalev.vladimir.mvpauth.utils.NetworkStatusChecker;
 import rx.Observable;
@@ -15,7 +13,6 @@ import rx.Observable;
 
 public class RestCallTransformer<T> implements Observable.Transformer<Response<T>, T> {
     @Override
-    @RxLogObservable
     public Observable<T> call(Observable<Response<T>> responseObservable) {
 
         return NetworkStatusChecker.isNetworkAvailable()

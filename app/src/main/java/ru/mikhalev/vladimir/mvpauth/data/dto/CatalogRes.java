@@ -11,7 +11,7 @@ import java.util.List;
  * @since 08.11.16
  */
 
-public class Catalog {
+public class CatalogRes {
 
     @SerializedName("goods")
     @Expose

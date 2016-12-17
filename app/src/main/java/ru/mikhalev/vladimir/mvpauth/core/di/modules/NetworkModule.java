@@ -12,7 +12,7 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.mikhalev.vladimir.mvpauth.core.network.api.RestService;
+import ru.mikhalev.vladimir.mvpauth.data.network.api.RestService;
 import ru.mikhalev.vladimir.mvpauth.utils.AppConfig;
 
 /**

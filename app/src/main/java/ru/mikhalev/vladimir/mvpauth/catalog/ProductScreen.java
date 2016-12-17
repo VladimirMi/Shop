@@ -22,8 +22,8 @@ import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
     private ProductViewModel mProductViewModel;
 
-    public ProductScreen(ProductRes productRes) {
-        mProductViewModel = new ProductViewModel(productRes);
+    public ProductScreen(ProductDto productDto) {
+        mProductViewModel = new ProductViewModel(productDto);
     }
 
     @Override
@@ -102,6 +102,16 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
                 mProductViewModel.deleteProduct();
                 mCatalogModel.updateProduct(new ProductRes(mProductViewModel));
             }
+        }
+
+        @Override
+        public void clickOnShowMore() {
+            // TODO: 17.12.2016 flow show datail screen
+        }
+
+        @Override
+        public void clickOnFavorite(boolean checked) {
+
         }
 
         //endregion

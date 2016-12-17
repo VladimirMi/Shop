@@ -64,6 +64,16 @@ public class ProductView extends LinearLayout implements IProductView, IProductA
         mPresenter.clickOnMinus();
     }
 
+    @Override
+    public void clickOnShowMore() {
+        mPresenter.clickOnShowMore();
+    }
+
+    @Override
+    public void clickOnFavorite(boolean checked) {
+        mPresenter.clickOnFavorite(checked);
+    }
+
     //endregion
 
     //region ==================== IProductView ========================

@@ -7,20 +7,19 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 
 import dagger.Provides;
+import flow.Flow;
 import mortar.MortarScope;
 import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.auth.AuthScreen;
 import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.core.di.scopes.CatalogScope;
-import ru.mikhalev.vladimir.mvpauth.data.dto.ProductRes;
 import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
 import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
 import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import timber.log.Timber;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -66,14 +65,17 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
 
     class CatalogPresenter extends ViewPresenter<CatalogView> implements ICatalogPressenter {
 
-        @Inject CatalogModel mCatalogModel;
-        @Inject RootPresenter mRootPresenter;
+        @Inject
+        CatalogModel mCatalogModel;
+        @Inject
+        RootPresenter mRootPresenter;
+        CompositeSubscription mSubscriptions = new CompositeSubscription();
         private int mCartCounter;
 
         @Override
         protected void onEnterScope(MortarScope scope) {
             super.onEnterScope(scope);
-            ((CatalogScreen.Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
+            scope.<CatalogScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
         }
 
         @Override
@@ -81,14 +83,20 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
             super.onLoad(savedInstanceState);
             getView().initView();
             subscribeOnProductList();
-
                 if (getRootView() != null) {
                     getRootView().setBasketCounter(mCartCounter);
                 }
         }
 
+        @Override
+        public void dropView(CatalogView view) {
+            super.dropView(view);
+            mSubscriptions.unsubscribe();
+        }
+
         private void subscribeOnProductList() {
-            mCatalogModel.getProductList().subscribe(getView().getAdapter()::addItem);
+            mSubscriptions.add(mCatalogModel.getProductsObs().
+                    subscribe(getView().getAdapter()::addItem));
         }
 
         @Nullable
@@ -98,26 +106,20 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
 
         @Override
         public void clickOnBuyButton(int position) {
-            mCatalogModel.getProductList()
-                    .doOnNext(productRes -> Timber.e("clickOnBuyButton: " + Thread.currentThread().getName()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(productRes -> Timber.e("clickOnBuyButton: " + productRes.getProductName() + " " + Thread.currentThread().getName()));
-
-//            if (getView() != null) {
-//                mCatalogModel.getProductList()
-//                        .filter(product -> product.getId() == position)
-//                        .subscribe(product -> {
-//                            if (checkUserAuth() && getRootView() != null) {
+            if (getView() != null) {
+                mCatalogModel.getProductsObs()
+                        .filter(product -> product.getId() == position)
+                        .subscribe(product -> {
+                            if (checkUserAuth() && getRootView() != null) {
 //                                getRootView().showMessage("Товар " + mCatalogModel.getProductFromPosition(position).getProductName()
 //                                        + " успешно добавлен в корзину");
 //                                mCartCounter += mCatalogModel.getProductFromPosition(position);
-//                                getRootView().setBasketCounter(mCartCounter);
-//                            } else {
-//                                Flow.get(getView()).set(new AuthScreen());
-//                            }
-//                        });
-//            }
+                                getRootView().setBasketCounter(mCartCounter);
+                            } else {
+                                Flow.get(getView()).set(new AuthScreen());
+                            }
+                        });
+            }
         }
 
         @Override
@@ -127,11 +129,11 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
     }
 
     public static class Factory {
-        public static Context createProductContext(ProductRes productRes, Context parentContext) {
+        public static Context createProductContext(ProductDto productDto, Context parentContext) {
             MortarScope parentScope = MortarScope.getScope(parentContext);
             MortarScope childScope = null;
-            ProductScreen productScreen = new ProductScreen(productRes);
-            String scopeName = String.format("%s_%d", productScreen.getScopeName(), productRes.getRemoteId());
+            ProductScreen productScreen = new ProductScreen(productDto);
+            String scopeName = String.format("%s_%d", productScreen.getScopeName(), productDto.getId());
 
             if (parentScope.findChild(scopeName) == null) {
                 childScope = parentScope.buildChild()

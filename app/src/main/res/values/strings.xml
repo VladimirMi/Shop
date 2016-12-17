@@ -35,7 +35,7 @@
     <string name="nav.orders">Мои заказы</string>
     <string name="nav.notifications">Мои уведомления</string>
 
-    <!-- Catalog -->
+    <!-- CatalogRes -->
     <string name="catalog.add">В корзину</string>
 
     <!-- ProductRes -->

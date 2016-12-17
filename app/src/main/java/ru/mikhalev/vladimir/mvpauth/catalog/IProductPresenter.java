@@ -8,4 +8,8 @@ public interface IProductPresenter {
     void clickOnPlus();
 
     void clickOnMinus();
+
+    void clickOnShowMore();
+
+    void clickOnFavorite(boolean checked);
 }

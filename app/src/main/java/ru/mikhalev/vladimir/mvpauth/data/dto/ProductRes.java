@@ -14,11 +14,11 @@ public class ProductRes {
     @Expose
     private int remoteId;
 
-    @SerializedName("name")
+    @SerializedName("productName")
     @Expose
     private String productName;
 
-    @SerializedName("image_url")
+    @SerializedName("imageUrl")
     @Expose
     private String imageUrl;
 
@@ -30,7 +30,14 @@ public class ProductRes {
     @Expose
     private int price;
 
+    @SerializedName("raiting")
+    @Expose
+    private float raiting;
+
+    @SerializedName("active")
+    @Expose
     private boolean active;
+
 
     public ProductRes(ProductViewModel productViewModel) {
     }

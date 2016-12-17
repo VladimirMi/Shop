@@ -12,7 +12,7 @@
             android:checked="true"/>
         <item
             android:id="@+id/nav_favorite"
-            android:icon="@drawable/ic_favorite_24dp"
+            android:icon="@drawable/ic_favorite_primary_dark_24dp"
             android:title="Избранное"/>
         <item
             android:id="@+id/nav_orders"

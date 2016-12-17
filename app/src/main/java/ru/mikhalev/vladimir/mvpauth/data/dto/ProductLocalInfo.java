@@ -15,6 +15,11 @@ public class ProductLocalInfo {
         this.count = count;
     }
 
+    public ProductLocalInfo(int remoteId) {
+        this.remoteId = remoteId;
+        this.count = 1;
+    }
+
     public int getRemoteId() {
         return remoteId;
     }
