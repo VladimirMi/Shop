@@ -3,8 +3,6 @@ package ru.mikhalev.vladimir.mvpauth.data.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import ru.mikhalev.vladimir.mvpauth.catalog.ProductViewModel;
-
 /**
  * Developer Vladimir Mikhalev, 13.12.2016.
  */
@@ -37,10 +35,6 @@ public class ProductRes {
     @SerializedName("active")
     @Expose
     private boolean active;
-
-
-    public ProductRes(ProductViewModel productViewModel) {
-    }
 
     public int getRemoteId() {
         return remoteId;

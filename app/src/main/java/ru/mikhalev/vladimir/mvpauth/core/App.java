@@ -29,8 +29,10 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        sAppComponent =
         sAppComponent = DaggerService.createDaggerComponent(AppComponent.class,
                 new AppModule(getApplicationContext()));
+
 
         mRootScope = MortarScope.buildRootScope()
                 .withService(DaggerService.SERVICE_NAME, sAppComponent)

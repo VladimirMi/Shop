@@ -15,6 +15,6 @@ public class AuthModel extends BaseModel {
     }
 
     private String getAuthToken() {
-        return mDataManager.getAuthTokenPref();
+        return mDataManager.getAuthToken();
     }
 }

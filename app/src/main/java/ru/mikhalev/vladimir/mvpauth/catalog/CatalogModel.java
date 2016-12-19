@@ -14,7 +14,7 @@ import rx.Observable;
 public class CatalogModel extends BaseModel {
 
     public boolean isUserAuth() {
-//        return mDataManager.getAuthTokenPref();
+//        return mDataManager.getAuthToken();
         return false;
     }
 

@@ -13,6 +13,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.catalog.ProductDto;
 import ru.mikhalev.vladimir.mvpauth.core.App;
@@ -26,6 +28,7 @@ import ru.mikhalev.vladimir.mvpauth.data.dto.Address;
 import ru.mikhalev.vladimir.mvpauth.data.dto.ProductLocalInfo;
 import ru.mikhalev.vladimir.mvpauth.data.dto.ProductRes;
 import ru.mikhalev.vladimir.mvpauth.data.network.api.RestService;
+import ru.mikhalev.vladimir.mvpauth.data.storage.Product;
 import ru.mikhalev.vladimir.mvpauth.utils.RawUtils;
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -39,15 +42,16 @@ public class DataManager {
     @Inject
     Context mContext;
 
-
     private List<ProductDto> mMockProductList = new ArrayList<>();
     private Account mMockAccount;
+    private Realm mRealm;
 
     public DataManager() {
         DaggerService.createDaggerComponent(DataManagerComponent.class,
                 App.getAppComponent(),
                 new LocaleModule(),
                 new NetworkModule()).inject(this);
+        mRealm = Realm.getDefaultInstance();
         generateMockCatalog();
         generateMockAccount();
     }
@@ -56,7 +60,7 @@ public class DataManager {
         return mPreferencesManager.getLastProductUpdate();
     }
 
-    public String getAuthTokenPref() {
+    public String getAuthToken() {
         return mPreferencesManager.getAuthTokenPref();
     }
 
@@ -82,19 +86,27 @@ public class DataManager {
                 .observeOn(Schedulers.io())
                 .doOnNext(productRes -> {
                     if (!productRes.isActive()) {
-                        // TODO: 15.12.2016 delete from DB
+                        deleteProductFromDB(productRes);
                     }
                 })
                 .filter(ProductRes::isActive)
-                .doOnNext(this::saveInDB);
+                .doOnNext(this::saveProductInDB);
     }
 
     public List<ProductDto> getProductsFromDB() {
         return mMockProductList;
     }
 
-    private void saveInDB(ProductRes productRes) {
+    private void deleteProductFromDB(ProductRes productRes) {
+        mRealm.where(Product.class)
+                .equalTo("id", productRes.getRemoteId())
+                .findAllAsync().asObservable()
+                .subscribe(RealmResults::deleteAllFromRealm);
+    }
 
+    private void saveProductInDB(ProductRes productRes) {
+        Product product = new Product(productRes);
+        mRealm.copyToRealmOrUpdate(product);
     }
 
     private void generateMockCatalog() {
