@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.core.di;
+package ru.mikhalev.vladimir.mvpauth.di;
 
 import android.content.Context;
 

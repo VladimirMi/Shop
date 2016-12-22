@@ -1,22 +1,29 @@
-package ru.mikhalev.vladimir.mvpauth.core.layers.presenter;
+package ru.mikhalev.vladimir.mvpauth.core.base;
 
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
-import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewPresenter;
+import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev, 05.12.2016.
  */
 
-public abstract class SubscribePresenter<V extends ViewGroup> extends BaseViewPresenter<V> {
+public abstract class SubscribePresenter<V extends ViewGroup> extends ViewPresenter<V> {
+
+    protected CompositeSubscription mSubscriptions = new CompositeSubscription();
+
+    @Override
+    public void dropView(V view) {
+        super.dropView(view);
+        mSubscriptions.unsubscribe();
+    }
 
     @Nullable
     protected abstract IRootView getRootView();
@@ -40,8 +47,6 @@ public abstract class SubscribePresenter<V extends ViewGroup> extends BaseViewPr
 
     protected <T> Subscription subscribe(Observable<T> observable, ViewSubscriber<T> subscriber) {
         return observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
 }

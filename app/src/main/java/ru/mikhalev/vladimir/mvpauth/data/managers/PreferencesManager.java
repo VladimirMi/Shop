@@ -55,12 +55,18 @@ public class PreferencesManager {
         editor.apply();
     }
 
-    public String getAuthTokenPref() {
+    public String getAuthToken() {
         return mSharedPreferences.getString(AUTH_TOKEN_KEY, StringUtils.EMPTY);
     }
 
     public String getLastProductUpdate() {
         return mSharedPreferences.getString(PRODUCT_LAST_UPDATE_KEY, new Date(0).toString());
+    }
+
+    public void saveLastProductUpdate(String date) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(PRODUCT_LAST_UPDATE_KEY, date);
+        editor.apply();
     }
 
     public void saveAccountSetting(String notificationPromoKey, boolean isChecked) {

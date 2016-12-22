@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import mortar.MortarScope;
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 
 /**

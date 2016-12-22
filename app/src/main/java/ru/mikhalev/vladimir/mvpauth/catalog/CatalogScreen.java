@@ -7,19 +7,18 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 
 import dagger.Provides;
-import flow.Flow;
+import io.realm.RealmResults;
 import mortar.MortarScope;
-import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.auth.AuthScreen;
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.core.di.scopes.CatalogScope;
+import ru.mikhalev.vladimir.mvpauth.core.base.SubscribePresenter;
+import ru.mikhalev.vladimir.mvpauth.data.storage.Product;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.CatalogScope;
 import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 import ru.mikhalev.vladimir.mvpauth.root.IRootView;
 import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
 import ru.mikhalev.vladimir.mvpauth.root.RootPresenter;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -63,14 +62,19 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
 
     //endregion
 
-    class CatalogPresenter extends ViewPresenter<CatalogView> implements ICatalogPressenter {
+    class CatalogPresenter extends SubscribePresenter<CatalogView> implements ICatalogPressenter {
 
         @Inject
         CatalogModel mCatalogModel;
         @Inject
         RootPresenter mRootPresenter;
-        CompositeSubscription mSubscriptions = new CompositeSubscription();
         private int mCartCounter;
+
+        @Nullable
+        @Override
+        protected IRootView getRootView() {
+            return mRootPresenter.getView();
+        }
 
         @Override
         protected void onEnterScope(MortarScope scope) {
@@ -83,9 +87,9 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
             super.onLoad(savedInstanceState);
             getView().initView();
             subscribeOnProductList();
-                if (getRootView() != null) {
-                    getRootView().setBasketCounter(mCartCounter);
-                }
+            if (getRootView() != null) {
+                getRootView().setBasketCounter(mCartCounter);
+            }
         }
 
         @Override
@@ -95,30 +99,30 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
         }
 
         private void subscribeOnProductList() {
-            mSubscriptions.add(mCatalogModel.getProductsObs().
-                    subscribe(getView().getAdapter()::addItem));
-        }
-
-        @Nullable
-        private IRootView getRootView() {
-            return mRootPresenter.getView();
+            mSubscriptions.add(mCatalogModel.getProductsObs()
+                    .subscribe(new ViewSubscriber<RealmResults<Product>>() {
+                        @Override
+                        public void onNext(RealmResults<Product> products) {
+                            getView().getAdapter().updateData(products);
+                        }
+                    }));
         }
 
         @Override
         public void clickOnBuyButton(int position) {
             if (getView() != null) {
-                mCatalogModel.getProductsObs()
-                        .filter(product -> product.getId() == position)
-                        .subscribe(product -> {
-                            if (checkUserAuth() && getRootView() != null) {
-//                                getRootView().showMessage("Товар " + mCatalogModel.getProductFromPosition(position).getProductName()
-//                                        + " успешно добавлен в корзину");
-//                                mCartCounter += mCatalogModel.getProductFromPosition(position);
-                                getRootView().setBasketCounter(mCartCounter);
-                            } else {
-                                Flow.get(getView()).set(new AuthScreen());
-                            }
-                        });
+//                mCatalogModel.getProductsObs()
+//                        .filter(product -> product.getId() == position)
+//                        .subscribe(product -> {
+//                            if (checkUserAuth() && getRootView() != null) {
+////                                getRootView().showMessage("Товар " + mCatalogModel.getProductFromPosition(position).getProductName()
+////                                        + " успешно добавлен в корзину");
+////                                mCartCounter += mCatalogModel.getProductFromPosition(position);
+//                                getRootView().setBasketCounter(mCartCounter);
+//                            } else {
+//                                Flow.get(getView()).set(new AuthScreen());
+//                            }
+//                        });
             }
         }
 
@@ -129,11 +133,11 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
     }
 
     public static class Factory {
-        public static Context createProductContext(ProductDto productDto, Context parentContext) {
+        public static Context createProductContext(Product product, Context parentContext) {
             MortarScope parentScope = MortarScope.getScope(parentContext);
             MortarScope childScope = null;
-            ProductScreen productScreen = new ProductScreen(productDto);
-            String scopeName = String.format("%s_%d", productScreen.getScopeName(), productDto.getId());
+            ProductScreen productScreen = new ProductScreen(product);
+            String scopeName = String.format("%s_%d", productScreen.getScopeName(), product.getId());
 
             if (parentScope.findChild(scopeName) == null) {
                 childScope = parentScope.buildChild()

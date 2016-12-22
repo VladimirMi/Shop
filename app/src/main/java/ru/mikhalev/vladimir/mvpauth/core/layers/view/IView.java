@@ -5,6 +5,7 @@ package ru.mikhalev.vladimir.mvpauth.core.layers.view;
  */
 
 public interface IView {
+    void initView();
 
     boolean viewOnBackPressed();
 }

@@ -4,6 +4,7 @@ import android.databinding.Bindable;
 
 import ru.mikhalev.vladimir.mvpauth.BR;
 import ru.mikhalev.vladimir.mvpauth.core.base.BaseViewModel;
+import ru.mikhalev.vladimir.mvpauth.data.storage.Product;
 
 /**
  * Developer Vladimir Mikhalev 27.10.2016
@@ -18,14 +19,17 @@ public class ProductViewModel extends BaseViewModel {
     private int count;
     private boolean favorite;
 
-    public ProductViewModel(ProductDto productDto) {
-        id = productDto.getId();
-        productName = productDto.getProductName();
-        imageUrl = productDto.getImageUrl();
-        description = productDto.getDescription();
-        price = productDto.getPrice();
-        count = productDto.getCount();
-        favorite = productDto.isFavorite();
+    public ProductViewModel() {
+    }
+
+    public ProductViewModel(Product product) {
+        id = product.getId();
+        productName = product.getProductName();
+        imageUrl = product.getImageUrl();
+        description = product.getDescription();
+        price = product.getPrice();
+        count = product.getCount();
+        favorite = product.isFavorite();
     }
 
     public int getId() {
@@ -48,6 +52,7 @@ public class ProductViewModel extends BaseViewModel {
         return price;
     }
 
+
     @Bindable
     public int getCount() {
         return count;
@@ -64,5 +69,15 @@ public class ProductViewModel extends BaseViewModel {
 
     public void deleteProduct() {
         setCount(--count);
+    }
+
+    @Bindable
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+        // TODO: 21.12.2016 BR
     }
 }

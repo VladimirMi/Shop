@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.core.di.scopes;
+package ru.mikhalev.vladimir.mvpauth.di.scopes;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,6 +11,6 @@ import javax.inject.Scope;
 
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RootScope {
+public @interface CatalogScope {
 
 }

@@ -13,8 +13,8 @@ import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
 import ru.mikhalev.vladimir.mvpauth.account.AccountModel;
 import ru.mikhalev.vladimir.mvpauth.account.AccountScreen;
-import ru.mikhalev.vladimir.mvpauth.core.di.scopes.AddressScope;
 import ru.mikhalev.vladimir.mvpauth.data.dto.Address;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.AddressScope;
 import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 
@@ -99,7 +99,8 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             if (getView() != null) {
-                getView().initView(mViewModel);
+                // FIXME: 21.12.2016 this
+//                getView().initView(mViewModel);
             }
         }
 

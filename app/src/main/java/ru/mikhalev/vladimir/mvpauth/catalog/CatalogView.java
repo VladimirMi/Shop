@@ -8,8 +8,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenCatalogBinding;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016

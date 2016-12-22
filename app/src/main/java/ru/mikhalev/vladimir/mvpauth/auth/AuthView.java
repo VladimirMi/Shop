@@ -10,8 +10,8 @@ import javax.inject.Inject;
 
 import flow.Flow;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAuthBinding;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
 import timber.log.Timber;
 
 
@@ -22,14 +22,10 @@ import timber.log.Timber;
 public class AuthView extends RelativeLayout implements IAuthView, IAuthActions {
 
     @Inject
-    AuthPresenter mPresenter;
+    AuthScreen.AuthPresenter mPresenter;
 
     private ScreenAuthBinding mBinding;
     private AuthViewModel mViewModel;
-
-    public AuthViewModel getViewModel() {
-        return mViewModel;
-    }
 
     public AuthView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -49,7 +45,9 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
     protected void onFinishInflate() {
         super.onFinishInflate();
         Timber.d("onFinishInflate");
-        mBinding = ScreenAuthBinding.bind(this);
+        if (!isInEditMode()) {
+            mBinding = ScreenAuthBinding.bind(this);
+        }
     }
 
     @Override
@@ -113,6 +111,7 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
 
     //region =============== IAuthView ==============
 
+    @Override
     public void initView() {
         mBinding.setViewModel(mViewModel);
         mBinding.setActionsHandler(this);

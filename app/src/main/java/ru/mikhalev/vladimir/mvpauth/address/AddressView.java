@@ -7,8 +7,8 @@ import android.widget.RelativeLayout;
 import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenAddressBinding;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
 
 /**
  * Developer Vladimir Mikhalev, 04.12.2016.
@@ -62,16 +62,17 @@ public class AddressView extends RelativeLayout implements IAddressView, IAddres
 
     //endregion
 
-    //endregion
-
-    public void initView(AddressViewModel address) {
-        mBinding.setActionsHandler(this);
-        mAddressId = address.getId();
-        mBinding.setViewModel(address);
-        mBinding.addAddress.setText(getContext().getString(R.string.address_save));
-    }
 
     //region =============== IAddressView ==============
+
+    @Override
+    public void initView() {
+        mBinding.setActionsHandler(this);
+        // FIXME: 21.12.2016 this
+//        mAddressId = address.getId();
+//        mBinding.setViewModel(address);
+        mBinding.addAddress.setText(getContext().getString(R.string.address_save));
+    }
 
     @Override
     public void showInputError() {

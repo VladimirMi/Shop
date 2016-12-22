@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmResults;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpauth.R;
+import ru.mikhalev.vladimir.mvpauth.data.storage.Product;
 import timber.log.Timber;
 
 /**
@@ -18,7 +20,7 @@ import timber.log.Timber;
  */
 
 public class CatalogAdapter extends PagerAdapter {
-    private List<ProductDto> mProductList = new ArrayList<>();
+    private List<Product> mProductList = new ArrayList<>();
 
     public CatalogAdapter() {
 
@@ -29,20 +31,20 @@ public class CatalogAdapter extends PagerAdapter {
         return mProductList.size();
     }
 
+    public void updateData(RealmResults<Product> products) {
+        mProductList = products;
+        notifyDataSetChanged();
+    }
+
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view.equals(object);
     }
 
-    public void addItem(ProductDto productDto) {
-        mProductList.add(productDto);
-        notifyDataSetChanged();
-    }
-
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ProductDto productDto = mProductList.get(position);
-        Context productContext = CatalogScreen.Factory.createProductContext(productDto, container.getContext());
+        Product product = mProductList.get(position);
+        Context productContext = CatalogScreen.Factory.createProductContext(product, container.getContext());
         View newView = LayoutInflater.from(productContext).inflate(R.layout.screen_product, container, false);
         container.addView(newView);
         return newView;

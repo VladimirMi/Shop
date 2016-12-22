@@ -6,21 +6,27 @@ import android.widget.LinearLayout;
 
 import javax.inject.Inject;
 
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
+import flow.Flow;
 import ru.mikhalev.vladimir.mvpauth.databinding.ScreenProductBinding;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
 
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
  */
 public class ProductView extends LinearLayout implements IProductView, IProductActions {
-    private ScreenProductBinding mBinding;
     @Inject ProductScreen.ProductPresenter mPresenter;
+    private ScreenProductBinding mBinding;
+    private ProductViewModel mViewModel;
 
     public ProductView(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (!isInEditMode()) {
             DaggerService.<ProductScreen.Component>getDaggerComponent(context).inject(this);
+            ProductScreen screen = Flow.getKey(this);
+            if (screen != null) {
+                mViewModel = screen.getViewModel();
+            }
         }
     }
 
@@ -31,7 +37,6 @@ public class ProductView extends LinearLayout implements IProductView, IProductA
         super.onFinishInflate();
         if (!isInEditMode()) {
             mBinding = ScreenProductBinding.bind(this);
-            mBinding.setActionsHandler(this);
         }
     }
 
@@ -78,9 +83,11 @@ public class ProductView extends LinearLayout implements IProductView, IProductA
 
     //region ==================== IProductView ========================
 
+
     @Override
-    public void showProductView(ProductViewModel productViewModel) {
-        mBinding.setViewModel(productViewModel);
+    public void initView() {
+        mBinding.setViewModel(mViewModel);
+        mBinding.setActionsHandler(this);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ru.mikhalev.vladimir.mvpauth.core.base;
 
 import retrofit2.Response;
+import ru.mikhalev.vladimir.mvpauth.data.managers.DataManager;
 import ru.mikhalev.vladimir.mvpauth.data.network.error.ErrorUtils;
 import ru.mikhalev.vladimir.mvpauth.data.network.error.NetworkAvailableError;
 import ru.mikhalev.vladimir.mvpauth.utils.ConstantManager;
@@ -22,7 +23,7 @@ public class RestCallTransformer<T> implements Observable.Transformer<Response<T
                         case 200:
                             String lastModified = tResponse.headers().get(ConstantManager.LAST_MODIFIED_HEADER);
                             if (lastModified != null) {
-                                // TODO: 15.12.2016 save lastModified in prefs
+                                DataManager.getInstance().getPreferencesManager().saveLastProductUpdate(lastModified);
                             }
                             return Observable.just(tResponse.body());
                         case 304:

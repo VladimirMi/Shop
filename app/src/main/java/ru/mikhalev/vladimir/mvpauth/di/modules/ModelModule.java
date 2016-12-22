@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpauth.core.di.modules;
+package ru.mikhalev.vladimir.mvpauth.di.modules;
 
 import javax.inject.Singleton;
 
@@ -16,7 +16,7 @@ public class ModelModule {
     @Provides
     @Singleton
     DataManager provideDataManager() {
-        return new DataManager();
+        return DataManager.getInstance();
     }
 
     @Provides

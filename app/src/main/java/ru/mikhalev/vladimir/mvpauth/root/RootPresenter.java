@@ -7,28 +7,32 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpauth.account.AccountModel;
 import ru.mikhalev.vladimir.mvpauth.account.AccountViewModel;
 import ru.mikhalev.vladimir.mvpauth.core.App;
 import ru.mikhalev.vladimir.mvpauth.core.layers.presenter.AbstractPresenter;
+import ru.mikhalev.vladimir.mvpauth.data.managers.DataManager;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Developer Vladimir Mikhalev, 06.11.2016.
  */
 public class RootPresenter extends AbstractPresenter<IRootView> implements IRootPresenter {
-    @SuppressWarnings("unused")
-    private static final String TAG = "RootPresenter";
 
     private PublishSubject<ActivityResultDto> mActivityResultSubject = PublishSubject.create();
     private PublishSubject<PermissionResultDto> mPermissionResultSubject = PublishSubject.create();
-    @Inject
-    AccountModel mAccountModel;
+    private CompositeSubscription mSubscription = new CompositeSubscription();
+
+    @Inject AccountModel mAccountModel;
 
     public RootPresenter() {
         App.getRootActivityComponent().inject(this);
@@ -43,8 +47,14 @@ public class RootPresenter extends AbstractPresenter<IRootView> implements IRoot
     }
 
     @Override
+    public void dropView() {
+        mSubscription.unsubscribe();
+        super.dropView();
+    }
+
+    @Override
     public void initView() {
-        mAccountModel.getAccountSubject()
+        mSubscription.add(mAccountModel.getAccountSubject()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<AccountViewModel>() {
@@ -66,9 +76,12 @@ public class RootPresenter extends AbstractPresenter<IRootView> implements IRoot
                             getView().setDrawer(accountViewModel);
                         }
                     }
-                });
+                }));
 
-
+        mSubscription.add(Observable.interval(0, 5, TimeUnit.MINUTES)
+                .observeOn(Schedulers.io())
+                .doOnNext(aLong -> DataManager.getInstance().updateProductsFromNetwork())
+                .subscribe());
     }
 
     public void checkPermissionsAndRequestIfNotGranted(@NonNull String[] permissions, int requestCode) {

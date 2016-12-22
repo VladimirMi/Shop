@@ -7,5 +7,4 @@ import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
  */
 
 public interface IProductView extends IView{
-    void showProductView(ProductViewModel product);
 }

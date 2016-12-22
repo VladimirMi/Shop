@@ -8,9 +8,9 @@ import dagger.Provides;
 import mortar.MortarScope;
 import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpauth.R;
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.core.di.scopes.ProductScope;
-import ru.mikhalev.vladimir.mvpauth.data.dto.ProductRes;
+import ru.mikhalev.vladimir.mvpauth.data.storage.Product;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.ProductScope;
 import ru.mikhalev.vladimir.mvpauth.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 
@@ -20,20 +20,24 @@ import ru.mikhalev.vladimir.mvpauth.flow.Screen;
 
 @Screen(R.layout.screen_product)
 public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
-    private ProductViewModel mProductViewModel;
+    private ProductViewModel mViewModel;
 
-    public ProductScreen(ProductDto productDto) {
-        mProductViewModel = new ProductViewModel(productDto);
+    public ProductScreen(Product product) {
+        mViewModel = new ProductViewModel(product);
+    }
+
+    public ProductViewModel getViewModel() {
+        return mViewModel;
     }
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof ProductScreen && mProductViewModel.equals(((ProductScreen) o).mProductViewModel);
+        return o instanceof ProductScreen && mViewModel.equals(((ProductScreen) o).mViewModel);
     }
 
     @Override
     public int hashCode() {
-        return mProductViewModel.hashCode();
+        return mViewModel.hashCode();
     }
 
     @Override
@@ -52,7 +56,7 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
         @Provides
         @ProductScope
         ProductScreen.ProductPresenter provideProductPresenter() {
-            return new ProductScreen.ProductPresenter(mProductViewModel);
+            return new ProductScreen.ProductPresenter();
         }
     }
 
@@ -70,21 +74,17 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
 
         @Inject CatalogModel mCatalogModel;
 
-        public ProductPresenter(ProductViewModel product) {
-
-        }
-
         @Override
         protected void onEnterScope(MortarScope scope) {
             super.onEnterScope(scope);
-            ((ProductScreen.Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
+            scope.<ProductScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
         }
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             if (getView() != null) {
-                getView().showProductView(mProductViewModel);
+                getView().initView();
             }
         }
 
@@ -92,15 +92,15 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
 
         @Override
         public void clickOnPlus() {
-            mProductViewModel.addProduct();
-            mCatalogModel.updateProduct(new ProductRes(mProductViewModel));
+            mViewModel.addProduct();
+            mCatalogModel.updateProduct(new Product(mViewModel));
         }
 
         @Override
         public void clickOnMinus() {
-            if (mProductViewModel.getCount() > 1) {
-                mProductViewModel.deleteProduct();
-                mCatalogModel.updateProduct(new ProductRes(mProductViewModel));
+            if (mViewModel.getCount() > 1) {
+                mViewModel.deleteProduct();
+                mCatalogModel.updateProduct(new Product(mViewModel));
             }
         }
 

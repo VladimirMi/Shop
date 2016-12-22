@@ -3,12 +3,13 @@ package ru.mikhalev.vladimir.mvpauth.core;
 
 import android.app.Application;
 
+import io.realm.Realm;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 import ru.mikhalev.vladimir.mvpauth.BuildConfig;
-import ru.mikhalev.vladimir.mvpauth.core.di.DaggerService;
-import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
-import ru.mikhalev.vladimir.mvpauth.core.di.modules.AppModule;
+import ru.mikhalev.vladimir.mvpauth.di.DaggerService;
+import ru.mikhalev.vladimir.mvpauth.di.components.AppComponent;
+import ru.mikhalev.vladimir.mvpauth.di.modules.AppModule;
 import ru.mikhalev.vladimir.mvpauth.mortar.ScreenScoper;
 import ru.mikhalev.vladimir.mvpauth.root.RootActivity;
 import timber.log.Timber;
@@ -29,7 +30,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        sAppComponent =
+        Realm.init(this);
         sAppComponent = DaggerService.createDaggerComponent(AppComponent.class,
                 new AppModule(getApplicationContext()));
 

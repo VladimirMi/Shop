@@ -34,13 +34,13 @@ import ru.mikhalev.vladimir.mvpauth.account.AccountViewModel;
 import ru.mikhalev.vladimir.mvpauth.auth.AuthScreen;
 import ru.mikhalev.vladimir.mvpauth.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpauth.core.App;
-import ru.mikhalev.vladimir.mvpauth.core.di.components.AppComponent;
-import ru.mikhalev.vladimir.mvpauth.core.di.scopes.RootScope;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.BaseActivity;
 import ru.mikhalev.vladimir.mvpauth.core.layers.view.IView;
 import ru.mikhalev.vladimir.mvpauth.databinding.ActivityRootBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.DrawerHeaderBinding;
 import ru.mikhalev.vladimir.mvpauth.databinding.ToolbarBasketItemBinding;
+import ru.mikhalev.vladimir.mvpauth.di.components.AppComponent;
+import ru.mikhalev.vladimir.mvpauth.di.scopes.RootScope;
 import ru.mikhalev.vladimir.mvpauth.flow.TreeKeyDispatcher;
 import ru.mikhalev.vladimir.mvpauth.utils.UIHelper;
 import timber.log.Timber;
@@ -62,6 +62,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     @Override
     protected void attachBaseContext(Context newBase) {
+        Timber.e("attachBaseContext: ");
         newBase = Flow.configure(newBase, this)
                 .defaultKey(new AuthScreen())
                 .dispatcher(new TreeKeyDispatcher(this))
@@ -83,7 +84,6 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_root);
-
         mBasketBinding = ToolbarBasketItemBinding.inflate(getLayoutInflater(),
                 (ViewGroup) mBinding.getRoot(), false);
         mBasketBinding.setCount(0);
@@ -201,6 +201,11 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     //region ==================== IRootView ========================
 
+
+    @Override
+    public void initView() {
+        // TODO: 21.12.2016 init
+    }
 
     @Override
     public void setDrawer(AccountViewModel accountViewModel) {
