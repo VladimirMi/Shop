@@ -1,0 +1,23 @@
+package ru.mikhalev.vladimir.mvpshop.core;
+
+import javax.inject.Inject;
+
+import ru.mikhalev.vladimir.mvpshop.data.AsyncTransformer;
+import ru.mikhalev.vladimir.mvpshop.data.managers.DataManager;
+import ru.mikhalev.vladimir.mvpshop.di.components.DaggerModelComponent;
+
+/**
+ * Developer Vladimir Mikhalev, 06.11.2016.
+ */
+
+public abstract class BaseModel {
+    @Inject
+    protected DataManager mDataManager;
+
+    @Inject
+    protected AsyncTransformer mAsyncTransformer;
+
+    public BaseModel() {
+        DaggerModelComponent.create().inject(this);
+    }
+}

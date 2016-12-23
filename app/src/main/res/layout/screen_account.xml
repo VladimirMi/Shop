@@ -5,24 +5,24 @@
 
     <data>
 
-        <import type="ru.mikhalev.vladimir.mvpauth.account.AccountView.STATE"/>
+        <import type="ru.mikhalev.vladimir.mvpshop.features.account.AccountView.STATE"/>
 
-        <import type="ru.mikhalev.vladimir.mvpauth.R"/>
+        <import type="ru.mikhalev.vladimir.mvpshop.R"/>
 
         <variable
             name="viewModel"
-            type="ru.mikhalev.vladimir.mvpauth.account.AccountViewModel"/>
+            type="ru.mikhalev.vladimir.mvpshop.features.account.AccountViewModel"/>
 
         <variable
             name="actionsHandler"
-            type="ru.mikhalev.vladimir.mvpauth.account.IAccountActions"/>
+            type="ru.mikhalev.vladimir.mvpshop.features.account.IAccountActions"/>
 
         <variable
             name="viewState"
             type="int"/>
     </data>
 
-    <ru.mikhalev.vladimir.mvpauth.account.AccountView
+    <ru.mikhalev.vladimir.mvpshop.features.account.AccountView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_primary">
@@ -201,6 +201,6 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-    </ru.mikhalev.vladimir.mvpauth.account.AccountView>
+    </ru.mikhalev.vladimir.mvpshop.features.account.AccountView>
 </layout>
 

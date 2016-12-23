@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="352dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardView2"
+        tools:layout_editor_absoluteY="16dp"
+        tools:layout_editor_absoluteX="16dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2"
+                tools:layout_editor_absoluteX="102dp"
+                tools:text="Nunquam dignus ausus."
+                android:fontFamily="sans-serif"
+                android:textSize="14sp"
+                tools:layout_editor_absoluteY="32dp"/>
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                tools:text="Accolas credere in fidelis gandavum!Pol, a bene fluctui.Observare virtualiter ducunt ad raptus pulchritudine.Est nobilis xiphias, cesaris.Mineraliss peregrinationes!Heu.Hilotaes velum, tanquam fatalis olla."
+                android:textAlignment="center"
+                tools:layout_editor_absoluteY="81dp"
+                tools:layout_editor_absoluteX="0dp"
+                android:layout_marginTop="8dp"/>
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                tools:layout_editor_absoluteX="136dp"
+                android:numStars="5"
+                android:rating="2.3"
+                android:stepSize="0.1"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:isIndicator="false"
+                tools:layout_editor_absoluteY="172dp"
+                android:layout_marginTop="8dp"/>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="352dp"
+        android:layout_height="347dp"
+        tools:layout_editor_absoluteY="212dp"
+        tools:layout_editor_absoluteX="16dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_minus_24dp"
+                android:id="@+id/imageButton2"
+                style="@style/CountButton"
+                tools:layout_editor_absoluteY="295dp"
+                tools:layout_editor_absoluteX="30dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_plus_24dp"
+                android:id="@+id/imageButton"
+                style="@style/CountButton"
+                tools:layout_editor_absoluteY="295dp"
+                tools:layout_editor_absoluteX="104dp"/>
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView8"
+                tools:layout_editor_absoluteY="262dp"
+                tools:layout_editor_absoluteX="62dp"/>
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="86dp"
+                android:id="@+id/textView11"
+                tools:text="2"
+                android:textSize="18sp"
+                tools:layout_editor_absoluteY="308dp"/>
+
+            <View
+                style="@style/VerticalDivider"
+                tools:layout_editor_absoluteY="0dp"
+                tools:layout_editor_absoluteX="176dp"
+                android:layout_width="1dp"
+                android:id="@+id/view"
+                android:layout_height="0dp"/>
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteY="259dp"
+                android:id="@+id/textView12"
+                tools:layout_editor_absoluteX="232dp"/>
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView13"
+                tools:layout_editor_absoluteY="302dp"
+                tools:layout_editor_absoluteX="232dp"/>
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>

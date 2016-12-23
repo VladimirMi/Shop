@@ -7,11 +7,11 @@
 
         <variable
             name="actionsHandler"
-            type="ru.mikhalev.vladimir.mvpauth.catalog.ICatalogActions"/>
+            type="ru.mikhalev.vladimir.mvpshop.features.catalog.ICatalogActions"/>
 
     </data>
 
-    <ru.mikhalev.vladimir.mvpauth.catalog.CatalogView
+    <ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -44,5 +44,5 @@
                 android:theme="@style/EnterButton"/>
 
         </LinearLayout>
-    </ru.mikhalev.vladimir.mvpauth.catalog.CatalogView>
+    </ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogView>
 </layout>

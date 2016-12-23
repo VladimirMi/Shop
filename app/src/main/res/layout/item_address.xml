@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="ru.mikhalev.vladimir.mvpauth.address.AddressViewModel"/>
+            type="ru.mikhalev.vladimir.mvpshop.features.address.AddressViewModel"/>
     </data>
 
     <LinearLayout

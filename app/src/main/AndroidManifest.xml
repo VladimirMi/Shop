@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="ru.mikhalev.vladimir.mvpauth">
+          package="ru.mikhalev.vladimir.mvpshop">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".root.RootActivity"
+            android:name=".features.root.RootActivity"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -34,15 +34,16 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="ru.mikhalev.vladimir.mvpauth.provider"
+            android:authorities="ru.mikhalev.vladimir.mvpshop.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
+
         <meta-data
-            android:name="ru.mikhalev.vladimir.mvpauth.utils.MyGlideModule"
+            android:name="ru.mikhalev.vladimir.mvpshop.utils.MyGlideModule"
             android:value="GlideModule"/>
     </application>
 

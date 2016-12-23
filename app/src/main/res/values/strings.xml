@@ -42,7 +42,7 @@
     <string name="productRes.count">Количество</string>
     <string name="productRes.price">Стоимость</string>
 
-    <!-- Account -->
+    <!-- AccountRes -->
     <string name="account.username.title">Имя пользователя</string>
     <string name="account.username.sample">Евгений Максимович</string>
     <string name="account.phone.title">Телефон:</string>
@@ -73,4 +73,7 @@
 
 
     <string name="progress_show_text">Пожлуйста, подождите</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

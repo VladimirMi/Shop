@@ -6,18 +6,18 @@
 
     <data>
 
-        <import type="ru.mikhalev.vladimir.mvpauth.auth.AuthViewModel.STATE"/>
+        <import type="ru.mikhalev.vladimir.mvpshop.features.auth.AuthViewModel.STATE"/>
 
         <variable
             name="actionsHandler"
-            type="ru.mikhalev.vladimir.mvpauth.auth.IAuthActions"/>
+            type="ru.mikhalev.vladimir.mvpshop.features.auth.IAuthActions"/>
 
         <variable
             name="viewModel"
-            type="ru.mikhalev.vladimir.mvpauth.auth.AuthViewModel"/>
+            type="ru.mikhalev.vladimir.mvpshop.features.auth.AuthViewModel"/>
     </data>
 
-    <ru.mikhalev.vladimir.mvpauth.auth.AuthView
+    <ru.mikhalev.vladimir.mvpshop.features.auth.AuthView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="ContentDescription"
@@ -141,5 +141,5 @@
 
         </LinearLayout>
 
-    </ru.mikhalev.vladimir.mvpauth.auth.AuthView>
+    </ru.mikhalev.vladimir.mvpshop.features.auth.AuthView>
 </layout>
