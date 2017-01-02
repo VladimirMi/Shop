@@ -7,5 +7,7 @@ package ru.mikhalev.vladimir.mvpshop.core;
 public interface IView {
     void initView();
 
+    void setViewModel(BaseViewModel viewModel);
+
     boolean viewOnBackPressed();
 }

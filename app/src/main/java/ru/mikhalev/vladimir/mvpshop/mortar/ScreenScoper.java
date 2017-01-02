@@ -1,7 +1,6 @@
 package ru.mikhalev.vladimir.mvpshop.mortar;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
@@ -11,21 +10,21 @@ import java.util.Map;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.flow.BaseScreen;
+import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev, 27.11.2016.
  */
 
 public class ScreenScoper {
-    private static final String TAG = "ScreenScoper";
     private static Map<String, MortarScope> sScopeMap = new HashMap<>();
 
     public static MortarScope getScreenScope(BaseScreen screen) {
         if (!sScopeMap.containsKey(screen.getScopeName())) {
-            Log.e(TAG, "getScreenScope: create new scope");
+            Timber.e("getScreenScope: create new scope");
             return createScreenScope(screen);
         } else {
-            Log.e(TAG, "getScreenScope: return existed scope");
+            Timber.e("getScreenScope: return existed scope");
             return sScopeMap.get(screen.getScopeName());
         }
     }
@@ -69,7 +68,7 @@ public class ScreenScoper {
     }
 
     private static MortarScope createScreenScope(BaseScreen screen) {
-        Log.e(TAG, "createScreenScope: with name : " + screen.getScopeName());
+        Timber.e("createScreenScope: with name : " + screen.getScopeName());
         String parentScopeName = getParentScopeName(screen);
         MortarScope parentScope = sScopeMap.get(parentScopeName);
         Object screenComponent = screen.createScreenComponent(parentScope.getService(DaggerService.SERVICE_NAME));

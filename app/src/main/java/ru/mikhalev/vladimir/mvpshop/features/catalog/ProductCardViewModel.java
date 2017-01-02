@@ -2,7 +2,7 @@ package ru.mikhalev.vladimir.mvpshop.features.catalog;
 
 import android.databinding.Bindable;
 
-import ru.mikhalev.vladimir.mvpauth.BR;
+import ru.mikhalev.vladimir.mvpshop.BR;
 import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
 

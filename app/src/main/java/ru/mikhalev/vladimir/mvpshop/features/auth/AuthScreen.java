@@ -7,10 +7,11 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 
 import dagger.Provides;
+import flow.Direction;
 import flow.Flow;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
-import ru.mikhalev.vladimir.mvpshop.core.SubscribePresenter;
+import ru.mikhalev.vladimir.mvpshop.core.BaseViewPresenter;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.AuthScope;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogScreen;
@@ -71,7 +72,7 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
     //endregion
 
 
-    class AuthPresenter extends SubscribePresenter<AuthView> implements IAuthPresenter {
+    class AuthPresenter extends BaseViewPresenter<AuthView> implements IAuthPresenter {
 
         @Inject
         AuthModel mAuthModel;
@@ -95,6 +96,7 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
                 getRootView().hideToolbar();
                 getRootView().lockDrawer();
             }
+            getView().setViewModel(mViewModel);
             getView().initView();
         }
 
@@ -144,13 +146,13 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
                     getRootView().showToolbar();
                     getRootView().unlockDrawer();
                 }
-                Flow.get(getView()).set(new CatalogScreen());
+                Flow.get(getView()).replaceTop(new CatalogScreen(), Direction.REPLACE);
             }
         }
 
         @Override
         public boolean checkUserAuth() {
-            return true;
+            return false;
         }
     }
 }

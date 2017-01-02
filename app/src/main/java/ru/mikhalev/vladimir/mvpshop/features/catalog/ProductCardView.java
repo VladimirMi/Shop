@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 
 import javax.inject.Inject;
 
-import flow.Flow;
+import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenProductCardBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -23,10 +23,6 @@ public class ProductCardView extends LinearLayout implements IProductCardView, I
         super(context, attrs);
         if (!isInEditMode()) {
             DaggerService.<ProductCardScreen.Component>getDaggerComponent(context).inject(this);
-            ProductCardScreen screen = Flow.getKey(this);
-            if (screen != null) {
-                mViewModel = screen.getViewModel();
-            }
         }
     }
 
@@ -85,9 +81,15 @@ public class ProductCardView extends LinearLayout implements IProductCardView, I
 
 
     @Override
-    public void initView() {
+    public void setViewModel(BaseViewModel viewModel) {
+        mViewModel = (ProductCardViewModel) viewModel;
         mBinding.setViewModel(mViewModel);
         mBinding.setActionsHandler(this);
+    }
+
+    @Override
+    public void initView() {
+
     }
 
     @Override

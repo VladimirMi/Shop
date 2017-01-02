@@ -2,9 +2,9 @@ package ru.mikhalev.vladimir.mvpshop.features.address;
 
 import android.databinding.Bindable;
 
-import ru.mikhalev.vladimir.mvpauth.BR;
+import ru.mikhalev.vladimir.mvpshop.BR;
 import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
-import ru.mikhalev.vladimir.mvpshop.data.network.models.AddressRes;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -20,7 +20,7 @@ public class AddressViewModel extends BaseViewModel {
     private String comment;
     private boolean favorite;
 
-    public AddressViewModel(AddressRes address) {
+    public AddressViewModel(AccountAddressDto address) {
         this.name = address.getName();
         this.street = address.getStreet();
         this.house = address.getHouse();

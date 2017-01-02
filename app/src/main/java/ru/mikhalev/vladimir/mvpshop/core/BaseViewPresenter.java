@@ -1,13 +1,13 @@
 package ru.mikhalev.vladimir.mvpshop.core;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
+import mortar.MortarScope;
 import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpshop.features.root.IRootView;
-import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -15,15 +15,32 @@ import timber.log.Timber;
  * Developer Vladimir Mikhalev, 05.12.2016.
  */
 
-public abstract class SubscribePresenter<V extends ViewGroup> extends ViewPresenter<V> {
+public abstract class BaseViewPresenter<V extends ViewGroup> extends ViewPresenter<V> {
 
     protected CompositeSubscription mSubscriptions = new CompositeSubscription();
 
     @Override
+    protected void onEnterScope(MortarScope scope) {
+        Timber.tag(getClass().getSimpleName());
+        Timber.d("onEnterScope: ");
+        super.onEnterScope(scope);
+    }
+
+    @Override
+    protected void onLoad(Bundle savedInstanceState) {
+        Timber.tag(getClass().getSimpleName());
+        Timber.d("onLoad: ");
+        super.onLoad(savedInstanceState);
+    }
+
+    @Override
     public void dropView(V view) {
+        Timber.tag(getClass().getSimpleName());
+        Timber.d("dropView: ");
         super.dropView(view);
         mSubscriptions.unsubscribe();
     }
+
 
     @Nullable
     protected abstract IRootView getRootView();
@@ -31,7 +48,8 @@ public abstract class SubscribePresenter<V extends ViewGroup> extends ViewPresen
     protected abstract class ViewSubscriber<T> extends Subscriber<T> {
         @Override
         public void onCompleted() {
-            Timber.d("onCompleted");
+            Timber.tag(getClass().getSimpleName());
+            Timber.d("onCompleted: ");
         }
 
         @Override
@@ -43,10 +61,5 @@ public abstract class SubscribePresenter<V extends ViewGroup> extends ViewPresen
 
         @Override
         public abstract void onNext(T t);
-    }
-
-    protected <T> Subscription subscribe(Observable<T> observable, ViewSubscriber<T> subscriber) {
-        return observable
-                .subscribe(subscriber);
     }
 }

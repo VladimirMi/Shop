@@ -6,7 +6,8 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -14,10 +15,12 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.App;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountProfileDto;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountSettingsDto;
 import ru.mikhalev.vladimir.mvpshop.data.network.RestCallTransformer;
 import ru.mikhalev.vladimir.mvpshop.data.network.api.RestService;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.AccountRes;
-import ru.mikhalev.vladimir.mvpshop.data.network.models.AddressRes;
 import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.components.DataManagerComponent;
@@ -36,8 +39,8 @@ public class DataManager {
     @Inject RestService mRestService;
     @Inject Context mContext;
 
-    private AccountRes mMockAccount;
     private Realm mRealm;
+    private ArrayList<AccountAddressDto> mAddressDtoList;
 
     public static DataManager getInstance() {
         return instance;
@@ -56,23 +59,21 @@ public class DataManager {
         generateMockAccount();
     }
 
-    public String getLastProductUpdate() {
-        return mPreferencesManager.getLastProductUpdate();
+    private void generateMockAccount() {
+        AccountRes accountRes = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.account), AccountRes.class);
+        AccountProfileDto profileDto = new AccountProfileDto(accountRes);
+        AccountSettingsDto settingsDto = new AccountSettingsDto(accountRes);
+        mAddressDtoList = accountRes.getAddresses();
+        saveAccountProfile(profileDto);
+        saveAccountSettings(settingsDto);
+        saveAccountAddresses(mAddressDtoList);
     }
 
-    public String getAuthToken() {
-        return mPreferencesManager.getAuthToken();
-    }
+    //region =============== Network ==============
 
     public void loginUser(String email, String password) {
         // TODO: 10/22/16 implement auth
     }
-
-//    public Observable<ProductDto> getProductFromPosition(int position) {
-//        // TODO: 27-Oct-16 temp sample mock data fix me (maybe load from db)
-//        return Observable.just(mMockProductList.get(position - 1));
-//    }
-
 
     public void updateProductsFromNetwork() {
         mRestService.getProductResponse(getLastProductUpdate())
@@ -91,17 +92,20 @@ public class DataManager {
                 .subscribe();
     }
 
+    //endregion
+
+
+    //region =============== DataBase ==============
+
     public void saveProductInDB(Product product) {
         mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(product));
     }
 
     public void deleteProductFromDB(Product product) {
-        mRealm.executeTransaction(realm -> {
-            realm.where(Product.class)
-                    .equalTo("id", product.getId())
-                    .findAll()
-                    .deleteAllFromRealm();
-        });
+        mRealm.executeTransaction(realm -> realm.where(Product.class)
+                .equalTo("id", product.getId())
+                .findAll()
+                .deleteAllFromRealm());
     }
 
 
@@ -111,53 +115,66 @@ public class DataManager {
                 .asObservable();
     }
 
-    private void generateMockAccount() {
-        mMockAccount = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.account), AccountRes.class);
-        saveProfileInfo(mMockAccount.getFullname(), mMockAccount.getPhone());
-        saveAvatarPhoto(mMockAccount.getAvatar());
-        saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY, mMockAccount.isOrderNotification());
-        saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_PROMO_KEY, mMockAccount.isPromoNotification());
+    //endregion
+
+
+    //region =============== Shared Preferences ==============
+
+    public String getLastProductUpdate() {
+        return mPreferencesManager.getLastProductUpdate();
     }
 
-    // TODO: 01.12.2016 implement real
-    public Observable<AddressRes> getAccountAddresses() {
-        return Observable.from(mMockAccount.getAddresses());
+    public String getAuthToken() {
+        return mPreferencesManager.getAuthToken();
     }
 
-    public void updateOrInsertAddress(AddressRes address) {
-        if (mMockAccount.getAddresses().contains(address)) {
-            mMockAccount.getAddresses().set(mMockAccount.getAddresses().indexOf(address), address);
-        } else {
-            mMockAccount.getAddresses().add(address);
-        }
+    public void saveAccountProfile(AccountProfileDto profileDto) {
+        mPreferencesManager.saveAccountProfile(profileDto);
     }
 
-    public Observable<AddressRes> getAccountAddressFromPosition(int position) {
-        return Observable.just(mMockAccount.getAddresses().get(position));
+    public AccountProfileDto getAccountProfile() {
+        return mPreferencesManager.getAccountProfile();
     }
 
-    public void removeAddress(Observable<AddressRes> address) {
-        mMockAccount.getAddresses().remove(address);
+    public void saveAccountSettings(AccountSettingsDto settingsDto) {
+        mPreferencesManager.saveAccountSettings(settingsDto);
     }
 
-    public Map<String, Boolean> getAccountSettings() {
+    public AccountSettingsDto getAccountSettings() {
         return mPreferencesManager.getAccountSettings();
     }
 
-    public void saveAccountSetting(String notificationPromoKey, boolean isChecked) {
-        mPreferencesManager.saveAccountSetting(notificationPromoKey, isChecked);
+    public void saveAccountAddresses(List<AccountAddressDto> addressDtoList) {
+        mPreferencesManager.saveAccountAddresses(addressDtoList);
     }
 
-    public Map<String, String> getAccountProfileInfo() {
-        return mPreferencesManager.getUserAccountProfileInfo();
+    public Observable<AccountAddressDto> getAccountAddresses() {
+        return Observable.from(mAddressDtoList);
     }
 
-    public void saveProfileInfo(String name, String phone) {
-        mPreferencesManager.saveProfileInfo(name, phone);
+    public void updateOrInsertAddress(AccountAddressDto address) {
+        if (mAddressDtoList.contains(address)) {
+            mAddressDtoList.set(mAddressDtoList.indexOf(address), address);
+        } else {
+            mAddressDtoList.add(address);
+        }
+        saveAccountAddresses(mAddressDtoList);
     }
 
-
-    public void saveAvatarPhoto(String photoPath) {
-        mPreferencesManager.saveAvatarPhoto(photoPath);
+    public AccountAddressDto getAccountAddressFromPosition(int position) {
+        return mAddressDtoList.get(position);
     }
+
+    public void removeAddress(AccountAddressDto address) {
+        mAddressDtoList.remove(address);
+        saveAccountAddresses(mAddressDtoList);
+    }
+
+    //endregion
+
+
+//    public Observable<ProductDto> getProductFromPosition(int position) {
+//        // TODO: 27-Oct-16 temp sample mock data fix me (maybe load from db)
+//        return Observable.just(mMockProductList.get(position - 1));
+//    }
 }

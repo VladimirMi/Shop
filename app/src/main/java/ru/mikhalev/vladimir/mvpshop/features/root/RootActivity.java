@@ -30,6 +30,7 @@ import ru.mikhalev.vladimir.mvpshop.BuildConfig;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.App;
 import ru.mikhalev.vladimir.mvpshop.core.BaseActivity;
+import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.core.IView;
 import ru.mikhalev.vladimir.mvpshop.databinding.ActivityRootBinding;
 import ru.mikhalev.vladimir.mvpshop.databinding.DrawerHeaderBinding;
@@ -48,14 +49,12 @@ import timber.log.Timber;
 public class RootActivity extends BaseActivity implements IRootView, NavigationView.OnNavigationItemSelectedListener {
     private static final int REQUEST_SETTINGS_INTENT = 123;
 
-    @Inject
-    RootPresenter mRootPresenter;
+    @Inject RootPresenter mRootPresenter;
 
     private ProgressDialog mProgressDialog;
     private ActivityRootBinding mBinding;
     private DrawerHeaderBinding mDrawerBinding;
     private ToolbarBasketItemBinding mBasketBinding;
-    private boolean isExitEnabled = false;
 
     //region ==================== Life cycle ========================
 
@@ -151,27 +150,20 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     @Override
     public void onBackPressed() {
+        if (mBinding.drawer.isDrawerOpen(GravityCompat.START)) {
+            mBinding.drawer.closeDrawer(GravityCompat.START);
+            return;
+        }
         if (getCurrentScreen() != null && !getCurrentScreen().viewOnBackPressed() && !Flow.get(this).goBack()) {
             super.onBackPressed();
         }
-//        if (mBinding.drawer.isDrawerOpen(GravityCompat.START)) {
-//            mBinding.drawer.closeDrawer(GravityCompat.START);
-//        } else if (fragment != null && !fragment.isVisible()) {
-//            mBinding.navigationView.setCheckedItem(R.id.nav_catalog);
-//        } else if (isExitEnabled) {
-//            super.onBackPressed();
-//        } else {
-//            isExitEnabled = true;
-//            new Handler().postDelayed(() -> isExitEnabled = false, 2000);
-//            showMessage(getString(R.string.message_exit));
-//        }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Object key = null;
         switch (item.getItemId()) {
-            case R.id.nav_accout:
+            case R.id.nav_account:
                 key = new AccountScreen();
                 break;
 
@@ -201,6 +193,11 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     //region ==================== IRootView ========================
 
+
+    @Override
+    public void setViewModel(BaseViewModel viewModel) {
+        // TODO: 27.12.2016 set viewmodel
+    }
 
     @Override
     public void initView() {
@@ -340,5 +337,6 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
         AccountModel getAccountModel();
     }
+
     //endregion
 }

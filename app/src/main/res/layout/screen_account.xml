@@ -1,3 +1,4 @@
+<!--suppress AndroidUnknownAttribute -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:bind="http://schemas.android.com/apk/res-auto"
@@ -5,9 +6,7 @@
 
     <data>
 
-        <import type="ru.mikhalev.vladimir.mvpshop.features.account.AccountView.STATE"/>
-
-        <import type="ru.mikhalev.vladimir.mvpshop.R"/>
+        <import type="ru.mikhalev.vladimir.mvpshop.features.account.AccountViewModel.STATE"/>
 
         <variable
             name="viewModel"
@@ -16,10 +15,6 @@
         <variable
             name="actionsHandler"
             type="ru.mikhalev.vladimir.mvpshop.features.account.IAccountActions"/>
-
-        <variable
-            name="viewState"
-            type="int"/>
     </data>
 
     <ru.mikhalev.vladimir.mvpshop.features.account.AccountView
@@ -59,7 +54,7 @@
             app:elevation="@dimen/profile_avatar_elevation"
             app:layout_anchor="@id/appbar_account"
             app:layout_anchorGravity="center_horizontal"
-            app:layout_behavior=".account.AvatarBehavior"
+            app:layout_behavior="@string/avatar_behavior"
             bind:onClick="@{actionsHandler::changeAvatar}"
             tools:ignore="ContentDescription,UnusedAttribute">
 
@@ -67,7 +62,7 @@
                 android:id="@+id/avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:alpha="@{viewState == STATE.PREVIEW ? 1.0f : 0.8f}"
+                android:alpha="@{viewModel.viewState == STATE.PREVIEW ? 1.0f : 0.8f}"
                 bind:avatar="@{viewModel.avatar}"
                 bind:border_width="@{@dimen/profile_avatar_border}"
                 tools:src="@drawable/user_avatar"/>
@@ -76,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_add_white_24dp"
-                android:visibility="@{viewState == STATE.EDIT}"/>
+                android:visibility="@{viewModel.viewState == STATE.EDIT}"/>
 
         </FrameLayout>
 
@@ -99,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_normal_16"
                     android:orientation="horizontal"
-                    android:visibility="@{viewState == STATE.EDIT}"
+                    android:visibility="@{viewModel.viewState == STATE.EDIT}"
                     tools:visibility="visible">
 
                     <ImageView
@@ -118,7 +113,7 @@
                             style="@style/CustomText.AccountValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:enabled="@{viewState == STATE.EDIT}"
+                            android:enabled="@{viewModel.viewState == STATE.EDIT}"
                             android:inputType="text"
                             android:text="@={viewModel.fullname}"
                             tools:text="@string/account.username.sample"/>
@@ -149,7 +144,7 @@
                             style="@style/CustomText.AccountValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:enabled="@{viewState == STATE.EDIT}"
+                            android:enabled="@{viewModel.viewState == STATE.EDIT}"
                             android:inputType="phone"
                             android:text="@={viewModel.phone}"
                             tools:text="@string/account.phone.sample"/>

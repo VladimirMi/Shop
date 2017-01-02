@@ -8,8 +8,8 @@ import android.widget.RelativeLayout;
 
 import javax.inject.Inject;
 
-import flow.Flow;
 import ru.mikhalev.vladimir.mvpshop.R;
+import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenAuthBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import timber.log.Timber;
@@ -32,10 +32,6 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
         Timber.d("AuthView");
         if (!isInEditMode()) {
             DaggerService.<AuthScreen.Component>getDaggerComponent(context).inject(this);
-            AuthScreen screen = Flow.getKey(this);
-            if (screen != null) {
-                mViewModel = screen.getViewModel();
-            }
         }
     }
 
@@ -110,6 +106,12 @@ public class AuthView extends RelativeLayout implements IAuthView, IAuthActions 
 
 
     //region =============== IAuthView ==============
+
+
+    @Override
+    public void setViewModel(BaseViewModel viewModel) {
+        mViewModel = (AuthViewModel) viewModel;
+    }
 
     @Override
     public void initView() {

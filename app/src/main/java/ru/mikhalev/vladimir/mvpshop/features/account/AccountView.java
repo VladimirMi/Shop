@@ -1,7 +1,6 @@
 package ru.mikhalev.vladimir.mvpshop.features.account;
 
 import android.content.Context;
-import android.support.annotation.IntDef;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,12 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 import javax.inject.Inject;
 
-import flow.Flow;
+import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenAccountBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -24,24 +20,16 @@ import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
 public class AccountView extends CoordinatorLayout implements IAccountView, IAccountActions {
 
-    @IntDef({STATE.PREVIEW, STATE.EDIT})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface STATE {
-        int PREVIEW = 0;
-        int EDIT = 1;
-    }
-
     @Inject
     AccountScreen.AccountPresenter mPresenter;
     private ScreenAccountBinding mBinding;
-    private AccountScreen mScreen;
+    private AccountViewModel mViewModel;
     private AddressListAdapter mAdapter;
 
     public AccountView(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (!isInEditMode()) {
             DaggerService.<AccountScreen.Component>getDaggerComponent(getContext()).inject(this);
-            mScreen = Flow.getKey(this);
         }
     }
 
@@ -56,8 +44,6 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
         super.onFinishInflate();
         if (!isInEditMode()) {
             mBinding = ScreenAccountBinding.bind(this);
-            mBinding.setActionsHandler(this);
-            showViewFromState();
         }
     }
 
@@ -91,29 +77,25 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
     }
 
     @Override
-    public void switchOrder(boolean isCheked) {
-        mBinding.getViewModel().setOrderNotification(isCheked);
+    public void switchOrder(boolean isChecked) {
+        mViewModel.setOrderNotification(isChecked);
         mPresenter.switchNotification();
     }
 
     @Override
-    public void switchPromo(boolean isCheked) {
-        mBinding.getViewModel().setPromoNotification(isCheked);
+    public void switchPromo(boolean isChecked) {
+        mViewModel.setPromoNotification(isChecked);
         mPresenter.switchNotification();
     }
 
     @Override
     public void changeAvatar() {
-        if (mBinding.getViewState() == STATE.EDIT) {
+        if (mViewModel.getViewState() == AccountViewModel.STATE.EDIT) {
             mPresenter.changeAvatar();
         }
     }
 
     //endregion
-
-    private void showViewFromState() {
-        mBinding.setViewState(mScreen.getViewState());
-    }
 
 
     public void initAddressList() {
@@ -164,6 +146,14 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
 
     //region ==================== IAccountView ========================
 
+
+    @Override
+    public void setViewModel(BaseViewModel viewModel) {
+        mViewModel = (AccountViewModel) viewModel;
+        mBinding.setViewModel(mViewModel);
+        mBinding.setActionsHandler(this);
+    }
+
     @Override
     public void initView() {
         initAddressList();
@@ -172,12 +162,11 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
 
     @Override
     public void changeState() {
-        if (mScreen.getViewState() == STATE.EDIT) {
-            mScreen.setViewState(STATE.PREVIEW);
+        if (mViewModel.getViewState() == AccountViewModel.STATE.EDIT) {
+            mViewModel.setViewState(AccountViewModel.STATE.PREVIEW);
         } else {
-            mScreen.setViewState(STATE.EDIT);
+            mViewModel.setViewState(AccountViewModel.STATE.EDIT);
         }
-        showViewFromState();
     }
 
     @Override
@@ -204,11 +193,15 @@ public class AccountView extends CoordinatorLayout implements IAccountView, IAcc
 
     @Override
     public boolean viewOnBackPressed() {
-        if (mScreen.getViewState() == STATE.EDIT) {
+        if (mViewModel.getViewState() == AccountViewModel.STATE.EDIT) {
             changeState();
             return true;
         }
         return false;
+    }
+
+    public AccountViewModel getViewModel() {
+        return mViewModel;
     }
 
     //endregion

@@ -1,9 +1,8 @@
 package ru.mikhalev.vladimir.mvpshop.data.network.models;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
+
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
 
 /**
  * Developer Vladimir Mikhalev, 13.12.2016.
@@ -11,30 +10,12 @@ import java.util.ArrayList;
 
 public class AccountRes {
     private int id;
-
-    @SerializedName("fullname")
-    @Expose
     private String fullname;
-
-    @SerializedName("avatar")
-    @Expose
-    private String avatar;
-
-    @SerializedName("phone")
-    @Expose
     private String phone;
-
-    @SerializedName("orderNotification")
-    @Expose
+    private String avatar;
     private boolean orderNotification;
-
-    @SerializedName("promoNotification")
-    @Expose
     private boolean promoNotification;
-
-    @SerializedName("addresses")
-    @Expose
-    private ArrayList<AddressRes> addresses;
+    private ArrayList<AccountAddressDto> addresses;
 
     public int getId() {
         return id;
@@ -84,11 +65,11 @@ public class AccountRes {
         this.promoNotification = promoNotification;
     }
 
-    public ArrayList<AddressRes> getAddresses() {
+    public ArrayList<AccountAddressDto> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(ArrayList<AddressRes> addresses) {
+    public void setAddresses(ArrayList<AccountAddressDto> addresses) {
         this.addresses = addresses;
     }
 }

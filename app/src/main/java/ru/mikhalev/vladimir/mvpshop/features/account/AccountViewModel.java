@@ -1,55 +1,43 @@
 package ru.mikhalev.vladimir.mvpshop.features.account;
 
 import android.databinding.Bindable;
+import android.support.annotation.IntDef;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-import ru.mikhalev.vladimir.mvpauth.BR;
+import ru.mikhalev.vladimir.mvpshop.BR;
 import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
-import ru.mikhalev.vladimir.mvpshop.data.managers.PreferencesManager;
-import ru.mikhalev.vladimir.mvpshop.features.address.AddressViewModel;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountProfileDto;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountSettingsDto;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
  */
 
 public class AccountViewModel extends BaseViewModel {
+
+    @IntDef({STATE.PREVIEW, STATE.EDIT})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface STATE {
+        int PREVIEW = 0;
+        int EDIT = 1;
+    }
+
     private int id;
-
-    @SerializedName("fullname")
-    @Expose
     private String fullname;
-
-    @SerializedName("avatar")
-    @Expose
-    private String avatar;
-
-    @SerializedName("phone")
-    @Expose
     private String phone;
-
-    @SerializedName("orderNotification")
-    @Expose
+    private String avatar;
     private boolean orderNotification;
-
-    @SerializedName("promoNotification")
-    @Expose
     private boolean promoNotification;
+    private int viewState = STATE.PREVIEW;
 
-    @SerializedName("addresses")
-    @Expose
-    private ArrayList<AddressViewModel> addresses;
-
-    public AccountViewModel(Map<String, String> accountProfileInfo, Map<String, Boolean> accountSettings) {
-        this.fullname = accountProfileInfo.get(PreferencesManager.ACCOUNT.FULL_NAME_KEY);
-        this.avatar = accountProfileInfo.get(PreferencesManager.ACCOUNT.AVATAR_KEY);
-        this.phone = accountProfileInfo.get(PreferencesManager.ACCOUNT.PHONE_KEY);
-        this.orderNotification = accountSettings.get(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY);
-        this.promoNotification = accountSettings.get(PreferencesManager.ACCOUNT.NOTIFICATION_PROMO_KEY);
+    public AccountViewModel(AccountProfileDto accountProfile, AccountSettingsDto accountSettings) {
+        this.fullname = accountProfile.getFullname();
+        this.phone = accountProfile.getPhone();
+        this.avatar = accountProfile.getAvatar();
+        this.orderNotification = accountSettings.isOrderNotification();
+        this.promoNotification = accountSettings.isPromoNotification();
     }
 
     //region ==================== Getters and setters ========================
@@ -112,12 +100,16 @@ public class AccountViewModel extends BaseViewModel {
         notifyPropertyChanged(BR.promoNotification);
     }
 
-    public ArrayList<AddressViewModel> getAddresses() {
-        return addresses;
+    @Bindable
+    public
+    @STATE
+    int getViewState() {
+        return viewState;
     }
 
-    public void setAddresses(ArrayList<AddressViewModel> addresses) {
-        this.addresses = addresses;
+    public void setViewState(@STATE int viewState) {
+        this.viewState = viewState;
+        notifyPropertyChanged(BR.viewState);
     }
 
     public void update(AccountViewModel viewModel) {
@@ -135,6 +127,9 @@ public class AccountViewModel extends BaseViewModel {
         }
         if (promoNotification != viewModel.isPromoNotification()) {
             setPromoNotification(viewModel.isPromoNotification());
+        }
+        if (viewState != viewModel.getViewState()) {
+            setViewState(viewModel.getViewState());
         }
     }
 

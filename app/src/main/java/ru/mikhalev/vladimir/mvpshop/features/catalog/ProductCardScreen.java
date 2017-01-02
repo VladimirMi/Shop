@@ -83,9 +83,8 @@ public class ProductCardScreen extends BaseScreen<CatalogScreen.Component> {
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            if (getView() != null) {
-                getView().initView();
-            }
+            getView().setViewModel(mViewModel);
+            getView().initView();
         }
 
         //region ==================== IProductCardPresenter ========================

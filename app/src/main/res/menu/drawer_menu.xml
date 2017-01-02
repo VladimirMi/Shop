@@ -2,26 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_accout"
+            android:id="@+id/nav_account"
             android:icon="@drawable/ic_account_circle_24dp"
-            android:title="Личный кабинет"/>
+            android:title="@string/nav.profile"/>
         <item
             android:id="@+id/nav_catalog"
             android:icon="@drawable/ic_local_mall_24dp"
-            android:title="Каталог товаров"
+            android:title="@string/nav.catalog"
             android:checked="true"/>
         <item
             android:id="@+id/nav_favorite"
             android:icon="@drawable/ic_favorite_primary_dark_24dp"
-            android:title="Избранное"/>
+            android:title="@string/nav.favorite"/>
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_local_grocery_store_24dp"
-            android:title="Мои заказы"/>
+            android:title="@string/nav.orders"/>
         <item
             android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_notifications_24dp"
-            android:title="Мои уведомления"/>
+            android:title="@string/nav.notifications"/>
 
     </group>
 </menu>

@@ -11,7 +11,8 @@ import flow.TreeKey;
 import mortar.MortarScope;
 import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpshop.R;
-import ru.mikhalev.vladimir.mvpshop.data.network.models.AddressRes;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
+import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.AddressScope;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountModel;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountScreen;
@@ -26,7 +27,7 @@ import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 public class AddressScreen extends BaseScreen<AccountScreen.Component> implements TreeKey {
     private AddressViewModel mViewModel;
 
-    public AddressScreen(AddressRes address) {
+    public AddressScreen(AccountAddressDto address) {
         mViewModel = new AddressViewModel(address);
     }
 
@@ -77,7 +78,7 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
             modules = AddressScreen.Module.class)
     @AddressScope
     public interface Component {
-//        void inject(AddressPresenter presenter);
+        void inject(AddressPresenter presenter);
 
         void inject(AddressView view);
     }
@@ -92,23 +93,21 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
         @Override
         protected void onEnterScope(MortarScope scope) {
             super.onEnterScope(scope);
-//            ((AddressScreen.Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
+            scope.<AddressScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
         }
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            if (getView() != null) {
-                // FIXME: 21.12.2016 this
-//                getView().initView(mViewModel);
-            }
+            getView().initView();
+            getView().setViewModel(mViewModel);
         }
 
         @SuppressWarnings("CheckResult")
         @Override
         public void clickOnAddAddress() {
             if (getView() != null) {
-                mAccountModel.updateOrInsertAddress(new AddressRes(mViewModel));
+                mAccountModel.updateOrInsertAddress(new AccountAddressDto(mViewModel));
                 Flow.get(getView()).goBack();
             }
         }

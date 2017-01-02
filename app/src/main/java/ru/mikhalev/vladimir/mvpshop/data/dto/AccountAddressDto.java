@@ -1,45 +1,21 @@
-package ru.mikhalev.vladimir.mvpshop.data.network.models;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package ru.mikhalev.vladimir.mvpshop.data.dto;
 
 import ru.mikhalev.vladimir.mvpshop.features.address.AddressViewModel;
 
 /**
  * Developer Vladimir Mikhalev, 13.12.2016.
  */
-public class AddressRes {
-    @SerializedName("id")
-    @Expose
+public class AccountAddressDto {
     private int id;
-
-    @SerializedName("name")
-    @Expose
     private String name;
-
-    @SerializedName("street")
-    @Expose
     private String street;
-
-    @SerializedName("house")
-    @Expose
     private String house;
-
-    @SerializedName("apartment")
-    @Expose
     private String apartment;
-
-    @SerializedName("floor")
-    @Expose
     private String floor;
-
-    @SerializedName("comment")
-    @Expose
     private String comment;
-
     private boolean favorite;
 
-    public AddressRes(AddressViewModel addressViewModel) {
+    public AccountAddressDto(AddressViewModel addressViewModel) {
         this.id = addressViewModel.getId();
         this.name = addressViewModel.getName();
         this.street = addressViewModel.getStreet();
@@ -49,7 +25,7 @@ public class AddressRes {
         this.comment = addressViewModel.getComment();
     }
 
-    public AddressRes(int id) {
+    public AccountAddressDto(int id) {
         this.id = id;
     }
 

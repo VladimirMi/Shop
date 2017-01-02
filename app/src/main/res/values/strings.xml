@@ -1,14 +1,12 @@
 <resources>
     <string name="app_name">MVPAuth</string>
 
-    <string name="message.exit">Вы уверены что хотите выйти?</string>
+    <string name="message.exit">Нажмите снова для выхода</string>
     <string name="message.auth">Необходима авторизация</string>
     <string name="message.error.common">Извините что то пошло не так, попрбуйте позже</string>
     <string name="message.error.token">Invalid Token</string>
 
     <!-- Fonts -->
-    <string name="font.roboto.regular">Roboto-Regular.ttf</string>
-    <string name="font.roboto.light">Roboto-Light.ttf</string>
     <string name="font.roboto.medium">Roboto-Medium.ttf</string>
     <string name="font.bebas.book">PTBebasNeueBook.ttf</string>
     <string name="font.bebas.regular">PTBebasNeueRegular.ttf</string>
@@ -76,4 +74,5 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="avatar_behavior" translatable="false">ru.mikhalev.vladimir.mvpshop.features.account.AvatarBehavior</string>
 </resources>

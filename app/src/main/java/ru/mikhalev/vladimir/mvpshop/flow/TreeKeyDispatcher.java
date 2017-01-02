@@ -14,6 +14,7 @@ import java.util.Map;
 import flow.Direction;
 import flow.Dispatcher;
 import flow.KeyChanger;
+import flow.MultiKey;
 import flow.State;
 import flow.Traversal;
 import flow.TraversalCallback;
@@ -51,8 +52,8 @@ public class TreeKeyDispatcher implements Dispatcher, KeyChanger {
             return;
         }
 
-        if (inKey instanceof TreeKey) {
-            // TODO: 27.11.2016 implement treekey case
+        if (inKey instanceof MultiKey) {
+
         }
 
         Context flowContext = traversal.createContext(inKey, mActivity);
@@ -83,7 +84,6 @@ public class TreeKeyDispatcher implements Dispatcher, KeyChanger {
 
             incomingState.restore(newView);
 
-            // TODO: 27.11.2016 unregister screen scope
             if (outKey != null && !(inKey instanceof TreeKey)) {
                 ((BaseScreen) outKey).unregisterScope();
             }

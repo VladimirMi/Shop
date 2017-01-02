@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.mikhalev.vladimir.mvpshop.data.network.models.AddressRes;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
 import ru.mikhalev.vladimir.mvpshop.databinding.ItemAddressBinding;
 import ru.mikhalev.vladimir.mvpshop.features.address.AddressViewModel;
 
@@ -40,7 +40,8 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         return mAddresses.size();
     }
 
-    public void addItem(AddressRes address) {
+    // TODO: 28.12.2016 optimize notify
+    public void addItem(AccountAddressDto address) {
         mAddresses.add(new AddressViewModel(address));
         notifyDataSetChanged();
     }

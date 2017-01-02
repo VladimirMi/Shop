@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpshop.R;
+import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenAddressBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -17,7 +18,7 @@ public class AddressView extends RelativeLayout implements IAddressView, IAddres
     @Inject
     AddressScreen.AddressPresenter mPresenter;
     private ScreenAddressBinding mBinding;
-    private int mAddressId;
+    private AddressViewModel mViewModel;
 
     public AddressView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -65,12 +66,16 @@ public class AddressView extends RelativeLayout implements IAddressView, IAddres
 
     //region =============== IAddressView ==============
 
+
+    @Override
+    public void setViewModel(BaseViewModel viewModel) {
+        mViewModel = (AddressViewModel) viewModel;
+        mBinding.setViewModel(mViewModel);
+        mBinding.setActionsHandler(this);
+    }
+
     @Override
     public void initView() {
-        mBinding.setActionsHandler(this);
-        // FIXME: 21.12.2016 this
-//        mAddressId = address.getId();
-//        mBinding.setViewModel(address);
         mBinding.addAddress.setText(getContext().getString(R.string.address_save));
     }
 

@@ -63,9 +63,6 @@ dependencies {
     compile 'com.squareup.flow:flow:1.0.0-alpha2'
     compile 'com.squareup.mortar:mortar:0.20'
 
-    compile 'me.relex:circleindicator:1.2.2@aar'
-    compile 'com.romandanylyk:pageindicatorview:0.0.5'
-
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.4'
 

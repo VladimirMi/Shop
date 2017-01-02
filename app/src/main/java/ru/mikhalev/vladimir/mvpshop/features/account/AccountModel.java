@@ -1,10 +1,9 @@
 package ru.mikhalev.vladimir.mvpshop.features.account;
 
-import java.util.Map;
-
 import ru.mikhalev.vladimir.mvpshop.core.BaseModel;
-import ru.mikhalev.vladimir.mvpshop.data.managers.PreferencesManager;
-import ru.mikhalev.vladimir.mvpshop.data.network.models.AddressRes;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountProfileDto;
+import ru.mikhalev.vladimir.mvpshop.data.dto.AccountSettingsDto;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -13,7 +12,7 @@ import rx.subjects.BehaviorSubject;
  */
 
 public class AccountModel extends BaseModel {
-    private BehaviorSubject<AccountViewModel> mAccountSubject = BehaviorSubject.create(getAccountDto());
+    private BehaviorSubject<AccountViewModel> mAccountSubject = BehaviorSubject.create(getAccountViewModel());
 
     public BehaviorSubject<AccountViewModel> getAccountSubject() {
         return mAccountSubject;
@@ -21,44 +20,45 @@ public class AccountModel extends BaseModel {
 
     //region ==================== AccountRes ========================
 
-    public AccountViewModel getAccountDto() {
-        return new AccountViewModel(getAccountProfileInfo(), getAccountSettings());
+    public AccountViewModel getAccountViewModel() {
+        return new AccountViewModel(getAccountProfile(), getAccountSettings());
     }
 
-    private Map<String, String> getAccountProfileInfo() {
-        return mDataManager.getAccountProfileInfo();
+    private AccountProfileDto getAccountProfile() {
+        return mDataManager.getAccountProfile();
     }
 
-    private Map<String, Boolean> getAccountSettings() {
+    private AccountSettingsDto getAccountSettings() {
         return mDataManager.getAccountSettings();
     }
 
-    public void saveAccount(AccountViewModel viewModel) {
-        mDataManager.saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_ORDER_KEY, viewModel.isOrderNotification());
-        mDataManager.saveAccountSetting(PreferencesManager.ACCOUNT.NOTIFICATION_PROMO_KEY, viewModel.isPromoNotification());
-        mDataManager.saveAvatarPhoto(viewModel.getAvatar());
-        mDataManager.saveProfileInfo(viewModel.getFullname(), viewModel.getPhone());
+    public void saveAccountProfile(AccountViewModel viewModel) {
+        mDataManager.saveAccountProfile(new AccountProfileDto(viewModel));
         mAccountSubject.onNext(viewModel);
+    }
+
+    public void saveAccountSetting(AccountViewModel viewModel) {
+        mDataManager.saveAccountSettings(new AccountSettingsDto(viewModel));
     }
 
     //endregion
 
     //region =============== Addresses ==============
 
-    public Observable<AddressRes> getAccountAddresses() {
+    public Observable<AccountAddressDto> getAccountAddresses() {
         return mDataManager.getAccountAddresses().compose(mAsyncTransformer.transform());
     }
 
-    public void updateOrInsertAddress(AddressRes address) {
+    public void updateOrInsertAddress(AccountAddressDto address) {
         mDataManager.updateOrInsertAddress(address);
     }
 
 
-    public void removeAddress(Observable<AddressRes> address) {
+    public void removeAddress(AccountAddressDto address) {
         mDataManager.removeAddress(address);
     }
 
-    public Observable<AddressRes> getAddressFromPosition(int position) {
+    public AccountAddressDto getAddressFromPosition(int position) {
         return mDataManager.getAccountAddressFromPosition(position);
     }
 

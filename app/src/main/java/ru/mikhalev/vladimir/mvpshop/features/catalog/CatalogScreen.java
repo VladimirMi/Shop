@@ -10,7 +10,7 @@ import dagger.Provides;
 import io.realm.RealmResults;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
-import ru.mikhalev.vladimir.mvpshop.core.SubscribePresenter;
+import ru.mikhalev.vladimir.mvpshop.core.BaseViewPresenter;
 import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.CatalogScope;
@@ -62,7 +62,7 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
 
     //endregion
 
-    class CatalogPresenter extends SubscribePresenter<CatalogView> implements ICatalogPressenter {
+    class CatalogPresenter extends BaseViewPresenter<CatalogView> implements ICatalogPressenter {
 
         @Inject
         CatalogModel mCatalogModel;
@@ -85,6 +85,7 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
+            getView().setViewModel(null);
             getView().initView();
             subscribeOnProductList();
             if (getRootView() != null) {
@@ -138,6 +139,7 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
             MortarScope childScope = null;
             ProductCardScreen productCardScreen = new ProductCardScreen(product);
             String scopeName = String.format("%s_%d", productCardScreen.getScopeName(), product.getId());
+
 
             if (parentScope.findChild(scopeName) == null) {
                 childScope = parentScope.buildChild()
