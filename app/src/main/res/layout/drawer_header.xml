@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:maxLines="1"
-            android:text="@{viewModel.fullname}"
+            android:text="@{viewModel.fullName}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font_normal_16"
             android:fontFamily="sans-serif"

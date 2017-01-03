@@ -23,7 +23,7 @@ public interface IRootView extends IView {
 
     void setBasketCounter(int count);
 
-    void showPermissionSnackbar();
+    void showPermissionSnackBar();
 
     void openApplicationSettings();
 

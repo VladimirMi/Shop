@@ -116,7 +116,7 @@ public class RootPresenter extends AbstractPresenter<IRootView> implements IRoot
         for (int grantResult : grantResults) {
             if (grantResult == PackageManager.PERMISSION_DENIED) {
                 if (getView() != null) {
-                    getView().showPermissionSnackbar();
+                    getView().showPermissionSnackBar();
                 }
                 allGranted = false;
                 break;

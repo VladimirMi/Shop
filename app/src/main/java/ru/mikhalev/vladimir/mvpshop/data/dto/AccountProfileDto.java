@@ -8,30 +8,30 @@ import ru.mikhalev.vladimir.mvpshop.features.account.AccountViewModel;
  */
 
 public class AccountProfileDto {
-    private String fullname;
+    private String fullName;
     private String avatar;
     private String phone;
 
-    public AccountProfileDto(String fullname, String phone, String avatar) {
-        this.fullname = fullname;
+    public AccountProfileDto(String fullName, String phone, String avatar) {
+        this.fullName = fullName;
         this.phone = phone;
         this.avatar = avatar;
     }
 
     public AccountProfileDto(AccountRes accountRes) {
-        this.fullname = accountRes.getFullname();
+        this.fullName = accountRes.getFullName();
         this.phone = accountRes.getPhone();
         this.avatar = accountRes.getAvatar();
     }
 
     public AccountProfileDto(AccountViewModel viewModel) {
-        this.fullname = viewModel.getFullname();
+        this.fullName = viewModel.getFullname();
         this.phone = viewModel.getPhone();
         this.avatar = viewModel.getAvatar();
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getFullName() {
+        return fullName;
     }
 
     public String getAvatar() {

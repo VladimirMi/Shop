@@ -196,7 +196,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     @Override
     public void setViewModel(BaseViewModel viewModel) {
-        // TODO: 27.12.2016 set viewmodel
+        // TODO: 27.12.2016 set ViewModel
     }
 
     @Override
@@ -254,7 +254,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     }
 
     @Override
-    public void showPermissionSnackbar() {
+    public void showPermissionSnackBar() {
         Snackbar.make(mBinding.getRoot(), "Для корректной работы необходимо дать требуемые разрешения", Snackbar.LENGTH_LONG)
                 .setAction("Разрешить", view -> openApplicationSettings()).show();
     }

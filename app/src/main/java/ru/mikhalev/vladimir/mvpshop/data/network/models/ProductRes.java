@@ -10,7 +10,7 @@ public class ProductRes {
     private String imageUrl;
     private String description;
     private int price;
-    private float raiting;
+    private float rating;
     private boolean active;
 
     public int getRemoteId() {

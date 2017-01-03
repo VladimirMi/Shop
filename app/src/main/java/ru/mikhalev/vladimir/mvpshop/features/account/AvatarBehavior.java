@@ -21,7 +21,7 @@ public class AvatarBehavior extends AppBarLayout.ScrollingViewBehavior {
 
     @Override
     public boolean onMeasureChild(CoordinatorLayout parent, View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
-        mInitialAvatarCenterY = child.getY() + child.getHeight() / 2;
+        mInitialAvatarCenterY = child.getY() + child.getHeight() / 2f;
         return super.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
     }
 

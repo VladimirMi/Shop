@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 public class DaggerService {
     public static final String SERVICE_NAME = "DAGGER_SERVICE";
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "WrongConstant"})
     public static <T> T getDaggerComponent(Context context) {
         return (T) context.getSystemService(SERVICE_NAME);
     }

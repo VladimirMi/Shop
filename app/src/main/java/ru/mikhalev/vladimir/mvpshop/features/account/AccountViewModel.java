@@ -33,7 +33,7 @@ public class AccountViewModel extends BaseViewModel {
     private int viewState = STATE.PREVIEW;
 
     public AccountViewModel(AccountProfileDto accountProfile, AccountSettingsDto accountSettings) {
-        this.fullname = accountProfile.getFullname();
+        this.fullname = accountProfile.getFullName();
         this.phone = accountProfile.getPhone();
         this.avatar = accountProfile.getAvatar();
         this.orderNotification = accountSettings.isOrderNotification();

@@ -67,6 +67,7 @@ public class ScreenScoper {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static MortarScope createScreenScope(BaseScreen screen) {
         Timber.e("createScreenScope: with name : " + screen.getScopeName());
         String parentScopeName = getParentScopeName(screen);
