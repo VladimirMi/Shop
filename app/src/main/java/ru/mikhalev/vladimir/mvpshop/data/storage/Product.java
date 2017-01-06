@@ -1,9 +1,10 @@
 package ru.mikhalev.vladimir.mvpshop.data.storage;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.ProductRes;
-import ru.mikhalev.vladimir.mvpshop.features.catalog.ProductCardViewModel;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
 
 /**
  * Developer Vladimir Mikhalev 19.12.2016
@@ -18,6 +19,8 @@ public class Product extends RealmObject {
     private int price;
     private int count = 1;
     private boolean favorite;
+    private float rating;
+    private RealmList<Comment> mComments = new RealmList<>();
 
     public Product() {
     }
@@ -30,7 +33,7 @@ public class Product extends RealmObject {
         this.price = productRes.getPrice();
     }
 
-    public Product(ProductCardViewModel viewModel) {
+    public Product(ProductViewModel viewModel) {
         this.id = viewModel.getId();
         this.productName = viewModel.getProductName();
         this.imageUrl = viewModel.getImageUrl();
@@ -66,5 +69,13 @@ public class Product extends RealmObject {
 
     public boolean isFavorite() {
         return favorite;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public RealmList<Comment> getComments() {
+        return mComments;
     }
 }

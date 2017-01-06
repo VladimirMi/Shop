@@ -3,20 +3,18 @@ package ru.mikhalev.vladimir.mvpshop.features.address;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import javax.inject.Inject;
-
 import dagger.Provides;
 import flow.Flow;
 import flow.TreeKey;
 import mortar.MortarScope;
-import mortar.ViewPresenter;
 import ru.mikhalev.vladimir.mvpshop.R;
+import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
+import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
-import ru.mikhalev.vladimir.mvpshop.di.scopes.AddressScope;
+import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountModel;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountScreen;
-import ru.mikhalev.vladimir.mvpshop.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 
 /**
@@ -68,7 +66,7 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
     @dagger.Module
     public class Module {
         @Provides
-        @AddressScope
+        @DaggerScope(AddressScreen.class)
         AddressPresenter provideAddressPresenter() {
             return new AddressPresenter();
         }
@@ -76,7 +74,7 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
 
     @dagger.Component(dependencies = AccountScreen.Component.class,
             modules = AddressScreen.Module.class)
-    @AddressScope
+    @DaggerScope(AddressScreen.class)
     public interface Component {
         void inject(AddressPresenter presenter);
 
@@ -85,31 +83,38 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
 
     //endregion
 
-    public class AddressPresenter extends ViewPresenter<AddressView> implements IAddressPresenter {
-
-        @Inject
-        AccountModel mAccountModel;
-
-        @Override
-        protected void onEnterScope(MortarScope scope) {
-            super.onEnterScope(scope);
-            scope.<AddressScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
-        }
+    public class AddressPresenter extends BasePresenter<AddressView, AccountModel> implements IAddressPresenter {
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
+            // TODO: 04.01.2017 move to base
             getView().initView();
             getView().setViewModel(mViewModel);
         }
+
+        @Override
+        protected void initDagger(MortarScope scope) {
+            scope.<AddressScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
+        }
+
+        @Override
+        protected void initActionBar() {
+            // TODO: 04.01.2017 init this
+        }
+
+
+        //region =============== IAddressPresenter ==============
 
         @SuppressWarnings("CheckResult")
         @Override
         public void clickOnAddAddress() {
             if (getView() != null) {
-                mAccountModel.updateOrInsertAddress(new AccountAddressDto(mViewModel));
+                mModel.updateOrInsertAddress(new AccountAddressDto(mViewModel));
                 Flow.get(getView()).goBack();
             }
         }
+
+        //endregion
     }
 }

@@ -16,16 +16,16 @@ public class CatalogModel extends BaseModel {
         return false;
     }
 
-    public void updateProduct(Product product) {
-        mDataManager.saveProductInDB(product);
-    }
-
 //    public Observable<ProductDto> getProductFromPosition(int position) {
 //        return mDataManager.getProductFromPosition(position);
 //    }
 
     public Observable<RealmResults<Product>> getProductsObs() {
         return mDataManager.getProductsFromDB();
+    }
+
+    public void updateProduct(Product product) {
+        mDataManager.saveProductInDB(product);
     }
 
 //    @RxLogObservable

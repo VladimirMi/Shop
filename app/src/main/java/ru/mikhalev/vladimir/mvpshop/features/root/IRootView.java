@@ -2,13 +2,13 @@ package ru.mikhalev.vladimir.mvpshop.features.root;
 
 import android.support.annotation.Nullable;
 
-import ru.mikhalev.vladimir.mvpshop.core.IView;
+import ru.mikhalev.vladimir.mvpshop.core.BaseView;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountViewModel;
 
 /**
  * Developer Vladimir Mikhalev, 06.11.2016.
  */
-public interface IRootView extends IView {
+public interface IRootView {
 
     void showMessage(String message);
 
@@ -19,7 +19,7 @@ public interface IRootView extends IView {
     void hideLoad();
 
     @Nullable
-    IView getCurrentScreen();
+    BaseView getCurrentScreen();
 
     void setBasketCounter(int count);
 

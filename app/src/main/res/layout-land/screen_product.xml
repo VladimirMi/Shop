@@ -7,15 +7,15 @@
 
         <variable
             name="viewModel"
-            type="ru.mikhalev.vladimir.mvpshop.features.catalog.ProductCardViewModel"/>
+            type="ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel"/>
 
         <variable
             name="actionsHandler"
-            type="ru.mikhalev.vladimir.mvpshop.features.catalog.ProductCardView"/>
+            type="ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductView"/>
 
     </data>
 
-    <ru.mikhalev.vladimir.mvpshop.features.catalog.ProductCardView
+    <ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="ContentDescription">
@@ -115,5 +115,5 @@
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
-    </ru.mikhalev.vladimir.mvpshop.features.catalog.ProductCardView>
+    </ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductView>
 </layout>

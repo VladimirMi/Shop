@@ -1,13 +1,15 @@
 package ru.mikhalev.vladimir.mvpshop.core;
 
 /**
- * Developer Vladimir Mikhalev, 27.10.16
+ * Developer Vladimir Mikhalev 04.01.2017
  */
 
 public interface IView {
+
     void initView();
 
     void setViewModel(BaseViewModel viewModel);
 
     boolean viewOnBackPressed();
+
 }

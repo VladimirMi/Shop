@@ -23,7 +23,6 @@ public class CatalogAdapter extends PagerAdapter {
     private List<Product> mProductList = new ArrayList<>();
 
     public CatalogAdapter() {
-
     }
 
     @Override
@@ -45,7 +44,7 @@ public class CatalogAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         Product product = mProductList.get(position);
         Context productContext = CatalogScreen.Factory.createProductContext(product, container.getContext());
-        View newView = LayoutInflater.from(productContext).inflate(R.layout.screen_product_card, container, false);
+        View newView = LayoutInflater.from(productContext).inflate(R.layout.screen_product, container, false);
         container.addView(newView);
         return newView;
     }
@@ -57,4 +56,6 @@ public class CatalogAdapter extends PagerAdapter {
         container.removeView((View) object);
         Timber.e("destroyItem");
     }
+
+
 }

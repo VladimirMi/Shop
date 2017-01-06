@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel"/>
+
+        <variable
+            name="actionsHandler"
+            type="ru.mikhalev.vladimir.mvpshop.features.details.DetailsView"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                style="@style/CustomCard.ProductCard">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/title_description"
+                        style="@style/CustomText.ProductTitle"
+                        android:text="Описание"
+                        bind:font="@{@string/font_roboto_medium}"/>
+
+                    <TextView
+                        android:id="@+id/description"
+                        style="@style/CustomText.ProductDescription"
+                        android:layout_width="match_parent"
+                        android:text="Nixuss cantare in primus tubinga!Trabem una ducunt ad rusticus visus.Salvus axona callide gratias absolutio est.A falsis, nomen talis torus.Emeritis, velox nomens superbe convertam de varius, fidelis advena."/>
+
+                    <RatingBar
+                        android:id="@+id/rating"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:rating="2.5"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                style="@style/CustomCard.ProductCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/CustomText.LabelPrice"
+                            android:text="@string/productRes.count"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageButton
+                                android:id="@+id/minus"
+                                style="@style/CountButton"
+                                android:src="@drawable/ic_minus_24dp"
+                                bind:onClick="@{actionsHandler::clickOnMinus}"
+                                tools:ignore="ContentDescription"/>
+
+                            <TextView
+                                style="@style/CustomText.ValuePrice"
+                                android:text="@{viewModel.count}"
+                                tools:text="1"/>
+
+                            <ImageButton
+                                android:id="@+id/plus"
+                                style="@style/CountButton"
+                                android:src="@drawable/ic_plus_24dp"
+                                bind:onClick="@{actionsHandler::clickOnPlus}"
+                                tools:ignore="ContentDescription"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/grey_light"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/CustomText.LabelPrice"
+                            android:text="@string/productRes.price"/>
+
+                        <TextView
+                            style="@style/CustomText.ValuePrice"
+                            android:text="@{viewModel.price * viewModel.count}"
+                            tools:text="999"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>

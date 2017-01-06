@@ -25,7 +25,7 @@ public class AccountViewModel extends BaseViewModel {
     }
 
     private int id;
-    private String fullname;
+    private String fullName;
     private String phone;
     private String avatar;
     private boolean orderNotification;
@@ -33,7 +33,7 @@ public class AccountViewModel extends BaseViewModel {
     private int viewState = STATE.PREVIEW;
 
     public AccountViewModel(AccountProfileDto accountProfile, AccountSettingsDto accountSettings) {
-        this.fullname = accountProfile.getFullName();
+        this.fullName = accountProfile.getFullName();
         this.phone = accountProfile.getPhone();
         this.avatar = accountProfile.getAvatar();
         this.orderNotification = accountSettings.isOrderNotification();
@@ -51,13 +51,13 @@ public class AccountViewModel extends BaseViewModel {
     }
 
     @Bindable
-    public String getFullname() {
-        return fullname;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-        notifyPropertyChanged(BR.fullname);
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+        notifyPropertyChanged(BR.fullName);
     }
 
     @Bindable
@@ -113,8 +113,8 @@ public class AccountViewModel extends BaseViewModel {
     }
 
     public void update(AccountViewModel viewModel) {
-        if (!fullname.equals(viewModel.getFullname())) {
-            setFullname(viewModel.getFullname());
+        if (!fullName.equals(viewModel.getFullName())) {
+            setFullName(viewModel.getFullName());
         }
         if (!phone.equals(viewModel.getPhone())) {
             setPhone(viewModel.getPhone());

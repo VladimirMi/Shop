@@ -21,6 +21,7 @@ import ru.mikhalev.vladimir.mvpshop.data.dto.AccountSettingsDto;
 import ru.mikhalev.vladimir.mvpshop.data.network.RestCallTransformer;
 import ru.mikhalev.vladimir.mvpshop.data.network.api.RestService;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.AccountRes;
+import ru.mikhalev.vladimir.mvpshop.data.network.models.ProductRes;
 import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.components.DataManagerComponent;
@@ -41,6 +42,7 @@ public class DataManager {
 
     private Realm mRealm;
     private ArrayList<AccountAddressDto> mAddressDtoList;
+    private RealmManager mRealmManager;
 
     public static DataManager getInstance() {
         return instance;
@@ -83,13 +85,14 @@ public class DataManager {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(productRes -> {
                     Product product = new Product(productRes);
-                    if (productRes.isActive()) {
+                    if (!productRes.isActive()) {
                         saveProductInDB(product);
                     } else {
                         deleteProductFromDB(product);
                     }
                 })
-                .subscribe();
+                .filter(ProductRes::isActive)
+                .subscribe(mRealmManager::saveProductInDB);
     }
 
     //endregion

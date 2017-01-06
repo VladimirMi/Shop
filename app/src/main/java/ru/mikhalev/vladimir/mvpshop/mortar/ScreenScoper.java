@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import mortar.MortarScope;
+import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
-import ru.mikhalev.vladimir.mvpshop.flow.BaseScreen;
 import timber.log.Timber;
 
 /**

@@ -3,6 +3,9 @@ package ru.mikhalev.vladimir.mvpshop.core;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
+
 import io.realm.Realm;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
@@ -22,15 +25,21 @@ public class App extends Application {
 
     @Override
     public Object getSystemService(String name) {
-        return mRootScope.hasService(name)
-                ? mRootScope.getService(name)
-                : super.getSystemService(name);
+        return mRootScope.hasService(name) ? mRootScope.getService(name) : super.getSystemService(name);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         Realm.init(this);
+
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                        .build());
+
         sAppComponent = DaggerService.createDaggerComponent(AppComponent.class,
                 new AppModule(getApplicationContext()));
 

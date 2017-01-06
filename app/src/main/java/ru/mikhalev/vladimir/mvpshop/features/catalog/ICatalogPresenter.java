@@ -5,7 +5,7 @@ package ru.mikhalev.vladimir.mvpshop.features.catalog;
  */
 
 public interface ICatalogPresenter {
-    void clickOnBuyButton(int position);
-
     boolean checkUserAuth();
+
+    void clickOnBuyButton(int position);
 }

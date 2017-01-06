@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
  * Developer Vladimir Mikhalev, 30.10.2016.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements IView {
+public abstract class BaseActivity extends AppCompatActivity {
     private ViewDataBinding mBinding;
 
     public ViewDataBinding getBinding() {
@@ -16,10 +16,5 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
 
     public void setBinding(ViewDataBinding binding) {
         mBinding = binding;
-    }
-
-    @Override
-    public boolean viewOnBackPressed() {
-        return false;
     }
 }

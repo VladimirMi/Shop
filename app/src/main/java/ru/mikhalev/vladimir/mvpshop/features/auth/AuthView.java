@@ -4,67 +4,36 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.RelativeLayout;
-
-import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpshop.R;
+import ru.mikhalev.vladimir.mvpshop.core.BaseView;
 import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenAuthBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
-import timber.log.Timber;
 
 
 /**
  * Developer Vladimir Mikhalev, 27.11.2016.
  */
 
-public class AuthView extends RelativeLayout implements IAuthView, IAuthActions {
-
-    @Inject
-    AuthScreen.AuthPresenter mPresenter;
+public class AuthView extends BaseView<AuthScreen.AuthPresenter> implements IAuthView, IAuthActions {
 
     private ScreenAuthBinding mBinding;
     private AuthViewModel mViewModel;
 
     public AuthView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Timber.d("AuthView");
-        if (!isInEditMode()) {
-            DaggerService.<AuthScreen.Component>getDaggerComponent(context).inject(this);
-        }
-    }
-
-    //region =============== Lifecycle ==============
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        Timber.d("onFinishInflate");
-        if (!isInEditMode()) {
-            mBinding = ScreenAuthBinding.bind(this);
-        }
     }
 
     @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        Timber.d("onAttachedToWindow");
-        if (!isInEditMode()) {
-            mPresenter.takeView(this);
-        }
+    protected void initDagger(Context context) {
+        DaggerService.<AuthScreen.Component>getDaggerComponent(context).inject(this);
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        Timber.d("onDetachedFromWindow");
-        if (!isInEditMode()) {
-            mPresenter.dropView(this);
-        }
+    protected void initBinding() {
+        mBinding = ScreenAuthBinding.bind(this);
     }
-
-    //endregion
 
 
     //region =============== Events ==============

@@ -1,15 +1,13 @@
 package ru.mikhalev.vladimir.mvpshop.features.account;
 
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
 
-import javax.inject.Inject;
-
+import ru.mikhalev.vladimir.mvpshop.core.BaseView;
 import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenAccountBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
@@ -18,51 +16,30 @@ import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
  * Developer Vladimir Mikhalev 29.11.2016
  */
 
-public class AccountView extends CoordinatorLayout implements IAccountView, IAccountActions {
+public class AccountView extends BaseView<AccountScreen.AccountPresenter> implements IAccountView, IAccountActions {
 
-    @Inject
-    AccountScreen.AccountPresenter mPresenter;
     private ScreenAccountBinding mBinding;
     private AccountViewModel mViewModel;
     private AddressListAdapter mAdapter;
 
     public AccountView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (!isInEditMode()) {
-            DaggerService.<AccountScreen.Component>getDaggerComponent(getContext()).inject(this);
-        }
+    }
+
+    @Override
+    protected void initDagger(Context context) {
+        DaggerService.<AccountScreen.Component>getDaggerComponent(getContext()).inject(this);
+    }
+
+    @Override
+    protected void initBinding() {
+        mBinding = ScreenAccountBinding.bind(this);
     }
 
     public AddressListAdapter getAdapter() {
         return mAdapter;
     }
 
-    //region =============== Lifecycle ==============
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        if (!isInEditMode()) {
-            mBinding = ScreenAccountBinding.bind(this);
-        }
-    }
-
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (!isInEditMode()) {
-            mPresenter.takeView(this);
-        }
-    }
-
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (!isInEditMode()) {
-            mPresenter.dropView(this);
-        }
-    }
-    //endregion
 
     //region =============== Events ==============
 

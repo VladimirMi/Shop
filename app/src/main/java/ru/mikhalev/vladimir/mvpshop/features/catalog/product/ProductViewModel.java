@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpshop.features.catalog;
+package ru.mikhalev.vladimir.mvpshop.features.catalog.product;
 
 import android.databinding.Bindable;
 
@@ -9,7 +9,7 @@ import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
 /**
  * Developer Vladimir Mikhalev 27.10.2016
  */
-public class ProductCardViewModel extends BaseViewModel {
+public class ProductViewModel extends BaseViewModel {
 
     private int id;
     private String productName;
@@ -19,10 +19,10 @@ public class ProductCardViewModel extends BaseViewModel {
     private int count;
     private boolean favorite;
 
-    public ProductCardViewModel() {
+    public ProductViewModel() {
     }
 
-    public ProductCardViewModel(Product product) {
+    public ProductViewModel(Product product) {
         id = product.getId();
         productName = product.getProductName();
         imageUrl = product.getImageUrl();

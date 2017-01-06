@@ -1,5 +1,7 @@
 package ru.mikhalev.vladimir.mvpshop.di.modules;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -43,11 +45,11 @@ public class NetworkModule {
     private OkHttpClient createClient() {
         return new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .addNetworkInterceptor(new StethoInterceptor())
                 .connectTimeout(AppConfig.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(AppConfig.READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .writeTimeout(AppConfig.WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
                 .build();
-        // TODO: 06.11.2016 add interceptors
     }
 
     private Retrofit createRetrofit(OkHttpClient okHttp) {

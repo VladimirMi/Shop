@@ -12,13 +12,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,13 +36,12 @@ import ru.mikhalev.vladimir.mvpshop.BuildConfig;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.App;
 import ru.mikhalev.vladimir.mvpshop.core.BaseActivity;
-import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
-import ru.mikhalev.vladimir.mvpshop.core.IView;
+import ru.mikhalev.vladimir.mvpshop.core.BaseView;
 import ru.mikhalev.vladimir.mvpshop.databinding.ActivityRootBinding;
 import ru.mikhalev.vladimir.mvpshop.databinding.DrawerHeaderBinding;
 import ru.mikhalev.vladimir.mvpshop.databinding.ToolbarBasketItemBinding;
 import ru.mikhalev.vladimir.mvpshop.di.components.AppComponent;
-import ru.mikhalev.vladimir.mvpshop.di.scopes.RootScope;
+import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountModel;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountScreen;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountViewModel;
@@ -46,7 +51,7 @@ import ru.mikhalev.vladimir.mvpshop.flow.TreeKeyDispatcher;
 import ru.mikhalev.vladimir.mvpshop.utils.UIHelper;
 import timber.log.Timber;
 
-public class RootActivity extends BaseActivity implements IRootView, NavigationView.OnNavigationItemSelectedListener {
+public class RootActivity extends BaseActivity implements IRootView, NavigationView.OnNavigationItemSelectedListener, IActionBarView {
     private static final int REQUEST_SETTINGS_INTENT = 123;
 
     @Inject RootPresenter mRootPresenter;
@@ -55,6 +60,9 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     private ActivityRootBinding mBinding;
     private DrawerHeaderBinding mDrawerBinding;
     private ToolbarBasketItemBinding mBasketBinding;
+    private ActionBarDrawerToggle mToggle;
+    private ActionBar mActionBar;
+    private List<MenuItemHolder> mActionBarMenuItems;
 
     //region ==================== Life cycle ========================
 
@@ -92,7 +100,6 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
         App.getRootActivityComponent().inject(this);
 
         mRootPresenter.takeView(this);
-        mRootPresenter.initView();
         initToolbar();
         initDrawer();
     }
@@ -111,7 +118,7 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     @Override
     protected void onPause() {
-        mRootPresenter.dropView();
+        mRootPresenter.dropView(this);
         super.onPause();
     }
 
@@ -132,16 +139,14 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     private void initToolbar() {
         setSupportActionBar(mBinding.toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
+        mActionBar = getSupportActionBar();
     }
 
     private void initDrawer() {
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        mToggle = new ActionBarDrawerToggle(
                 this, mBinding.drawer, mBinding.toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
-        toggle.syncState();
-        mBinding.drawer.addDrawerListener(toggle);
+        mToggle.syncState();
+        mBinding.drawer.addDrawerListener(mToggle);
         mBinding.navigationView.setNavigationItemSelectedListener(this);
 
         mDrawerBinding = DrawerHeaderBinding.inflate(getLayoutInflater(), mBinding.navigationView, false);
@@ -193,17 +198,6 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     //region ==================== IRootView ========================
 
-
-    @Override
-    public void setViewModel(BaseViewModel viewModel) {
-        // TODO: 27.12.2016 set ViewModel
-    }
-
-    @Override
-    public void initView() {
-        // TODO: 21.12.2016 init
-    }
-
     @Override
     public void setDrawer(AccountViewModel accountViewModel) {
         mDrawerBinding.setViewModel(accountViewModel);
@@ -239,14 +233,10 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     @Nullable
     @Override
-    public IView getCurrentScreen() {
-        return (IView) mBinding.rootFrame.getChildAt(0);
+    public BaseView getCurrentScreen() {
+        return (BaseView) mBinding.rootFrame.getChildAt(0);
     }
 
-    @Override
-    public boolean viewOnBackPressed() {
-        return false;
-    }
 
     @Override
     public void setBasketCounter(int count) {
@@ -296,6 +286,85 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     //endregion
 
 
+    //region =============== IActionBarView ==============
+
+
+    @Override
+    public void setToolbarVisible(boolean isVisible) {
+        // TODO: 05.01.2017 сделать через show/hide
+        if (isVisible) {
+            mBinding.toolbar.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.toolbar.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setTitle(String title) {
+        mBinding.toolbar.setTitle(title);
+    }
+
+    @Override
+    public void setBackArrow(boolean enabled) {
+        if (mToggle != null && mActionBar != null) {
+            if (enabled) {
+                mToggle.setDrawerIndicatorEnabled(false);
+                mActionBar.setDisplayHomeAsUpEnabled(true);
+                if (mToggle.getToolbarNavigationClickListener() == null) {
+                    mToggle.setToolbarNavigationClickListener(v -> onBackPressed());
+                }
+                lockDrawer();
+            } else {
+                mToggle.setDrawerIndicatorEnabled(true);
+                mToggle.setToolbarNavigationClickListener(null);
+                mActionBar.setDisplayHomeAsUpEnabled(false);
+                unlockDrawer();
+            }
+            mToggle.syncState();
+        }
+    }
+
+    @Override
+    public void setMenuItems(List<MenuItemHolder> items) {
+        mActionBarMenuItems = items;
+        supportInvalidateOptionsMenu();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (mActionBarMenuItems != null && !mActionBarMenuItems.isEmpty()) {
+            for (MenuItemHolder menuItem : mActionBarMenuItems) {
+                MenuItem item = menu.add(menuItem.getItemTitle());
+                item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                        .setIcon(menuItem.getIconResId())
+                        .setOnMenuItemClickListener(menuItem.getListener());
+            }
+        } else {
+            menu.clear();
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void setTabLayout(ViewPager pager) {
+        // TODO: 05.01.2017 табы на всю ширину в лэндскейпе
+        TabLayout tabs = new TabLayout(this);
+        tabs.setupWithViewPager(pager);
+        mBinding.appbar.addView(tabs);
+        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+    }
+
+    @Override
+    public void removeTabLayout() {
+        View tabs = mBinding.appbar.getChildAt(1);
+        if (tabs != null && tabs instanceof TabLayout) {
+            mBinding.appbar.removeView(tabs);
+        }
+    }
+
+    //endregion
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -314,20 +383,20 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     @dagger.Module
     public static class Module {
         @Provides
-        @RootScope
+        @DaggerScope(RootActivity.class)
         RootPresenter provideRootPresenter() {
             return new RootPresenter();
         }
 
         @Provides
-        @RootScope
+        @DaggerScope(RootActivity.class)
         AccountModel provideAccountModel() {
             return new AccountModel();
         }
     }
 
     @dagger.Component(dependencies = AppComponent.class, modules = RootActivity.Module.class)
-    @RootScope
+    @DaggerScope(RootActivity.class)
     public interface Component {
         void inject(RootActivity view);
 

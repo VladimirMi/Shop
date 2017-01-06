@@ -1,10 +1,10 @@
-package ru.mikhalev.vladimir.mvpshop.features.catalog;
+package ru.mikhalev.vladimir.mvpshop.features.catalog.product;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
  */
 
-public interface IProductCardActions {
+public interface IProductActions {
     void clickOnPlus();
 
     void clickOnMinus();

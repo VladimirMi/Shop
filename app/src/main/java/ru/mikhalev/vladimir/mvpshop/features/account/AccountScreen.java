@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 
 import java.io.File;
@@ -16,27 +15,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.inject.Inject;
-
 import dagger.Provides;
 import flow.Flow;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
-import ru.mikhalev.vladimir.mvpshop.core.BaseViewPresenter;
+import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
+import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
 import ru.mikhalev.vladimir.mvpshop.data.dto.ActivityResultDto;
 import ru.mikhalev.vladimir.mvpshop.data.dto.PermissionResultDto;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
-import ru.mikhalev.vladimir.mvpshop.di.scopes.AccountScope;
+import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.address.AddressScreen;
-import ru.mikhalev.vladimir.mvpshop.features.root.IRootView;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootActivity;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
-import ru.mikhalev.vladimir.mvpshop.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 import rx.Observable;
 import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static android.Manifest.permission.CAMERA;
@@ -64,7 +59,7 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
     @dagger.Module
     public class Module {
         @Provides
-        @AccountScope
+        @DaggerScope(AccountScreen.class)
         AccountScreen.AccountPresenter provideAccountPresenter() {
             return new AccountScreen.AccountPresenter();
         }
@@ -72,60 +67,49 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
 
     @dagger.Component(dependencies = RootActivity.Component.class,
             modules = AccountScreen.Module.class)
-    @AccountScope
+    @DaggerScope(AccountScreen.class)
     public interface Component {
         void inject(AccountScreen.AccountPresenter presenter);
 
         void inject(AccountView view);
 
         AccountModel getAccountModel();
+
+        RootPresenter getRootPresenter();
     }
 
     //endregion
 
 
-    public class AccountPresenter extends BaseViewPresenter<AccountView> implements IAccountPresenter {
+    public class AccountPresenter extends BasePresenter<AccountView, AccountModel> implements IAccountPresenter {
 
         private static final int REQUEST_CAMERA = 100;
         private static final int REQUEST_GALLERY = 101;
 
-        @Inject AccountModel mAccountModel;
-        @Inject RootPresenter mRootPresenter;
-
-        private CompositeSubscription mGlobalSubscriptions = new CompositeSubscription();
-        private CompositeSubscription mSubscriptions = new CompositeSubscription();
-
         private File mPhotoFile;
         private String mCurrentAvatarPath;
 
-        @Override
-        @Nullable
-        protected IRootView getRootView() {
-            return mRootPresenter.getView();
-        }
 
         //region =============== Lifecycle ==============
-
-        @Override
-        protected void onEnterScope(MortarScope scope) {
-            super.onEnterScope(scope);
-            scope.<AccountScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
-            mGlobalSubscriptions.add(subscribeOnActivityResultObs());
-            mGlobalSubscriptions.add(subscribeOnPermissionResultObs());
-        }
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             getView().initView();
-            mSubscriptions.add(subscribeOnAccountSubject());
-            mSubscriptions.add(subscribeOnAddressesObs());
+            mCompSubs.add(subscribeOnActivityResultObs());
+            mCompSubs.add(subscribeOnPermissionResultObs());
+            mCompSubs.add(subscribeOnAccountSubject());
+            mCompSubs.add(subscribeOnAddressesObs());
         }
 
         @Override
-        protected void onExitScope() {
-            super.onExitScope();
-            mGlobalSubscriptions.unsubscribe();
+        protected void initDagger(MortarScope scope) {
+            scope.<AccountScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
+        }
+
+        @Override
+        protected void initActionBar() {
+
         }
 
         //endregion
@@ -134,7 +118,7 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
         //region =============== Subscription ==============
 
         private Subscription subscribeOnAccountSubject() {
-            return mAccountModel.getAccountSubject()
+            return mModel.getAccountSubject()
                     .subscribe(new ViewSubscriber<AccountViewModel>() {
                         @Override
                         public void onNext(AccountViewModel viewModel) {
@@ -156,7 +140,7 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
         }
 
         private Subscription subscribeOnAddressesObs() {
-            return mAccountModel.getAccountAddresses()
+            return mModel.getAccountAddresses()
                     .subscribe(new ViewSubscriber<AccountAddressDto>() {
                         @Override
                         public void onNext(AccountAddressDto accountAddressDto) {
@@ -195,7 +179,7 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
         @Override
         public void editAddress(int position) {
             if (getView() != null) {
-                AccountAddressDto addressDto = mAccountModel.getAddressFromPosition(position);
+                AccountAddressDto addressDto = mModel.getAddressFromPosition(position);
                 Flow.get(getView()).set(new AddressScreen(addressDto));
             }
         }
@@ -211,7 +195,7 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
 
         @Override
         public void removeAddress(int position) {
-            mAccountModel.removeAddress(mAccountModel.getAddressFromPosition(position));
+            mModel.removeAddress(mModel.getAddressFromPosition(position));
             updateListView();
         }
 
@@ -223,16 +207,17 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
         @Override
         public void switchViewState() {
             if (mViewModel.getViewState() == AccountViewModel.STATE.EDIT) {
-                mAccountModel.saveAccountProfile(mViewModel);
+                mModel.saveAccountProfile(mViewModel);
             }
             getView().changeState();
         }
 
         @Override
         public void switchNotification() {
-            mAccountModel.saveAccountSetting(mViewModel);
+            mModel.saveAccountSetting(mViewModel);
         }
 
+        // TODO: 06.01.2017 remove
         @Override
         public void changeAvatar() {
             if (getView() != null) {

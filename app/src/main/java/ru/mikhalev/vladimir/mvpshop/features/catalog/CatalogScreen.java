@@ -6,21 +6,21 @@ import android.support.annotation.Nullable;
 
 import java.util.Locale;
 
-import javax.inject.Inject;
-
 import dagger.Provides;
 import io.realm.RealmResults;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
-import ru.mikhalev.vladimir.mvpshop.core.BaseViewPresenter;
+import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
+import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
-import ru.mikhalev.vladimir.mvpshop.di.scopes.CatalogScope;
+import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductScreen;
 import ru.mikhalev.vladimir.mvpshop.features.root.IRootView;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootActivity;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
-import ru.mikhalev.vladimir.mvpshop.flow.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
+import rx.Subscription;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -28,130 +28,135 @@ import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 @Screen(R.layout.screen_catalog)
 public class CatalogScreen
         extends BaseScreen<RootActivity.Component> {
-  @Override
-  public Object createScreenComponent(RootActivity.Component parentComponent) {
-    return DaggerCatalogScreen_Component.builder()
-            .component(parentComponent)
-            .module(new CatalogScreen.Module())
-            .build();
-  }
-
-  //region =============== DI ==============
-  @dagger.Module
-  public class Module {
-    @Provides
-    @CatalogScope
-    CatalogScreen.CatalogPresenter provideCatalogPresenter() {
-      return new CatalogScreen.CatalogPresenter();
-    }
-
-    @Provides
-    @CatalogScope
-    CatalogModel provideCatalogModel() {
-      return new CatalogModel();
-    }
-  }
-
-  @dagger.Component(dependencies = RootActivity.Component.class,
-          modules = CatalogScreen.Module.class)
-  @CatalogScope
-  public interface Component {
-    void inject(CatalogScreen.CatalogPresenter presenter);
-
-    void inject(CatalogView view);
-
-    CatalogModel getCatalogModel();
-  }
-
-  //endregion
-
-  class CatalogPresenter extends BaseViewPresenter<CatalogView> implements ICatalogPresenter {
-
-    @Inject CatalogModel mCatalogModel;
-    @Inject RootPresenter mRootPresenter;
-    private int mCartCounter;
-
-    @Nullable
     @Override
-    protected IRootView getRootView() {
-      return mRootPresenter.getView();
+    public Object createScreenComponent(RootActivity.Component parentComponent) {
+        return DaggerCatalogScreen_Component.builder()
+                .component(parentComponent)
+                .module(new CatalogScreen.Module())
+                .build();
     }
 
-    @Override
-    protected void onEnterScope(MortarScope scope) {
-      super.onEnterScope(scope);
-      scope.<CatalogScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
+    //region =============== DI ==============
+    @dagger.Module
+    public class Module {
+        @Provides
+        @DaggerScope(CatalogScreen.class)
+        CatalogScreen.CatalogPresenter provideCatalogPresenter() {
+            return new CatalogScreen.CatalogPresenter();
+        }
+
+        @Provides
+        @DaggerScope(CatalogScreen.class)
+        CatalogModel provideCatalogModel() {
+            return new CatalogModel();
+        }
     }
 
-    @Override
-    protected void onLoad(Bundle savedInstanceState) {
-      super.onLoad(savedInstanceState);
-      getView().setViewModel(null);
-      getView().initView();
-      subscribeOnProductList();
-      if (getRootView() != null) {
-        getRootView().setBasketCounter(mCartCounter);
-      }
+    @dagger.Component(dependencies = RootActivity.Component.class,
+            modules = CatalogScreen.Module.class)
+    @DaggerScope(CatalogScreen.class)
+    public interface Component {
+        void inject(CatalogScreen.CatalogPresenter presenter);
+
+        void inject(CatalogView view);
+
+        CatalogModel getCatalogModel();
+
+        RootPresenter getRootPresenter();
     }
 
-    @Override
-    public void dropView(CatalogView view) {
-      super.dropView(view);
-      mSubscriptions.unsubscribe();
-    }
+    //endregion
 
-    private void subscribeOnProductList() {
-      mSubscriptions.add(
-              mCatalogModel.getProductsObs().subscribe(new ViewSubscriber<RealmResults<Product>>() {
+    class CatalogPresenter extends BasePresenter<CatalogView, CatalogModel> implements ICatalogPresenter {
+
+        private int mCartCounter;
+
+        @Override
+        protected void initDagger(MortarScope scope) {
+            scope.<CatalogScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
+        }
+
+        @Override
+        protected void initActionBar() {
+            // TODO: 04.01.2017 init action bar
+        }
+
+
+        @Override
+        protected void onLoad(Bundle savedInstanceState) {
+            super.onLoad(savedInstanceState);
+            getView().initView();
+            getView().setViewModel(null);
+            mCompSubs.add(subscribeOnProductList());
+            if (getRootView() != null) {
+                getRootView().setBasketCounter(mCartCounter);
+            }
+        }
+
+        @Nullable
+        @Override
+        protected IRootView getRootView() {
+            return super.getRootView();
+        }
+
+        private Subscription subscribeOnProductList() {
+            return mModel.getProductsObs().subscribe(new ViewSubscriber<RealmResults<Product>>() {
                 @Override
                 public void onNext(RealmResults<Product> products) {
-                  getView().getAdapter().updateData(products);
+                    getView().getAdapter().updateData(products);
+                }
+            });
+        }
+
+
+        //region =============== ICatalogPresenter ==============
+
+        @Override
+        public void clickOnBuyButton(int position) {
+            if (getView() != null) {
+                //                mCatalogModel.getProductsObs()
+                //                        .filter(product -> product.getId() == position)
+                //                        .subscribe(product -> {
+                //                            if (checkUserAuth() && getRootView() != null) {
+                ////                                getRootView().showMessage("Товар " + mCatalogModel.getProductFromPosition(position).getProductName()
+                ////                                        + " успешно добавлен в корзину");
+                ////                                mCartCounter += mCatalogModel.getProductFromPosition(position);
+                //                                getRootView().setBasketCounter(mCartCounter);
+                //                            } else {
+                //                                Flow.get(getView()).set(new AuthScreen());
+                //                            }
+                //                        });
             }
-              }));
+        }
+
+        @Override
+        public boolean checkUserAuth() {
+            return mModel.isUserAuth();
+        }
+
+        //endregion
+
     }
 
-    @Override
-    public void clickOnBuyButton(int position) {
-      if (getView() != null) {
-        //                mCatalogModel.getProductsObs()
-        //                        .filter(product -> product.getId() == position)
-        //                        .subscribe(product -> {
-        //                            if (checkUserAuth() && getRootView() != null) {
-        ////                                getRootView().showMessage("Товар " + mCatalogModel.getProductFromPosition(position).getProductName()
-        ////                                        + " успешно добавлен в корзину");
-        ////                                mCartCounter += mCatalogModel.getProductFromPosition(position);
-        //                                getRootView().setBasketCounter(mCartCounter);
-        //                            } else {
-        //                                Flow.get(getView()).set(new AuthScreen());
-        //                            }
-        //                        });
-      }
-    }
 
-    @Override
-    public boolean checkUserAuth() {
-      return mCatalogModel.isUserAuth();
-    }
-  }
+    public static class Factory {
+        public static Context createProductContext(Product product, Context parentContext) {
+            MortarScope parentScope = MortarScope.getScope(parentContext);
+            MortarScope childScope = null;
+            ProductScreen productScreen = new ProductScreen(product);
+            String scopeName =
+                    String.format(Locale.getDefault(), "%s_%d", productScreen.getScopeName(),
+                            product.getId());
 
-  public static class Factory {
-    public static Context createProductContext(Product product, Context parentContext) {
-      MortarScope parentScope = MortarScope.getScope(parentContext);
-      MortarScope childScope = null;
-      ProductCardScreen productCardScreen = new ProductCardScreen(product);
-      String scopeName =
-              String.format(Locale.getDefault(), "%s_%d", productCardScreen.getScopeName(),
-                      product.getId());
-
-      if (parentScope.findChild(scopeName) == null) {
-        childScope = parentScope.buildChild()
-                .withService(DaggerService.SERVICE_NAME, productCardScreen.createScreenComponent(
-                        DaggerService.getDaggerComponent(parentContext)))
-                .build(scopeName);
-      } else {
-        childScope = parentScope.findChild(scopeName);
-      }
-      return childScope.createContext(parentContext);
+            if (parentScope.findChild(scopeName) == null) {
+                childScope = parentScope.buildChild()
+                        .withService(DaggerService.SERVICE_NAME, productScreen.createScreenComponent(
+                                DaggerService.getDaggerComponent(parentContext)))
+                        .build(scopeName);
+            } else {
+                childScope = parentScope.findChild(scopeName);
+            }
+            return childScope.createContext(parentContext);
+        }
     }
-  }
 }

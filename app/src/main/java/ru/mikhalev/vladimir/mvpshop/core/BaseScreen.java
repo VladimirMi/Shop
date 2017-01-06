@@ -1,4 +1,4 @@
-package ru.mikhalev.vladimir.mvpshop.flow;
+package ru.mikhalev.vladimir.mvpshop.core;
 
 import android.util.Log;
 

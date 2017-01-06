@@ -2,11 +2,9 @@ package ru.mikhalev.vladimir.mvpshop.features.address;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
-
-import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpshop.R;
+import ru.mikhalev.vladimir.mvpshop.core.BaseView;
 import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenAddressBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
@@ -14,45 +12,24 @@ import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 /**
  * Developer Vladimir Mikhalev, 04.12.2016.
  */
-public class AddressView extends RelativeLayout implements IAddressView, IAddressActions {
-    @Inject
-    AddressScreen.AddressPresenter mPresenter;
+public class AddressView extends BaseView<AddressScreen.AddressPresenter> implements IAddressView, IAddressActions {
+
     private ScreenAddressBinding mBinding;
     private AddressViewModel mViewModel;
 
     public AddressView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (!isInEditMode()) {
-            DaggerService.<AddressScreen.Component>getDaggerComponent(context).inject(this);
-        }
-    }
-
-    //region =============== Lifecycle ==============
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        if (!isInEditMode()) {
-            mBinding = ScreenAddressBinding.bind(this);
-        }
     }
 
     @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (!isInEditMode()) {
-            mPresenter.takeView(this);
-        }
+    protected void initDagger(Context context) {
+        DaggerService.<AddressScreen.Component>getDaggerComponent(context).inject(this);
     }
 
     @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (!isInEditMode()) {
-            mPresenter.dropView(this);
-        }
+    protected void initBinding() {
+        mBinding = ScreenAddressBinding.bind(this);
     }
-    //endregion
 
     //region =============== Events ==============
 
@@ -76,6 +53,7 @@ public class AddressView extends RelativeLayout implements IAddressView, IAddres
 
     @Override
     public void initView() {
+        // TODO: 04.01.2017 move to viewModel
         mBinding.addAddress.setText(getContext().getString(R.string.address_save));
     }
 
@@ -84,6 +62,7 @@ public class AddressView extends RelativeLayout implements IAddressView, IAddres
 
     }
 
+    // TODO: 04.01.2017 remove
     @Override
     public AddressViewModel getUserAddress() {
         return mBinding.getViewModel();

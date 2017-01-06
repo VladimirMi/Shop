@@ -25,7 +25,7 @@ public class AccountProfileDto {
     }
 
     public AccountProfileDto(AccountViewModel viewModel) {
-        this.fullName = viewModel.getFullname();
+        this.fullName = viewModel.getFullName();
         this.phone = viewModel.getPhone();
         this.avatar = viewModel.getAvatar();
     }

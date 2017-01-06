@@ -6,10 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import javax.inject.Scope;
 
 /**
- * Developer Vladimir Mikhalev, 04.12.2016.
+ * Developer Vladimir Mikhalev 04.01.2017
  */
 
 @Scope
-@Retention(RetentionPolicy.RUNTIME)
-public @interface AccountScope {
+@Retention(RetentionPolicy.SOURCE)
+public @interface DaggerScope {
+    Class<?> value();
 }

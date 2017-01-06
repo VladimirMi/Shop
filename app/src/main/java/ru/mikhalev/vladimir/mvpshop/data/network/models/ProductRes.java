@@ -1,10 +1,13 @@
 package ru.mikhalev.vladimir.mvpshop.data.network.models;
 
+import java.util.List;
+
 /**
  * Developer Vladimir Mikhalev, 13.12.2016.
  */
 
 public class ProductRes {
+    // TODO: 06.01.2017 change to id, check setters
     private int remoteId;
     private String productName;
     private String imageUrl;
@@ -12,6 +15,7 @@ public class ProductRes {
     private int price;
     private float rating;
     private boolean active;
+    private List<CommentRes> comments;
 
     public int getRemoteId() {
         return remoteId;
@@ -51,5 +55,13 @@ public class ProductRes {
 
     public boolean isActive() {
         return active;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public List<CommentRes> getComments() {
+        return comments;
     }
 }
