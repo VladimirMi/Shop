@@ -37,12 +37,13 @@ public class DataManager {
     private static DataManager instance = new DataManager();
 
     @Inject PreferencesManager mPreferencesManager;
+    @Inject RealmManager mRealmManager;
     @Inject RestService mRestService;
     @Inject Context mContext;
-
     private Realm mRealm;
+
+
     private ArrayList<AccountAddressDto> mAddressDtoList;
-    private RealmManager mRealmManager;
 
     public static DataManager getInstance() {
         return instance;

@@ -9,13 +9,12 @@ import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenDetailsBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.IProductActions;
-import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductScreen;
 
 /**
  * Developer Vladimir Mikhalev 23.12.2016
  */
 
-public class DetailsView extends BaseView<ProductScreen.ProductPresenter> implements IProductActions {
+public class DetailsView extends BaseView<DetailsScreen.DetailsPresenter> implements IProductActions {
 
     private ScreenDetailsBinding mBinding;
 
@@ -35,12 +34,12 @@ public class DetailsView extends BaseView<ProductScreen.ProductPresenter> implem
 
     @Override
     public void initView() {
-
+        DetailsAdapter adapter = new DetailsAdapter();
     }
 
     @Override
     public void setViewModel(BaseViewModel viewModel) {
-        DetailsAdapter adapter = new DetailsAdapter();
+
     }
 
     @Override

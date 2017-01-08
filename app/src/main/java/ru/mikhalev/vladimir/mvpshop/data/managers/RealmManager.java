@@ -15,7 +15,6 @@ import rx.Observable;
 
 public class RealmManager {
 
-
     public void saveProductInDB(Product product) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(product));
@@ -54,7 +53,8 @@ public class RealmManager {
 
     public Observable<RealmResults<Product>> getProductsFromDB() {
         return Realm.getDefaultInstance().where(Product.class)
-                .findAllSorted("id")
-                .asObservable();
+                .findAllAsync()
+                .asObservable()
+                .filter(RealmResults::isLoaded);
     }
 }

@@ -15,6 +15,7 @@ import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.IProductPresenter;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductScreen;
 import ru.mikhalev.vladimir.mvpshop.features.root.MenuItemHolder;
+import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 
 /**
@@ -42,8 +43,14 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
     @dagger.Module
     public class Module {
         @Provides
+        @DaggerScope(DetailsScreen.class)
         DetailsPresenter provideDetailsPresenter() {
             return new DetailsPresenter();
+        }
+
+        @Provides
+        DetailsModel provideDetailsModel() {
+            return new DetailsModel();
         }
     }
 
@@ -54,6 +61,10 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
         void inject(DetailsView detailsView);
 
         void inject(DetailsPresenter detailsPresenter);
+
+        RootPresenter getRootPresenter();
+
+        DetailsModel getDetailsModel();
     }
 
     public class DetailsPresenter extends BasePresenter<DetailsView, CatalogModel> implements IProductPresenter {

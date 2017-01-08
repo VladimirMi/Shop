@@ -1,54 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/apk/res-auto">
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+    >
 
     <data>
 
         <variable
             name="actionsHandler"
-            type="ru.mikhalev.vladimir.mvpshop.features.catalog.ICatalogActions"/>
+            type="ru.mikhalev.vladimir.mvpshop.features.catalog.ICatalogActions"
+            />
 
     </data>
 
     <ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/product_pager"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/pager_indicator"/>
+            >
 
-        <android.support.design.widget.TabLayout
-            android:id="@id/pager_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_medium_32"
-            android:layout_marginRight="@dimen/spacing_medium_32"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@+id/btn_wrapper"
-            app:tabBackground="@drawable/tab_selector"
-            app:tabGravity="center"
-            app:tabIndicatorHeight="0dp"/>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/product_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/pager_indicator"
+                />
 
-        <LinearLayout
-            android:id="@id/btn_wrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:gravity="center"
-            android:orientation="vertical">
+            <android.support.design.widget.TabLayout
+                android:id="@id/pager_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btn_wrapper"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/spacing_medium_32"
+                android:layout_marginRight="@dimen/spacing_medium_32"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                />
 
-            <Button
-                android:id="@+id/add_to_card_btn"
-                style="@style/CustomButton"
-                android:layout_marginBottom="@dimen/spacing_normal_16"
-                android:text="@string/catalog.add"
-                android:theme="@style/EnterButton"
-                bind:onClick="@{actionsHandler::clickOnAddGoodsToBasket}"/>
+            <LinearLayout
+                android:id="@id/btn_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/add_to_card_btn"
+                    style="@style/CustomButton"
+                    android:layout_marginBottom="@dimen/spacing_normal_16"
+                    android:text="@string/catalog.add"
+                    android:theme="@style/EnterButton"
+                    bind:onClick="@{actionsHandler::clickOnAddGoodsToBasket}"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
     </ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogView>
 </layout>

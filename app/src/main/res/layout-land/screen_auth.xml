@@ -5,168 +5,174 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-  <data>
+    <data>
 
-    <import type="ru.mikhalev.vladimir.mvpshop.features.auth.AuthViewModel.STATE"/>
+        <import type="ru.mikhalev.vladimir.mvpshop.features.auth.AuthViewModel.STATE"/>
 
-    <variable
-        name="actionsHandler"
-        type="ru.mikhalev.vladimir.mvpshop.features.auth.IAuthActions"
-        />
+        <variable
+            name="actionsHandler"
+            type="ru.mikhalev.vladimir.mvpshop.features.auth.IAuthActions"
+            />
 
-    <variable
-        name="viewModel"
-        type="ru.mikhalev.vladimir.mvpshop.features.auth.AuthViewModel"
-        />
-  </data>
+        <variable
+            name="viewModel"
+            type="ru.mikhalev.vladimir.mvpshop.features.auth.AuthViewModel"
+            />
+    </data>
 
-  <ru.mikhalev.vladimir.mvpshop.features.auth.AuthView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="@drawable/background"
-      tools:ignore="ContentDescription, RtlHardcoded"
-      >
-
-
-    <LinearLayout
-        android:id="@+id/auth_panel"
+    <ru.mikhalev.vladimir.mvpshop.features.auth.AuthView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/spacing_large_56"
-        android:layout_marginLeft="@dimen/spacing_largest_84"
-        android:layout_toLeftOf="@+id/social_wrapper"
-        android:gravity="bottom"
-        android:orientation="vertical"
+        android:background="@drawable/background"
+        tools:ignore="ContentDescription, RtlHardcoded"
         >
 
-      <android.support.v7.widget.CardView
-          android:id="@+id/auth_card"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:visibility="@{viewModel.inputState == STATE.LOGIN}"
-          tools:visibility="visible"
-          style="@style/CustomCard.LoginCard"
-          >
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
             >
 
-          <android.support.design.widget.TextInputLayout
-              android:id="@+id/email"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              bind:error="@{viewModel.emailError}"
-              >
+            <LinearLayout
+                android:id="@+id/auth_panel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/spacing_large_56"
+                android:layout_marginLeft="@dimen/spacing_largest_84"
+                android:layout_toLeftOf="@+id/social_wrapper"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                >
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/email_et"
-                android:hint="@string/auth.email.hint"
-                android:inputType="textEmailAddress"
-                android:text="@={viewModel.email}"
-                style="@style/AuthField"
-                />
-          </android.support.design.widget.TextInputLayout>
+                <android.support.v7.widget.CardView
+                    android:id="@+id/auth_card"
+                    style="@style/CustomCard.LoginCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewModel.inputState == STATE.LOGIN}"
+                    tools:visibility="visible"
+                    >
 
-          <android.support.design.widget.TextInputLayout
-              android:id="@+id/password"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              bind:error="@{viewModel.passwordError}"
-              >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/password_et"
-                android:hint="@string/auth.password.hint"
-                android:inputType="textPassword"
-                android:text="@={viewModel.password}"
-                style="@style/AuthField"
-                />
-          </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            bind:error="@{viewModel.emailError}"
+                            >
 
-        </LinearLayout>
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/email_et"
+                                style="@style/AuthField"
+                                android:hint="@string/auth.email.hint"
+                                android:inputType="textEmailAddress"
+                                android:text="@={viewModel.email}"
+                                />
+                        </android.support.design.widget.TextInputLayout>
 
-      </android.support.v7.widget.CardView>
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            bind:error="@{viewModel.passwordError}"
+                            >
 
-      <Button
-          android:id="@+id/show_catalog_btn"
-          android:text="@string/auth.catalog"
-          android:theme="@style/ShowButton"
-          android:visibility="@{viewModel.inputState == STATE.IDLE}"
-          bind:onClick="@{actionsHandler::clickOnShowCatalog}"
-          style="@style/CustomButton"
-          />
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/password_et"
+                                style="@style/AuthField"
+                                android:hint="@string/auth.password.hint"
+                                android:inputType="textPassword"
+                                android:text="@={viewModel.password}"
+                                />
+                        </android.support.design.widget.TextInputLayout>
 
-      <Button
-          android:id="@+id/login_btn"
-          android:text="@string/auth.login"
-          android:theme="@style/EnterButton"
-          bind:onClick="@{actionsHandler::clickOnLogin}"
-          style="@style/CustomButton"
-          />
-    </LinearLayout>
+                    </LinearLayout>
 
-    <LinearLayout
-        android:id="@id/social_wrapper"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        >
+                </android.support.v7.widget.CardView>
 
-      <ImageButton
-          android:id="@+id/fb_btn"
-          android:background="@drawable/fb_selector_btn"
-          android:onClick="@{actionsHandler::clickOnFb}"
-          style="@style/SocialButton"
-          />
+                <Button
+                    android:id="@+id/show_catalog_btn"
+                    style="@style/CustomButton"
+                    android:text="@string/auth.catalog"
+                    android:theme="@style/ShowButton"
+                    android:visibility="@{viewModel.inputState == STATE.IDLE}"
+                    bind:onClick="@{actionsHandler::clickOnShowCatalog}"
+                    />
 
-      <ImageButton
-          android:id="@+id/tw_btn"
-          android:background="@drawable/tw_selector_btn"
-          android:onClick="@{actionsHandler::clickOnTwitter}"
-          style="@style/SocialButton"
-          />
+                <Button
+                    android:id="@+id/login_btn"
+                    style="@style/CustomButton"
+                    android:text="@string/auth.login"
+                    android:theme="@style/EnterButton"
+                    bind:onClick="@{actionsHandler::clickOnLogin}"
+                    />
+            </LinearLayout>
 
-      <ImageButton
-          android:id="@+id/vk_btn"
-          android:background="@drawable/vk_selector_btn"
-          android:onClick="@{actionsHandler::clickOnVk}"
-          style="@style/SocialButton"
-          />
+            <LinearLayout
+                android:id="@id/social_wrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
 
-    </LinearLayout>
+                <ImageButton
+                    android:id="@+id/fb_btn"
+                    style="@style/SocialButton"
+                    android:background="@drawable/fb_selector_btn"
+                    android:onClick="@{actionsHandler::clickOnFb}"
+                    />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_largest_84"
-        android:layout_marginTop="34dp"
-        android:layout_toLeftOf="@+id/social_wrapper"
-        android:gravity="center"
-        android:orientation="horizontal"
-        >
+                <ImageButton
+                    android:id="@+id/tw_btn"
+                    style="@style/SocialButton"
+                    android:background="@drawable/tw_selector_btn"
+                    android:onClick="@{actionsHandler::clickOnTwitter}"
+                    />
 
-      <ImageView
-          android:id="@+id/logo"
-          android:layout_width="@dimen/logo_width"
-          android:layout_height="@dimen/logo_height"
-          android:src="@drawable/firebase_icon"
-          />
+                <ImageButton
+                    android:id="@+id/vk_btn"
+                    style="@style/SocialButton"
+                    android:background="@drawable/vk_selector_btn"
+                    android:onClick="@{actionsHandler::clickOnVk}"
+                    />
 
-      <TextView
-          android:id="@+id/app_name"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="@dimen/spacing_normal_16"
-          android:text="@string/app_name"
-          android:textColor="@android:color/white"
-          android:textSize="@dimen/font_largest_40"
-          bind:font="@{@string/font_bebas_book}"
-          />
-    </LinearLayout>
-  </ru.mikhalev.vladimir.mvpshop.features.auth.AuthView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_largest_84"
+                android:layout_marginTop="34dp"
+                android:layout_toLeftOf="@+id/social_wrapper"
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="@dimen/logo_width"
+                    android:layout_height="@dimen/logo_height"
+                    android:src="@drawable/firebase_icon"
+                    />
+
+                <TextView
+                    android:id="@+id/app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_normal_16"
+                    android:text="@string/app_name"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_largest_40"
+                    bind:font="@{@string/font_bebas_book}"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ru.mikhalev.vladimir.mvpshop.features.auth.AuthView>
 </layout>

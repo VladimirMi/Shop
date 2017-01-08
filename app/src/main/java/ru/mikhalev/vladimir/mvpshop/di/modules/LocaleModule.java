@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import ru.mikhalev.vladimir.mvpshop.data.managers.PreferencesManager;
+import ru.mikhalev.vladimir.mvpshop.data.managers.RealmManager;
 
 /**
  * Developer Vladimir Mikhalev, 06.11.2016.
@@ -19,6 +20,12 @@ public class LocaleModule {
     @Singleton
     PreferencesManager providePreferencesManager(Context context) {
         return new PreferencesManager(context);
+    }
+
+    @Provides
+    @Singleton
+    RealmManager provideRealmManager() {
+        return new RealmManager();
     }
 }
 
