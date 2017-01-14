@@ -81,19 +81,18 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
 
         @Override
         protected void initActionBar() {
-            // TODO: 06.01.2017 impl this
+            // nothing
         }
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            getView().initView();
             getView().setViewModel(mViewModel);
         }
 
         //region ==================== IProductPresenter ========================
 
-        // TODO: 06.01.2017  смысл сохранять в бд?
+        // TODO: 06.01.2017  переделать как в description screen
         @Override
         public void clickOnPlus() {
             mViewModel.addProduct();
@@ -102,7 +101,7 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
 
         @Override
         public void clickOnMinus() {
-            if (mViewModel.getCount() > 1) {
+            if (mViewModel.count.get() > 1) {
                 mViewModel.deleteProduct();
                 mModel.updateProduct(new Product(mViewModel));
             }

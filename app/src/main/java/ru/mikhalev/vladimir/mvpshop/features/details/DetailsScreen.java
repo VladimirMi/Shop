@@ -12,7 +12,6 @@ import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogModel;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogScreen;
-import ru.mikhalev.vladimir.mvpshop.features.catalog.product.IProductPresenter;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductScreen;
 import ru.mikhalev.vladimir.mvpshop.features.root.MenuItemHolder;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
@@ -67,7 +66,7 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
         DetailsModel getDetailsModel();
     }
 
-    public class DetailsPresenter extends BasePresenter<DetailsView, CatalogModel> implements IProductPresenter {
+    public class DetailsPresenter extends BasePresenter<DetailsView, CatalogModel> {
         @Override
         protected void initDagger(MortarScope scope) {
             scope.<DetailsScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
@@ -84,26 +83,6 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
                                 return true;
                             }))
                     .setTab(getView().getViewPager());
-        }
-
-        @Override
-        public void clickOnPlus() {
-
-        }
-
-        @Override
-        public void clickOnMinus() {
-
-        }
-
-        @Override
-        public void clickOnShowMore() {
-
-        }
-
-        @Override
-        public void clickOnFavorite(boolean checked) {
-
         }
     }
 

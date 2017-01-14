@@ -1,5 +1,6 @@
 package ru.mikhalev.vladimir.mvpshop.mortar;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 
 import java.lang.reflect.ParameterizedType;
@@ -78,5 +79,23 @@ public class ScreenScoper {
                 .build(screen.getScopeName());
         registerScope(newScope);
         return newScope;
+    }
+
+    public static MortarScope createScreenScopeFromContext(Context context, BaseScreen screen) {
+        MortarScope parentScope = MortarScope.getScope(context);
+        MortarScope childScope = parentScope.findChild(screen.getScopeName());
+
+        if (childScope == null) {
+            Object screenComponent = screen.createScreenComponent(parentScope.getService(DaggerService.SERVICE_NAME));
+            if (screenComponent == null) {
+                throw new IllegalStateException("Component isn't created");
+            }
+
+            childScope = parentScope.buildChild()
+                    .withService(DaggerService.SERVICE_NAME, screenComponent)
+                    .build(screen.getScopeName());
+        }
+
+        return childScope;
     }
 }

@@ -81,7 +81,6 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
                 getRootView().lockDrawer();
             }
             getView().setViewModel(mViewModel);
-            getView().initView();
         }
 
         @Override

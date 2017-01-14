@@ -5,16 +5,17 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
-import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
+import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenDetailsBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
-import ru.mikhalev.vladimir.mvpshop.features.catalog.product.IProductActions;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.product.IProductView;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
 
 /**
  * Developer Vladimir Mikhalev 23.12.2016
  */
 
-public class DetailsView extends BaseView<DetailsScreen.DetailsPresenter> implements IProductActions {
+public class DetailsView extends BaseView<DetailsScreen.DetailsPresenter> implements IProductView {
 
     private ScreenDetailsBinding mBinding;
 
@@ -28,50 +29,27 @@ public class DetailsView extends BaseView<DetailsScreen.DetailsPresenter> implem
     }
 
     @Override
-    protected void initBinding() {
+    protected void initView() {
         mBinding = ScreenDetailsBinding.bind(this);
     }
 
     @Override
-    public void initView() {
-        DetailsAdapter adapter = new DetailsAdapter();
+    public void setProduct(Product product) {
+        DetailsAdapter adapter = new DetailsAdapter(getContext(), product);
     }
 
     @Override
-    public void setViewModel(BaseViewModel viewModel) {
+    public void setViewModel(ProductViewModel viewModel) {
 
     }
 
     @Override
     public boolean viewOnBackPressed() {
+        // TODO: 14.01.2017 implement
         return false;
     }
 
     public ViewPager getViewPager() {
         return mBinding.pager;
     }
-
-    //region =============== Events ==============
-
-    @Override
-    public void clickOnPlus() {
-        // TODO: 06.01.2017 to VM
-    }
-
-    @Override
-    public void clickOnMinus() {
-        // TODO: 06.01.2017 to VM
-    }
-
-    @Override
-    public void clickOnShowMore() {
-        // do nothing
-    }
-
-    @Override
-    public void clickOnFavorite(boolean checked) {
-        // TODO: 06.01.2017 to presenter
-    }
-
-    //endregion
 }

@@ -27,12 +27,12 @@ public abstract class BaseView<P extends BasePresenter> extends FrameLayout impl
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        initBinding();
+        initView();
         Timber.tag(getClass().getSimpleName());
         Timber.d("onFinishInflate");
     }
 
-    protected abstract void initBinding();
+    protected abstract void initView();
 
     @Override
     public void onAttachedToWindow() {

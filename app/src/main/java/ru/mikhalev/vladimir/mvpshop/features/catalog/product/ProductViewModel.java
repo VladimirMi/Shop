@@ -1,8 +1,9 @@
 package ru.mikhalev.vladimir.mvpshop.features.catalog.product;
 
-import android.databinding.Bindable;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 
-import ru.mikhalev.vladimir.mvpshop.BR;
 import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
 
@@ -11,73 +12,46 @@ import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
  */
 public class ProductViewModel extends BaseViewModel {
 
-    private int id;
-    private String productName;
-    private String imageUrl;
-    private String description;
-    private int price;
-    private int count;
-    private boolean favorite;
-
-    public ProductViewModel() {
-    }
+    private final Product mProduct;
+    public int id;
+    public final ObservableField<String> productName = new ObservableField<>();
+    public final ObservableField<String> imageUrl = new ObservableField<>();
+    public final ObservableField<String> description = new ObservableField<>();
+    public final ObservableInt price = new ObservableInt();
+    public final ObservableInt count = new ObservableInt();
+    public final ObservableBoolean favorite = new ObservableBoolean();
 
     public ProductViewModel(Product product) {
+        mProduct = product;
         id = product.getId();
-        productName = product.getProductName();
-        imageUrl = product.getImageUrl();
-        description = product.getDescription();
-        price = product.getPrice();
-        count = product.getCount();
-        favorite = product.isFavorite();
+        init();
+        mProduct.addChangeListener(element -> init());
+    }
+
+    public void init() {
+        productName.set(mProduct.getProductName());
+        imageUrl.set(mProduct.getImageUrl());
+        description.set(mProduct.getDescription());
+        price.set(mProduct.getPrice());
+        count.set(mProduct.getCount());
+        favorite.set(mProduct.isFavorite());
     }
 
     public int getId() {
         return id;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-
-    @Bindable
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-        notifyPropertyChanged(BR.count);
-    }
-
     public void addProduct() {
-        setCount(++count);
+        int curCount = count.get();
+        mProduct.setCount(++curCount);
     }
 
     public void deleteProduct() {
-        setCount(--count);
+        int curCount = count.get();
+        mProduct.setCount(--curCount);
     }
 
-    @Bindable
-    public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-        // TODO: 21.12.2016 BR
+    public void setFavorite() {
+        mProduct.setFavorite(!favorite.get());
     }
 }

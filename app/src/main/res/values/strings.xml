@@ -69,10 +69,16 @@
     <string name="address.save">Сохранить</string>
     <string name="address.map">Указать на карте</string>
 
+    <string-array name="detail_tabs">
+        <item>Описание</item>
+        <item>Отзывы</item>
+    </string-array>
+
 
     <string name="progress_show_text">Пожлуйста, подождите</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="avatar_behavior" translatable="false">ru.mikhalev.vladimir.mvpshop.features.account.AvatarBehavior</string>
+    <string name="description.title">О товаре</string>
 </resources>

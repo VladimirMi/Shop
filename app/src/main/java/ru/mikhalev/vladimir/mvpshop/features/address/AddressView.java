@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
-import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenAddressBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -27,8 +26,10 @@ public class AddressView extends BaseView<AddressScreen.AddressPresenter> implem
     }
 
     @Override
-    protected void initBinding() {
+    protected void initView() {
         mBinding = ScreenAddressBinding.bind(this);
+        // TODO: 04.01.2017 move to viewModel
+        mBinding.addAddress.setText(getContext().getString(R.string.address_save));
     }
 
     //region =============== Events ==============
@@ -45,17 +46,12 @@ public class AddressView extends BaseView<AddressScreen.AddressPresenter> implem
 
 
     @Override
-    public void setViewModel(BaseViewModel viewModel) {
-        mViewModel = (AddressViewModel) viewModel;
+    public void setViewModel(AddressViewModel viewModel) {
+        mViewModel = viewModel;
         mBinding.setViewModel(mViewModel);
         mBinding.setActionsHandler(this);
     }
 
-    @Override
-    public void initView() {
-        // TODO: 04.01.2017 move to viewModel
-        mBinding.addAddress.setText(getContext().getString(R.string.address_save));
-    }
 
     @Override
     public void showInputError() {

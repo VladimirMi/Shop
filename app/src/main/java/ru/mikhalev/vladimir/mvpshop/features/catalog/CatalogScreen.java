@@ -85,8 +85,6 @@ public class CatalogScreen
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            getView().initView();
-            getView().setViewModel(null);
             mCompSubs.add(subscribeOnProductList());
             if (getRootView() != null) {
                 getRootView().setBasketCounter(mCartCounter);

@@ -8,7 +8,6 @@ import java.util.List;
 
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
-import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenCatalogBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
@@ -32,8 +31,11 @@ public class CatalogView extends BaseView<CatalogScreen.CatalogPresenter> implem
     }
 
     @Override
-    protected void initBinding() {
+    protected void initView() {
         mBinding = ScreenCatalogBinding.bind(this);
+        mAdapter = new CatalogAdapter();
+        mBinding.productPager.setAdapter(mAdapter);
+        mBinding.pagerIndicator.setupWithViewPager(mBinding.productPager);
     }
 
 
@@ -51,15 +53,8 @@ public class CatalogView extends BaseView<CatalogScreen.CatalogPresenter> implem
 
 
     @Override
-    public void setViewModel(BaseViewModel viewModel) {
+    public void setViewModel() {
         mBinding.setActionsHandler(this);
-    }
-
-    @Override
-    public void initView() {
-        mAdapter = new CatalogAdapter();
-        mBinding.productPager.setAdapter(mAdapter);
-        mBinding.pagerIndicator.setupWithViewPager(mBinding.productPager);
     }
 
     public CatalogAdapter getAdapter() {

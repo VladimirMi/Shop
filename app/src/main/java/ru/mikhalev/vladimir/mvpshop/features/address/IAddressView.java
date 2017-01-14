@@ -7,6 +7,8 @@ import ru.mikhalev.vladimir.mvpshop.core.IView;
  */
 
 public interface IAddressView extends IView {
+    void setViewModel(AddressViewModel viewModel);
+
     void showInputError();
 
     AddressViewModel getUserAddress();

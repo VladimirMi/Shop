@@ -7,7 +7,6 @@ import android.view.animation.AnimationUtils;
 
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
-import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenAuthBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -31,8 +30,9 @@ public class AuthView extends BaseView<AuthScreen.AuthPresenter> implements IAut
     }
 
     @Override
-    protected void initBinding() {
+    protected void initView() {
         mBinding = ScreenAuthBinding.bind(this);
+        mBinding.setActionsHandler(this);
     }
 
 
@@ -78,15 +78,11 @@ public class AuthView extends BaseView<AuthScreen.AuthPresenter> implements IAut
 
 
     @Override
-    public void setViewModel(BaseViewModel viewModel) {
-        mViewModel = (AuthViewModel) viewModel;
+    public void setViewModel(AuthViewModel viewModel) {
+        mViewModel = viewModel;
+        mBinding.setViewModel(mViewModel);
     }
 
-    @Override
-    public void initView() {
-        mBinding.setViewModel(mViewModel);
-        mBinding.setActionsHandler(this);
-    }
 
     @Override
     public boolean viewOnBackPressed() {

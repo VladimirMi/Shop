@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
-import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
+import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenProductBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -18,9 +18,6 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
 
     public ProductView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (!isInEditMode()) {
-
-        }
     }
 
     @Override
@@ -29,8 +26,9 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
     }
 
     @Override
-    protected void initBinding() {
+    protected void initView() {
         mBinding = ScreenProductBinding.bind(this);
+        mBinding.setActionsHandler(this);
     }
 
     //region ==================== Events ========================
@@ -61,16 +59,16 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
 
 
     @Override
-    public void setViewModel(BaseViewModel viewModel) {
-        mViewModel = (ProductViewModel) viewModel;
+    public void setViewModel(ProductViewModel viewModel) {
+        mViewModel = viewModel;
         mBinding.setViewModel(mViewModel);
-        mBinding.setActionsHandler(this);
     }
 
     @Override
-    public void initView() {
+    public void setProduct(Product product) {
 
     }
+
 
     @Override
     public boolean viewOnBackPressed() {

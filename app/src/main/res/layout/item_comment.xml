@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="ru.mikhalev.vladimir.mvpshop.features.details.comments.CommentViewModel"
+            />
+    </data>
+
+    <android.support.v7.widget.CardView
+        style="@style/CustomCard.ProductCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:avatar="@{viewModel.avatar}"
+                tools:src="@drawable/user_avatar"
+                />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:text="@{viewModel.userName}"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_small_14"
+                app:layout_constraintLeft_toRightOf="@+id/avatar"
+                app:layout_constraintTop_toTopOf="@+id/avatar"
+                bind:font="@{@string/font_roboto_medium}"
+                tools:text="Konstantin"
+                />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@{viewModel.date}"
+                android:textSize="@dimen/font_small_12"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rating"
+                tools:text="2 hours ago"
+                />
+
+            <RatingBar
+                android:id="@+id/rating"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:rating="@{viewModel.rating}"
+                app:layout_constraintLeft_toLeftOf="@+id/user_name"
+                app:layout_constraintTop_toBottomOf="@+id/user_name"
+                tools:rating="2.5"
+                />
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@{viewModel.comment}"
+                android:textSize="@dimen/font_small_12"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="@+id/rating"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rating"
+                tools:text="Coordinatae noceres, tanquam camerarius impositio.Sunt equisoes fallere noster, nobilis amores.Vitas volare!Coordinataes favere in mare!Cur contencio credere?Cum plasmator cantare, omnes paluses locus fidelis, pius parmaes.Heu, verpa!"
+                />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+</layout>

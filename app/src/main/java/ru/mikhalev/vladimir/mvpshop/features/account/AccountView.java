@@ -8,7 +8,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
 
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
-import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenAccountBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -32,12 +31,10 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
     }
 
     @Override
-    protected void initBinding() {
+    protected void initView() {
         mBinding = ScreenAccountBinding.bind(this);
-    }
-
-    public AddressListAdapter getAdapter() {
-        return mAdapter;
+        initAddressList();
+        initSwipe();
     }
 
 
@@ -125,16 +122,15 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
 
 
     @Override
-    public void setViewModel(BaseViewModel viewModel) {
-        mViewModel = (AccountViewModel) viewModel;
+    public void setViewModel(AccountViewModel viewModel) {
+        mViewModel = viewModel;
         mBinding.setViewModel(mViewModel);
         mBinding.setActionsHandler(this);
     }
 
     @Override
-    public void initView() {
-        initAddressList();
-        initSwipe();
+    public AddressListAdapter getAdapter() {
+        return mAdapter;
     }
 
     @Override
@@ -177,6 +173,7 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
         return false;
     }
 
+    @Override
     public AccountViewModel getViewModel() {
         return mViewModel;
     }

@@ -10,6 +10,8 @@ import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
  */
 
 public interface ICatalogView extends IView {
+    void setViewModel();
+
     void showCatalogView(List<ProductViewModel> productList);
 
     void updateProductCounter(int i);

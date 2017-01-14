@@ -35,12 +35,12 @@ public class Product extends RealmObject {
 
     public Product(ProductViewModel viewModel) {
         this.id = viewModel.getId();
-        this.productName = viewModel.getProductName();
-        this.imageUrl = viewModel.getImageUrl();
-        this.description = viewModel.getDescription();
-        this.price = viewModel.getPrice();
-        this.count = viewModel.getCount();
-        this.favorite = viewModel.isFavorite();
+        this.productName = viewModel.productName.get();
+        this.imageUrl = viewModel.imageUrl.get();
+        this.description = viewModel.description.get();
+        this.price = viewModel.price.get();
+        this.count = viewModel.count.get();
+        this.favorite = viewModel.favorite.get();
     }
 
     public int getId() {
@@ -77,5 +77,21 @@ public class Product extends RealmObject {
 
     public RealmList<Comment> getComments() {
         return mComments;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public void setComments(RealmList<Comment> comments) {
+        mComments = comments;
     }
 }

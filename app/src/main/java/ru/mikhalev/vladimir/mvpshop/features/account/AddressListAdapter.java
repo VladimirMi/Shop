@@ -51,7 +51,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemAddressBinding mBinding;
 

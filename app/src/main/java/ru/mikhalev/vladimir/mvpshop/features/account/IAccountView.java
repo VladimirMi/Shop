@@ -8,7 +8,13 @@ import ru.mikhalev.vladimir.mvpshop.core.IView;
 
 public interface IAccountView extends IView {
 
+    AddressListAdapter getAdapter();
+
+    void setViewModel(AccountViewModel viewModel);
+
     void changeState();
 
     void showPhotoSourceDialog();
+
+    AccountViewModel getViewModel();
 }
