@@ -17,7 +17,7 @@
             />
     </data>
 
-    <FrameLayout
+    <ru.mikhalev.vladimir.mvpshop.features.details.description.DescriptionView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -56,6 +56,7 @@
                         android:layout_marginTop="@dimen/spacing_normal_16"
                         android:textAlignment="center"
                         android:textSize="@dimen/font_small_14"
+                        android:text="@{viewModel.description}"
                         tools:text="Nixuss cantare in primus tubinga!Trabem una ducunt ad rusticus visus.Salvus axona callide gratias absolutio est.A falsis, nomen talis torus.Emeritis, velox nomens superbe convertam de varius, fidelis advena."
                         />
 
@@ -118,7 +119,7 @@
                             <TextView
                                 style="@style/CustomText.ValuePrice"
                                 android:gravity="center_vertical"
-                                android:text="@{viewModel.count}"
+                                android:text="@{String.valueOf(viewModel.count)}"
                                 tools:text="1"
                                 />
 
@@ -154,7 +155,7 @@
                         <TextView
                             style="@style/CustomText.ValuePrice"
                             android:gravity="center_vertical"
-                            android:text="@{viewModel.price * viewModel.count}"
+                            android:text="@{String.valueOf(viewModel.price * viewModel.count)}"
                             tools:text="999"
                             />
                     </LinearLayout>
@@ -164,5 +165,5 @@
 
         </LinearLayout>
 
-    </FrameLayout>
+    </ru.mikhalev.vladimir.mvpshop.features.details.description.DescriptionView>
 </layout>

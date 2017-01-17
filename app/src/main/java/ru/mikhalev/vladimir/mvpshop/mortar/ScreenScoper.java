@@ -88,7 +88,7 @@ public class ScreenScoper {
         if (childScope == null) {
             Object screenComponent = screen.createScreenComponent(parentScope.getService(DaggerService.SERVICE_NAME));
             if (screenComponent == null) {
-                throw new IllegalStateException("Component isn't created");
+                throw new IllegalStateException(screen.getScopeName() + " component isn't created");
             }
 
             childScope = parentScope.buildChild()

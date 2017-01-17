@@ -26,8 +26,7 @@ import rx.Subscription;
  * Developer Vladimir Mikhalev 29.11.2016
  */
 @Screen(R.layout.screen_catalog)
-public class CatalogScreen
-        extends BaseScreen<RootActivity.Component> {
+public class CatalogScreen extends BaseScreen<RootActivity.Component> {
     @Override
     public Object createScreenComponent(RootActivity.Component parentComponent) {
         return DaggerCatalogScreen_Component.builder()

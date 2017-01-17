@@ -23,9 +23,11 @@ import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 @Screen(R.layout.screen_product)
 public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
     private ProductViewModel mViewModel;
+    private Product mProduct;
 
     public ProductScreen(Product product) {
         mViewModel = new ProductViewModel(product);
+        mProduct = product;
     }
 
     public ProductViewModel getViewModel() {
@@ -109,7 +111,7 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
 
         @Override
         public void clickOnShowMore() {
-            Flow.get(getView()).set(new DetailsScreen());
+            Flow.get(getView()).set(new DetailsScreen(mProduct));
         }
 
         @Override

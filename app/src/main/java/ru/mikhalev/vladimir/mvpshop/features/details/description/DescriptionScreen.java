@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import dagger.Provides;
 import mortar.MortarScope;
+import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
@@ -13,11 +14,13 @@ import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
 import ru.mikhalev.vladimir.mvpshop.features.details.DetailsModel;
 import ru.mikhalev.vladimir.mvpshop.features.details.DetailsScreen;
 import ru.mikhalev.vladimir.mvpshop.features.details.comments.CommentsScreen;
+import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 
 /**
  * Developer Vladimir Mikhalev, 14.01.2017.
  */
 
+@Screen(R.layout.screen_description)
 public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
 
     private final Product mProduct;
@@ -28,7 +31,10 @@ public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
 
     @Override
     public Object createScreenComponent(DetailsScreen.Component parentComponent) {
-        return null;
+        return DaggerDescriptionScreen_Component.builder()
+                .component(parentComponent)
+                .module(new Module())
+                .build();
     }
 
     //region =============== Di ==============

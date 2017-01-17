@@ -36,6 +36,7 @@ public class DetailsView extends BaseView<DetailsScreen.DetailsPresenter> implem
     @Override
     public void setProduct(Product product) {
         DetailsAdapter adapter = new DetailsAdapter(getContext(), product);
+        mBinding.pager.setAdapter(adapter);
     }
 
     @Override

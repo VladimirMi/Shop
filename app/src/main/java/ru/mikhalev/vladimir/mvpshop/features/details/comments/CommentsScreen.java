@@ -5,6 +5,7 @@ import android.os.Bundle;
 import dagger.Provides;
 import io.realm.RealmList;
 import mortar.MortarScope;
+import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.data.storage.Comment;
@@ -13,11 +14,13 @@ import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.details.DetailsModel;
 import ru.mikhalev.vladimir.mvpshop.features.details.DetailsScreen;
+import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 
 /**
  * Developer Vladimir Mikhalev 08.01.2017
  */
 
+@Screen(R.layout.screen_comments)
 public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
     private final RealmList<Comment> mComments;
 
@@ -27,7 +30,10 @@ public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
 
     @Override
     public Object createScreenComponent(DetailsScreen.Component parentComponent) {
-        return null;
+        return DaggerCommentsScreen_Component.builder()
+                .component(parentComponent)
+                .module(new Module())
+                .build();
     }
 
     //region =============== DI ==============

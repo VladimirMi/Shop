@@ -27,7 +27,9 @@ public abstract class BaseView<P extends BasePresenter> extends FrameLayout impl
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        initView();
+        if (!isInEditMode()) {
+            initView();
+        }
         Timber.tag(getClass().getSimpleName());
         Timber.d("onFinishInflate");
     }

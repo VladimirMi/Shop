@@ -139,7 +139,6 @@
                                 style="@style/CustomText.ValuePrice"
                                 android:gravity="center_vertical"
                                 android:text="@{String.valueOf(viewModel.price * viewModel.count)}"
-
                                 tools:text="999"
                                 />
                         </LinearLayout>
@@ -159,6 +158,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
                             android:text="Подробнее"
+                            bind:onClick="@{actionsHandler::clickOnShowMore}"
                             android:textColor="@color/color_accent"
                             />
 

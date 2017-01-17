@@ -49,7 +49,7 @@ public class DetailsAdapter extends PagerAdapter {
         MortarScope scope = ScreenScoper.createScreenScopeFromContext(container.getContext(), screen);
         Context screenContext = scope.createContext(container.getContext());
 
-        View newView = LayoutInflater.from(container.getContext()).inflate(screen.getLayoutResId(), container, false);
+        View newView = LayoutInflater.from(screenContext).inflate(screen.getLayoutResId(), container, false);
         container.addView(newView);
         return newView;
     }
