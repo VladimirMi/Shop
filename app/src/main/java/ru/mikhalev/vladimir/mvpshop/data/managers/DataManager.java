@@ -22,7 +22,7 @@ import ru.mikhalev.vladimir.mvpshop.data.network.RestCallTransformer;
 import ru.mikhalev.vladimir.mvpshop.data.network.api.RestService;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.AccountRes;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.ProductRes;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.components.DataManagerComponent;
 import ru.mikhalev.vladimir.mvpshop.di.modules.LocaleModule;
@@ -85,7 +85,7 @@ public class DataManager {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(productRes -> {
-                    Product product = new Product(productRes);
+                    ProductRealm product = new ProductRealm(productRes);
                     if (!productRes.isActive()) {
                         saveProductInDB(product);
                     } else {
@@ -101,22 +101,20 @@ public class DataManager {
 
     //region =============== DataBase ==============
 
-    public void saveProductInDB(Product product) {
-        mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(product));
+    public void saveProductInDB(ProductRealm product) {
+        mRealmManager.saveProductInDB(product);
     }
 
-    public void deleteProductFromDB(Product product) {
-        mRealm.executeTransaction(realm -> realm.where(Product.class)
+    public void deleteProductFromDB(ProductRealm product) {
+        mRealm.executeTransaction(realm -> realm.where(ProductRealm.class)
                 .equalTo("id", product.getId())
                 .findAll()
                 .deleteAllFromRealm());
     }
 
 
-    public Observable<RealmResults<Product>> getProductsFromDB() {
-        return mRealm.where(Product.class)
-                .findAllSorted("id")
-                .asObservable();
+    public Observable<RealmResults<ProductRealm>> getProductsFromDB() {
+        return mRealmManager.getProductsFromDB();
     }
 
     //endregion

@@ -1,8 +1,9 @@
 package ru.mikhalev.vladimir.mvpshop.features.catalog;
 
+import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.mikhalev.vladimir.mvpshop.core.BaseModel;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import rx.Observable;
 
 /**
@@ -20,12 +21,14 @@ public class CatalogModel extends BaseModel {
 //        return mDataManager.getProductFromPosition(position);
 //    }
 
-    public Observable<RealmResults<Product>> getProductsObs() {
+    public Observable<RealmResults<ProductRealm>> getProductsObs() {
         return mDataManager.getProductsFromDB();
     }
 
-    public void updateProduct(Product product) {
+    public void updateProduct(ProductRealm product) {
+        Realm realm = Realm.getDefaultInstance();
         mDataManager.saveProductInDB(product);
+        realm.close();
     }
 
 //    @RxLogObservable

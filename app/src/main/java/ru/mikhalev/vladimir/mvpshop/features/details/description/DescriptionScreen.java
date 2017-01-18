@@ -7,11 +7,11 @@ import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogModel;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
-import ru.mikhalev.vladimir.mvpshop.features.details.DetailsModel;
 import ru.mikhalev.vladimir.mvpshop.features.details.DetailsScreen;
 import ru.mikhalev.vladimir.mvpshop.features.details.comments.CommentsScreen;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
@@ -23,10 +23,10 @@ import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 @Screen(R.layout.screen_description)
 public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
 
-    private final Product mProduct;
+    private ProductRealm mProductRealm;
 
-    public DescriptionScreen(Product product) {
-        mProduct = product;
+    public DescriptionScreen(ProductRealm productRealm) {
+        mProductRealm = productRealm;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
 
     //endregion
 
-    public class DescriptionPresenter extends BasePresenter<DescriptionView, DetailsModel> {
+    public class DescriptionPresenter extends BasePresenter<DescriptionView, CatalogModel> implements IDescriptionPresenter {
 
         @Override
         protected void initDagger(MortarScope scope) {
@@ -72,7 +72,35 @@ public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            getView().setViewModel(new ProductViewModel(mProduct));
+            getView().setViewModel(new ProductViewModel(mProductRealm));
         }
+
+        //region =============== IDescriptionPresenter ==============
+
+        @Override
+        public void clickOnPlus() {
+            mProductRealm.inc();
+            mModel.updateProduct(mProductRealm);
+        }
+
+        @Override
+        public void clickOnMinus() {
+            mProductRealm.dec();
+            mModel.updateProduct(mProductRealm);
+        }
+
+        @Override
+        public void clickOnFavorite() {
+            mProductRealm.switchFavorite();
+            mModel.updateProduct(mProductRealm);
+        }
+
+        @Override
+        public void clickOnRating(float rating) {
+            mProductRealm.setRating(rating);
+            mModel.updateProduct(mProductRealm);
+        }
+
+        //endregion
     }
 }

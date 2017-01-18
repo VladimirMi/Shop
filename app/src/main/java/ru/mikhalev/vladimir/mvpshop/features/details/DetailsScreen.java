@@ -9,7 +9,7 @@ import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogModel;
@@ -17,7 +17,6 @@ import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpshop.features.root.MenuItemHolder;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
-import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev 23.12.2016
@@ -25,10 +24,10 @@ import timber.log.Timber;
 
 @Screen(R.layout.screen_details)
 public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implements TreeKey {
-    private Product mProduct;
+    private ProductRealm mProductRealm;
 
-    public DetailsScreen(Product product) {
-        mProduct = product;
+    public DetailsScreen(ProductRealm productRealm) {
+        mProductRealm = productRealm;
     }
 
     @Override
@@ -54,11 +53,6 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
         DetailsPresenter provideDetailsPresenter() {
             return new DetailsPresenter();
         }
-
-        @Provides
-        DetailsModel provideDetailsModel() {
-            return new DetailsModel();
-        }
     }
 
     @dagger.Component(dependencies = CatalogScreen.Component.class, modules = Module.class)
@@ -71,7 +65,7 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
 
         RootPresenter getRootPresenter();
 
-        DetailsModel getDetailsModel();
+        CatalogModel getCatalogModel();
     }
 
     public class DetailsPresenter extends BasePresenter<DetailsView, CatalogModel> {
@@ -83,7 +77,7 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
         @Override
         protected void initActionBar() {
             mRootPresenter.newActionBarBuilder()
-                    .setTitle("Product name")
+                    .setTitle("ProductRealm name")
                     .setBackArrow(true)
                     .addActoin(new MenuItemHolder("В корзину", R.drawable.ic_shopping_cart_color_primary_dark_24dp,
                             item -> {
@@ -96,8 +90,7 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            Timber.e("onLoad: %s", mProduct.getDescription());
-            getView().setProduct(mProduct);
+            getView().setProduct(mProductRealm);
         }
     }
 

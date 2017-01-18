@@ -3,7 +3,7 @@ package ru.mikhalev.vladimir.mvpshop.features.details;
 import android.databinding.Bindable;
 
 import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 
 /**
  * Developer Vladimir Mikhalev 23.12.2016
@@ -21,14 +21,14 @@ public class DetailsViewModel extends BaseViewModel {
     public DetailsViewModel() {
     }
 
-    public DetailsViewModel(Product product) {
-        id = product.getId();
-        productName = product.getProductName();
-        imageUrl = product.getImageUrl();
-        description = product.getDescription();
-        price = product.getPrice();
-        count = product.getCount();
-        favorite = product.isFavorite();
+    public DetailsViewModel(ProductRealm productRealm) {
+        id = productRealm.getId();
+        productName = productRealm.getProductName();
+        imageUrl = productRealm.getImageUrl();
+        description = productRealm.getDescription();
+        price = productRealm.getPrice();
+        count = productRealm.getCount();
+        favorite = productRealm.isFavorite();
     }
 
     public int getId() {

@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 
 import io.realm.RealmList;
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Comment;
+import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenCommentsBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -36,9 +36,9 @@ public class CommentsView extends BaseView<CommentsScreen.CommentsPresenter> {
         return false;
     }
 
-    public void initComments(RealmList<Comment> comments) {
+    public void initComments(RealmList<CommentRealm> commentRealms) {
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
-        CommentsAdapter adapter = new CommentsAdapter(getContext(), comments, true);
+        CommentsAdapter adapter = new CommentsAdapter(getContext(), commentRealms, true);
         mBinding.comments.setLayoutManager(lm);
         mBinding.comments.setAdapter(adapter);
     }

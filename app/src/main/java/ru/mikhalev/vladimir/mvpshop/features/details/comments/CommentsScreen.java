@@ -8,11 +8,11 @@ import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Comment;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
-import ru.mikhalev.vladimir.mvpshop.features.details.DetailsModel;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogModel;
 import ru.mikhalev.vladimir.mvpshop.features.details.DetailsScreen;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 
@@ -22,10 +22,10 @@ import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 
 @Screen(R.layout.screen_comments)
 public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
-    private final RealmList<Comment> mComments;
+    private final RealmList<CommentRealm> mCommentRealms;
 
-    public CommentsScreen(Product product) {
-        mComments = product.getComments();
+    public CommentsScreen(ProductRealm productRealm) {
+        mCommentRealms = productRealm.getCommentRealms();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
 
     //endregion
 
-    public class CommentsPresenter extends BasePresenter<CommentsView, DetailsModel> {
+    public class CommentsPresenter extends BasePresenter<CommentsView, CatalogModel> {
 
         @Override
         protected void initDagger(MortarScope scope) {
@@ -73,7 +73,7 @@ public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            getView().initComments(mComments);
+            getView().initComments(mCommentRealms);
         }
     }
 }

@@ -37,12 +37,14 @@
 
             <TextView
                 style="@style/CustomText.AccountLabel"
-                android:text="@string/account.comment.title"/>
+                android:text="@string/account.commentRealm.title"
+                />
 
             <TextView
                 style="@style/CustomText.AccountValue"
                 android:text="@{viewModel.comment}"
-                tools:text="@string/account.comment.sample"/>
+                tools:text="@string/account.commentRealm.sample"
+                />
 
             <View
                 style="@style/HorizontalDivider"/>

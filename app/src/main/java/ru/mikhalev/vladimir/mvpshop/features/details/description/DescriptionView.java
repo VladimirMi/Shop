@@ -6,14 +6,13 @@ import android.util.AttributeSet;
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenDescriptionBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
-import ru.mikhalev.vladimir.mvpshop.features.catalog.product.IProductActions;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
 
 /**
  * Developer Vladimir Mikhalev, 14.01.2017.
  */
 
-public class DescriptionView extends BaseView<DescriptionScreen.DescriptionPresenter> implements IProductActions, IDescriptionView {
+public class DescriptionView extends BaseView<DescriptionScreen.DescriptionPresenter> implements IDescriptionActions, IDescriptionView {
     private ProductViewModel mViewModel;
     private ScreenDescriptionBinding mBinding;
 
@@ -53,22 +52,22 @@ public class DescriptionView extends BaseView<DescriptionScreen.DescriptionPrese
 
     @Override
     public void clickOnPlus() {
-        mViewModel.addProduct();
+        mPresenter.clickOnPlus();
     }
 
     @Override
     public void clickOnMinus() {
-        mViewModel.deleteProduct();
+        mPresenter.clickOnMinus();
     }
 
     @Override
-    public void clickOnShowMore() {
-        // do nothing
+    public void clickOnFavorite() {
+        mPresenter.clickOnFavorite();
     }
 
     @Override
-    public void clickOnFavorite(boolean checked) {
-        mViewModel.setFavorite();
+    public void clickOnRating(float rating) {
+        mPresenter.clickOnRating(rating);
     }
 
     //endregion

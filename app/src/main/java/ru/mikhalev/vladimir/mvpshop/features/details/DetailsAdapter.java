@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.features.details.comments.CommentsScreen;
 import ru.mikhalev.vladimir.mvpshop.features.details.description.DescriptionScreen;
 import ru.mikhalev.vladimir.mvpshop.mortar.ScreenScoper;
@@ -19,11 +19,11 @@ import ru.mikhalev.vladimir.mvpshop.mortar.ScreenScoper;
  */
 public class DetailsAdapter extends PagerAdapter {
 
-    private Product mProduct;
+    private ProductRealm mProductRealm;
     private final String[] mTabsTitles;
 
-    public DetailsAdapter(Context context, Product product) {
-        mProduct = product;
+    public DetailsAdapter(Context context, ProductRealm productRealm) {
+        mProductRealm = productRealm;
         mTabsTitles = context.getResources().getStringArray(R.array.detail_tabs);
     }
 
@@ -41,9 +41,9 @@ public class DetailsAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         BaseScreen screen;
         if (position == 0) {
-            screen = new DescriptionScreen(mProduct);
+            screen = new DescriptionScreen(mProductRealm);
         } else {
-            screen = new CommentsScreen(mProduct);
+            screen = new CommentsScreen(mProductRealm);
         }
 
         MortarScope scope = ScreenScoper.createScreenScopeFromContext(container.getContext(), screen);

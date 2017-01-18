@@ -20,6 +20,7 @@ public class ModelModule {
     }
 
     @Provides
+    @Singleton
     AsyncTransformer provideAsyncTransformer() {
         return AsyncTransformer.DEFAULT;
     }

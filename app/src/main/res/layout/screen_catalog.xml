@@ -26,14 +26,14 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/product_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_above="@+id/pager_indicator"
                 />
 
             <android.support.design.widget.TabLayout
                 android:id="@id/pager_indicator"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/spacing_normal_16"
+                android:layout_height="wrap_content"
                 android:layout_above="@+id/btn_wrapper"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/spacing_medium_32"

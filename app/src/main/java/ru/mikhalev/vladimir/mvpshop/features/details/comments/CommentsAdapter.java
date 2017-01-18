@@ -9,16 +9,16 @@ import android.view.ViewGroup;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Comment;
+import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
 import ru.mikhalev.vladimir.mvpshop.databinding.ItemCommentBinding;
 
 /**
  * Developer Vladimir Mikhalev, 14.01.2017.
  */
 
-public class CommentsAdapter extends RealmRecyclerViewAdapter<Comment, CommentsAdapter.ViewHolder> {
+public class CommentsAdapter extends RealmRecyclerViewAdapter<CommentRealm, CommentsAdapter.ViewHolder> {
 
-    public CommentsAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Comment> data, boolean autoUpdate) {
+    public CommentsAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<CommentRealm> data, boolean autoUpdate) {
         super(context, data, autoUpdate);
     }
 
@@ -43,9 +43,9 @@ public class CommentsAdapter extends RealmRecyclerViewAdapter<Comment, CommentsA
             mBinding = binding;
         }
 
-        public void bind(Comment comment) {
+        public void bind(CommentRealm commentRealm) {
             // TODO: 14.01.2017 set info
-            mBinding.setViewModel(new CommentViewModel(comment));
+            mBinding.setViewModel(new CommentViewModel(commentRealm));
         }
     }
 }

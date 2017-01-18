@@ -10,7 +10,7 @@ import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
  * Developer Vladimir Mikhalev 19.12.2016
  */
 
-public class Product extends RealmObject {
+public class ProductRealm extends RealmObject {
     @PrimaryKey
     private int id;
     private String productName;
@@ -20,12 +20,12 @@ public class Product extends RealmObject {
     private int count = 1;
     private boolean favorite;
     private float rating;
-    private RealmList<Comment> mComments = new RealmList<>();
+    private RealmList<CommentRealm> mCommentRealms = new RealmList<>();
 
-    public Product() {
+    public ProductRealm() {
     }
 
-    public Product(ProductRes productRes) {
+    public ProductRealm(ProductRes productRes) {
         this.id = productRes.getRemoteId();
         this.productName = productRes.getProductName();
         this.imageUrl = productRes.getImageUrl();
@@ -33,7 +33,7 @@ public class Product extends RealmObject {
         this.price = productRes.getPrice();
     }
 
-    public Product(ProductViewModel viewModel) {
+    public ProductRealm(ProductViewModel viewModel) {
         this.id = viewModel.getId();
         this.productName = viewModel.productName.get();
         this.imageUrl = viewModel.imageUrl.get();
@@ -75,23 +75,29 @@ public class Product extends RealmObject {
         return rating;
     }
 
-    public RealmList<Comment> getComments() {
-        return mComments;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
+    public RealmList<CommentRealm> getCommentRealms() {
+        return mCommentRealms;
     }
 
     public void setRating(float rating) {
         this.rating = rating;
     }
 
-    public void setComments(RealmList<Comment> comments) {
-        mComments = comments;
+    public void setCommentRealms(RealmList<CommentRealm> commentRealms) {
+        mCommentRealms = commentRealms;
+    }
+
+    public void inc() {
+        count++;
+    }
+
+    public void dec() {
+        if (count > 1) {
+            count--;
+        }
+    }
+
+    public void switchFavorite() {
+        favorite = !favorite;
     }
 }

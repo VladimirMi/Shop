@@ -92,7 +92,7 @@ public abstract class ItemSwipeCallback extends ItemTouchHelper.SimpleCallback {
             if (dX > 0) {
                 //swipe to right
 
-                //drawing background
+                //drawing splash_background
                 float leftBound = (float) itemView.getLeft();
                 float topBound = (float) itemView.getTop();
                 float rightBound = dX;
@@ -118,7 +118,7 @@ public abstract class ItemSwipeCallback extends ItemTouchHelper.SimpleCallback {
             } else {
                 //swipe to left
 
-                //drawing background
+                //drawing splash_background
                 float leftBound = (float) itemView.getRight() + dX;
                 float topBound = (float) itemView.getTop();
                 float rightBound = (float) itemView.getRight();

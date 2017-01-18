@@ -10,7 +10,7 @@ import ru.mikhalev.vladimir.mvpshop.data.network.models.CommentRes;
  * Developer Vladimir Mikhalev, 06.01.2017.
  */
 
-public class Comment extends RealmObject {
+public class CommentRealm extends RealmObject {
 
     @PrimaryKey
     private String id;
@@ -20,10 +20,10 @@ public class Comment extends RealmObject {
     private Date commentDate;
     private String comment;
 
-    public Comment() {
+    public CommentRealm() {
     }
 
-    public Comment(CommentRes commentRes) {
+    public CommentRealm(CommentRes commentRes) {
         this.id = commentRes.getId();
         this.userName = commentRes.getUserName();
         this.avatar = commentRes.getAvatar();

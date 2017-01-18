@@ -4,11 +4,12 @@ import android.os.Bundle;
 
 import dagger.Provides;
 import flow.Flow;
+import io.realm.Realm;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogModel;
@@ -23,11 +24,11 @@ import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 @Screen(R.layout.screen_product)
 public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
     private ProductViewModel mViewModel;
-    private Product mProduct;
+    private ProductRealm mProductRealm;
 
-    public ProductScreen(Product product) {
-        mViewModel = new ProductViewModel(product);
-        mProduct = product;
+    public ProductScreen(ProductRealm productRealm) {
+        mViewModel = new ProductViewModel(productRealm);
+        mProductRealm = productRealm;
     }
 
     public ProductViewModel getViewModel() {
@@ -60,7 +61,7 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
         @Provides
         @DaggerScope(ProductScreen.class)
         ProductPresenter provideProductPresenter() {
-            return new ProductPresenter();
+            return new ProductPresenter(mProductRealm);
         }
     }
 
@@ -75,6 +76,14 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
     //endregion
 
     public class ProductPresenter extends BasePresenter<ProductView, CatalogModel> implements IProductPresenter {
+
+        private final ProductRealm mProduct;
+
+        public ProductPresenter(ProductRealm productRealm) {
+            Realm realm = Realm.getDefaultInstance();
+            mProduct = realm.copyFromRealm(productRealm);
+            realm.close();
+        }
 
         @Override
         protected void initDagger(MortarScope scope) {
@@ -94,29 +103,27 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
 
         //region ==================== IProductPresenter ========================
 
-        // TODO: 06.01.2017  переделать как в description screen
         @Override
         public void clickOnPlus() {
-            mViewModel.addProduct();
-            mModel.updateProduct(new Product(mViewModel));
+            mProduct.inc();
+            mModel.updateProduct(mProduct);
         }
 
         @Override
         public void clickOnMinus() {
-            if (mViewModel.count.get() > 1) {
-                mViewModel.deleteProduct();
-                mModel.updateProduct(new Product(mViewModel));
-            }
+            mProduct.dec();
+            mModel.updateProduct(mProduct);
         }
 
         @Override
         public void clickOnShowMore() {
-            Flow.get(getView()).set(new DetailsScreen(mProduct));
+            Flow.get(getView()).set(new DetailsScreen(mProductRealm));
         }
 
         @Override
-        public void clickOnFavorite(boolean checked) {
-            mModel.updateProduct(new Product(mViewModel));
+        public void clickOnFavorite() {
+            mProduct.switchFavorite();
+            mModel.updateProduct(mProduct);
         }
 
         //endregion

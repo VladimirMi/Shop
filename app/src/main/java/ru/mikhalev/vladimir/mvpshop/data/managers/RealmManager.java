@@ -5,8 +5,8 @@ import io.realm.RealmObject;
 import io.realm.RealmResults;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.CommentRes;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.ProductRes;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Comment;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import rx.Observable;
 
 /**
@@ -15,25 +15,29 @@ import rx.Observable;
 
 public class RealmManager {
 
-    public void saveProductInDB(Product product) {
+    public void saveProductInDB(ProductRealm product) {
         Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(product));
+        if (product.isManaged()) {
+            realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(product));
+        } else {
+            realm.executeTransactionAsync(realm1 -> realm1.insertOrUpdate(product));
+        }
         realm.close();
     }
 
     public void saveProductInDB(ProductRes productRes) {
-        Product product = new Product(productRes);
+        ProductRealm product = new ProductRealm(productRes);
 
         if (!productRes.getComments().isEmpty()) {
             Observable.from(productRes.getComments())
                     .doOnNext(commentRes -> {
                         if (!commentRes.isActive()) {
-                            deleteFromDB(Comment.class, commentRes.getId());
+                            deleteFromDB(CommentRealm.class, commentRes.getId());
                         }
                     })
                     .filter(CommentRes::isActive)
-                    .map(Comment::new)
-                    .subscribe(comment -> product.getComments().add(comment));
+                    .map(CommentRealm::new)
+                    .subscribe(comment -> product.getCommentRealms().add(comment));
         }
 
         Realm realm = Realm.getDefaultInstance();
@@ -51,8 +55,9 @@ public class RealmManager {
     }
 
 
-    public Observable<RealmResults<Product>> getProductsFromDB() {
-        return Realm.getDefaultInstance().where(Product.class)
+    public Observable<RealmResults<ProductRealm>> getProductsFromDB() {
+        // TODO: 18.01.2017 close?
+        return Realm.getDefaultInstance().where(ProductRealm.class)
                 .findAllAsync()
                 .asObservable()
                 .filter(RealmResults::isLoaded);

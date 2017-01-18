@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenProductBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -49,9 +49,10 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
     }
 
     @Override
-    public void clickOnFavorite(boolean checked) {
-        mPresenter.clickOnFavorite(checked);
+    public void clickOnFavorite() {
+        mPresenter.clickOnFavorite();
     }
+
 
     //endregion
 
@@ -65,7 +66,7 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
     }
 
     @Override
-    public void setProduct(Product product) {
+    public void setProduct(ProductRealm productRealm) {
 
     }
 

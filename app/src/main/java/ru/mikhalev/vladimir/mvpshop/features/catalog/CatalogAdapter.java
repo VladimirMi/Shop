@@ -12,7 +12,7 @@ import java.util.List;
 import io.realm.RealmResults;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import timber.log.Timber;
 
 /**
@@ -20,18 +20,18 @@ import timber.log.Timber;
  */
 
 public class CatalogAdapter extends PagerAdapter {
-    private List<Product> mProductList = new ArrayList<>();
+    private List<ProductRealm> mProductRealmList = new ArrayList<>();
 
     public CatalogAdapter() {
     }
 
     @Override
     public int getCount() {
-        return mProductList.size();
+        return mProductRealmList.size();
     }
 
-    public void updateData(RealmResults<Product> products) {
-        mProductList = products;
+    public void updateData(RealmResults<ProductRealm> productRealms) {
+        mProductRealmList = productRealms;
         notifyDataSetChanged();
     }
 
@@ -42,8 +42,8 @@ public class CatalogAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Product product = mProductList.get(position);
-        Context productContext = CatalogScreen.Factory.createProductContext(product, container.getContext());
+        ProductRealm productRealm = mProductRealmList.get(position);
+        Context productContext = CatalogScreen.Factory.createProductContext(productRealm, container.getContext());
         View newView = LayoutInflater.from(productContext).inflate(R.layout.screen_product, container, false);
         container.addView(newView);
         return newView;

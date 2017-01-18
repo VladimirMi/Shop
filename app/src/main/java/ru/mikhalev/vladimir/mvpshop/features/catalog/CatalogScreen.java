@@ -12,7 +12,7 @@ import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
-import ru.mikhalev.vladimir.mvpshop.data.storage.Product;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductScreen;
@@ -97,10 +97,10 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
         }
 
         private Subscription subscribeOnProductList() {
-            return mModel.getProductsObs().subscribe(new ViewSubscriber<RealmResults<Product>>() {
+            return mModel.getProductsObs().subscribe(new ViewSubscriber<RealmResults<ProductRealm>>() {
                 @Override
-                public void onNext(RealmResults<Product> products) {
-                    getView().getAdapter().updateData(products);
+                public void onNext(RealmResults<ProductRealm> productRealms) {
+                    getView().getAdapter().updateData(productRealms);
                 }
             });
         }
@@ -137,13 +137,13 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
 
 
     public static class Factory {
-        public static Context createProductContext(Product product, Context parentContext) {
+        public static Context createProductContext(ProductRealm productRealm, Context parentContext) {
             MortarScope parentScope = MortarScope.getScope(parentContext);
             MortarScope childScope = null;
-            ProductScreen productScreen = new ProductScreen(product);
+            ProductScreen productScreen = new ProductScreen(productRealm);
             String scopeName =
                     String.format(Locale.getDefault(), "%s_%d", productScreen.getScopeName(),
-                            product.getId());
+                            productRealm.getId());
 
             if (parentScope.findChild(scopeName) == null) {
                 childScope = parentScope.buildChild()
