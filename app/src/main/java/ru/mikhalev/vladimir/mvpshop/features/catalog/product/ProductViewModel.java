@@ -30,7 +30,9 @@ public class ProductViewModel extends BaseViewModel {
 
     public void init() {
         productName.set(mProductRealm.getProductName());
-        imageUrl.set(mProductRealm.getImageUrl());
+        if (!mProductRealm.getImageUrl().equals(imageUrl.get())) {
+            imageUrl.set(mProductRealm.getImageUrl());
+        }
         description.set(mProductRealm.getDescription());
         price.set(mProductRealm.getPrice());
         count.set(mProductRealm.getCount());

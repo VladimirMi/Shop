@@ -2,47 +2,38 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-
-        <variable
-            name="toolbarTitle"
-            type="String"/>
-
-        <variable
-            name="logoVisible"
-            type="boolean"/>
-    </data>
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        >
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinator_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/grey_light">
+            android:background="@color/grey_light"
+            >
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                app:theme="@style/AppTheme.AppBarOverlay">
+                app:theme="@style/AppTheme.AppBarOverlay"
+                >
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimary"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    android:title="@{toolbarTitle}"
-                    app:popupTheme="@style/AppTheme.PopupOverlay">
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    >
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -50,8 +41,8 @@
                         android:layout_gravity="center"
                         android:padding="@dimen/spacing_tiny_4"
                         android:src="@drawable/firebase_icon"
-                        bind:visibility="@{logoVisible}"
-                        tools:ignore="ContentDescription"/>
+                        tools:ignore="ContentDescription"
+                        />
                 </android.support.v7.widget.Toolbar>
 
             </android.support.design.widget.AppBarLayout>
@@ -59,7 +50,9 @@
             <FrameLayout
                 android:id="@+id/root_frame"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                />
 
         </android.support.design.widget.CoordinatorLayout>
 
@@ -67,7 +60,8 @@
         <android.support.design.widget.NavigationView
             android:id="@+id/navigation_view"
             style="@style/NavigationDrawer"
-            app:menu="@menu/drawer_menu">
+            app:menu="@menu/drawer_menu"
+            >
 
         </android.support.design.widget.NavigationView>
     </android.support.v4.widget.DrawerLayout>

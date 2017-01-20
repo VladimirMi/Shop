@@ -76,10 +76,6 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
                 clickOnShowCatalog();
                 return;
             }
-            if (getRootView() != null) {
-                getRootView().hideToolbar();
-                getRootView().lockDrawer();
-            }
             getView().setViewModel(mViewModel);
         }
 
@@ -90,7 +86,10 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
 
         @Override
         protected void initActionBar() {
-            // TODO: 04.01.2017 implement this
+            mRootPresenter.newActionBarBuilder()
+                    .setBackArrow(true)
+                    .setVisible(false)
+                    .build();
         }
 
         @Override
@@ -130,8 +129,6 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
             if (getView() != null) {
                 if (getRootView() != null) {
                     getRootView().hideLoad();
-                    getRootView().showToolbar();
-                    getRootView().unlockDrawer();
                 }
                 Flow.get(getView()).replaceTop(new CatalogScreen(), Direction.REPLACE);
             }

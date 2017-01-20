@@ -92,7 +92,7 @@ public class ProductScreen extends BaseScreen<CatalogScreen.Component> {
 
         @Override
         protected void initActionBar() {
-            // nothing
+            // do nothing
         }
 
         @Override

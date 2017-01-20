@@ -84,7 +84,8 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
                                 getRootView().showMessage("Перейти в корзину");
                                 return true;
                             }))
-                    .setTab(getView().getViewPager());
+                    .setTab(getView().getViewPager())
+                    .build();
         }
 
         @Override

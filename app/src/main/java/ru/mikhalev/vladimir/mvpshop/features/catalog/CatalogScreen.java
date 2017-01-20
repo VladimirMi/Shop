@@ -17,6 +17,7 @@ import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductScreen;
 import ru.mikhalev.vladimir.mvpshop.features.root.IRootView;
+import ru.mikhalev.vladimir.mvpshop.features.root.MenuItemHolder;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootActivity;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
@@ -77,7 +78,13 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
 
         @Override
         protected void initActionBar() {
-            // TODO: 04.01.2017 init action bar
+            mRootPresenter.newActionBarBuilder()
+                    .addActoin(new MenuItemHolder("В корзину", R.drawable.ic_shopping_cart_color_primary_dark_24dp,
+                            item -> {
+                                getRootView().showMessage("Перейти в корзину");
+                                return true;
+                            }))
+                    .build();
         }
 
 

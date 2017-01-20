@@ -9,12 +9,10 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -48,7 +46,6 @@ import ru.mikhalev.vladimir.mvpshop.features.account.AccountViewModel;
 import ru.mikhalev.vladimir.mvpshop.features.auth.AuthScreen;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpshop.flow.TreeKeyDispatcher;
-import ru.mikhalev.vladimir.mvpshop.utils.UIHelper;
 import timber.log.Timber;
 
 public class RootActivity extends BaseActivity implements IRootView, NavigationView.OnNavigationItemSelectedListener, IActionBarView {
@@ -124,18 +121,6 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
 
     //endregion
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.catalog_menu, menu);
-        MenuItem item = menu.findItem(R.id.basket);
-        MenuItemCompat.setActionView(item, mBasketBinding.getRoot());
-        MenuItemCompat.getActionView(item).setOnClickListener(v -> {
-            // TODO: 07.11.16 open basket view
-            showMessage(getString(R.string.catalog_add));
-        });
-        return super.onCreateOptionsMenu(menu);
-    }
 
     private void initToolbar() {
         setSupportActionBar(mBinding.toolbar);
@@ -256,42 +241,23 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
         startActivityForResult(intent, REQUEST_SETTINGS_INTENT);
     }
 
-    @Override
-    public void hideToolbar() {
-        getSupportActionBar().hide();
-        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) mBinding.rootFrame.getLayoutParams();
-        lp.setMargins(0, 0, 0, 0);
-        mBinding.rootFrame.setLayoutParams(lp);
-    }
-
-    @Override
-    public void lockDrawer() {
-        mBinding.drawer.closeDrawer(GravityCompat.START);
-        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
-
-    @Override
-    public void showToolbar() {
-        getSupportActionBar().show();
-        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) mBinding.rootFrame.getLayoutParams();
-        lp.setMargins(0, UIHelper.getActionBarHeight(this), 0, 0);
-        mBinding.rootFrame.setLayoutParams(lp);
-    }
-
-    @Override
-    public void unlockDrawer() {
-        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
-
     //endregion
 
 
     //region =============== IActionBarView ==============
 
+    public void lockDrawer() {
+        mBinding.drawer.closeDrawer(GravityCompat.START);
+        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    public void unlockDrawer() {
+        mBinding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
 
     @Override
     public void setToolbarVisible(boolean isVisible) {
-        // TODO: 05.01.2017 сделать через show/hide
         if (isVisible) {
             mBinding.toolbar.setVisibility(View.VISIBLE);
         } else {

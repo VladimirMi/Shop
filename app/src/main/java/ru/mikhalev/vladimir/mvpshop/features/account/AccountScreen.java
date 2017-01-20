@@ -27,6 +27,7 @@ import ru.mikhalev.vladimir.mvpshop.data.dto.PermissionResultDto;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.address.AddressScreen;
+import ru.mikhalev.vladimir.mvpshop.features.root.MenuItemHolder;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootActivity;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
@@ -95,7 +96,6 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            getView().initView();
             mCompSubs.add(subscribeOnActivityResultObs());
             mCompSubs.add(subscribeOnPermissionResultObs());
             mCompSubs.add(subscribeOnAccountSubject());
@@ -109,7 +109,13 @@ public class AccountScreen extends BaseScreen<RootActivity.Component> {
 
         @Override
         protected void initActionBar() {
-
+            mRootPresenter.newActionBarBuilder()
+                    .addActoin(new MenuItemHolder("В корзину", R.drawable.ic_shopping_cart_color_primary_dark_24dp,
+                            item -> {
+                                getRootView().showMessage("Перейти в корзину");
+                                return true;
+                            }))
+                    .build();
         }
 
         //endregion

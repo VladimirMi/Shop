@@ -3,6 +3,7 @@ package ru.mikhalev.vladimir.mvpshop.features.details.description;
 import android.os.Bundle;
 
 import dagger.Provides;
+import io.realm.Realm;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
@@ -43,7 +44,7 @@ public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
     public class Module {
         @Provides
         DescriptionPresenter provideDescriptionPresenter() {
-            return new DescriptionPresenter();
+            return new DescriptionPresenter(mProductRealm);
         }
     }
 
@@ -58,6 +59,14 @@ public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
     //endregion
 
     public class DescriptionPresenter extends BasePresenter<DescriptionView, CatalogModel> implements IDescriptionPresenter {
+
+        private final ProductRealm mProduct;
+
+        public DescriptionPresenter(ProductRealm productRealm) {
+            Realm realm = Realm.getDefaultInstance();
+            mProduct = realm.copyFromRealm(productRealm);
+            realm.close();
+        }
 
         @Override
         protected void initDagger(MortarScope scope) {
@@ -79,26 +88,26 @@ public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
 
         @Override
         public void clickOnPlus() {
-            mProductRealm.inc();
-            mModel.updateProduct(mProductRealm);
+            mProduct.inc();
+            mModel.updateProduct(mProduct);
         }
 
         @Override
         public void clickOnMinus() {
-            mProductRealm.dec();
-            mModel.updateProduct(mProductRealm);
+            mProduct.dec();
+            mModel.updateProduct(mProduct);
         }
 
         @Override
         public void clickOnFavorite() {
-            mProductRealm.switchFavorite();
-            mModel.updateProduct(mProductRealm);
+            mProduct.switchFavorite();
+            mModel.updateProduct(mProduct);
         }
 
         @Override
         public void clickOnRating(float rating) {
-            mProductRealm.setRating(rating);
-            mModel.updateProduct(mProductRealm);
+            mProduct.setRating(rating);
+            mModel.updateProduct(mProduct);
         }
 
         //endregion

@@ -170,6 +170,7 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
     }
 
     public class ActionBarBuilder {
+        // TODO: 20.01.2017 setBackArrow and lock drawer split
         private boolean isGoBack = false;
         private boolean isVisible = true;
         private String title;

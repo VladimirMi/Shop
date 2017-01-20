@@ -28,12 +28,4 @@ public interface IRootView {
     void openApplicationSettings();
 
     void setDrawer(AccountViewModel accountViewModel);
-
-    void hideToolbar();
-
-    void lockDrawer();
-
-    void showToolbar();
-
-    void unlockDrawer();
 }
