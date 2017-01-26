@@ -6,22 +6,18 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import io.realm.Realm;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.App;
-import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
-import ru.mikhalev.vladimir.mvpshop.data.dto.AccountProfileDto;
-import ru.mikhalev.vladimir.mvpshop.data.dto.AccountSettingsDto;
 import ru.mikhalev.vladimir.mvpshop.data.network.RestCallTransformer;
 import ru.mikhalev.vladimir.mvpshop.data.network.api.RestService;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.AccountRes;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.ProductRes;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.components.DataManagerComponent;
@@ -42,9 +38,6 @@ public class DataManager {
     @Inject Context mContext;
     private Realm mRealm;
 
-
-    private ArrayList<AccountAddressDto> mAddressDtoList;
-
     public static DataManager getInstance() {
         return instance;
     }
@@ -64,12 +57,7 @@ public class DataManager {
 
     private void generateMockAccount() {
         AccountRes accountRes = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.account), AccountRes.class);
-        AccountProfileDto profileDto = new AccountProfileDto(accountRes);
-        AccountSettingsDto settingsDto = new AccountSettingsDto(accountRes);
-        mAddressDtoList = accountRes.getAddresses();
-        saveAccountProfile(profileDto);
-        saveAccountSettings(settingsDto);
-        saveAccountAddresses(mAddressDtoList);
+        mRealmManager.saveAccountInDB(accountRes);
     }
 
     //region =============== Network ==============
@@ -117,6 +105,18 @@ public class DataManager {
         return mRealmManager.getProductsFromDB();
     }
 
+    public void saveAccountInDB(AccountRealm accountRealm) {
+        mRealmManager.saveAccountInDB(accountRealm);
+    }
+
+    public void deleteFromDB(Class<? extends RealmObject> realmClass, String id) {
+        mRealmManager.deleteFromDB(realmClass, id);
+    }
+
+    public Observable<AccountRealm> getAccountFromDB() {
+        return mRealmManager.getAccount();
+    }
+
     //endregion
 
 
@@ -130,53 +130,5 @@ public class DataManager {
         return mPreferencesManager.getAuthToken();
     }
 
-    public void saveAccountProfile(AccountProfileDto profileDto) {
-        mPreferencesManager.saveAccountProfile(profileDto);
-    }
-
-    public AccountProfileDto getAccountProfile() {
-        return mPreferencesManager.getAccountProfile();
-    }
-
-    public void saveAccountSettings(AccountSettingsDto settingsDto) {
-        mPreferencesManager.saveAccountSettings(settingsDto);
-    }
-
-    public AccountSettingsDto getAccountSettings() {
-        return mPreferencesManager.getAccountSettings();
-    }
-
-    public void saveAccountAddresses(List<AccountAddressDto> addressDtoList) {
-        mPreferencesManager.saveAccountAddresses(addressDtoList);
-    }
-
-    public Observable<AccountAddressDto> getAccountAddresses() {
-        return Observable.from(mAddressDtoList);
-    }
-
-    public void updateOrInsertAddress(AccountAddressDto address) {
-        if (mAddressDtoList.contains(address)) {
-            mAddressDtoList.set(mAddressDtoList.indexOf(address), address);
-        } else {
-            mAddressDtoList.add(address);
-        }
-        saveAccountAddresses(mAddressDtoList);
-    }
-
-    public AccountAddressDto getAccountAddressFromPosition(int position) {
-        return mAddressDtoList.get(position);
-    }
-
-    public void removeAddress(AccountAddressDto address) {
-        mAddressDtoList.remove(address);
-        saveAccountAddresses(mAddressDtoList);
-    }
-
     //endregion
-
-
-//    public Observable<ProductDto> getProductFromPosition(int position) {
-//        // TODO: 27-Oct-16 temp sample mock data fix me (maybe load from db)
-//        return Observable.just(mMockProductList.get(position - 1));
-//    }
 }

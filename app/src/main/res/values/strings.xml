@@ -48,8 +48,8 @@
     <string name="account.delivery.title">Адрес доставки:</string>
     <string name="account.home.title">Дом:</string>
     <string name="account.home.sample">ул.Пушкина, д.Колотушкина</string>
-    <string name="account.commentRealm.title">Комментарий:</string>
-    <string name="account.commentRealm.sample">Без комментариев</string>
+    <string name="account.comment.title">Комментарий:</string>
+    <string name="account.comment.sample">Без комментариев</string>
     <string name="account.address.add">Добавить адрес</string>
     <string name="account.address.remove">Удалить</string>
     <string name="account.address.edit">Редактировать</string>

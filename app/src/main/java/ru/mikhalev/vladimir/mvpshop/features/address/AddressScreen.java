@@ -10,7 +10,7 @@ import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
-import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AddressRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountModel;
@@ -25,8 +25,8 @@ import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 public class AddressScreen extends BaseScreen<AccountScreen.Component> implements TreeKey {
     private AddressViewModel mViewModel;
 
-    public AddressScreen(AccountAddressDto address) {
-        mViewModel = new AddressViewModel(address);
+    public AddressScreen(AddressRealm addressRealm) {
+        mViewModel = new AddressViewModel(addressRealm);
     }
 
     @Override
@@ -110,7 +110,8 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
         @Override
         public void clickOnAddAddress() {
             if (getView() != null) {
-                mModel.updateOrInsertAddress(new AccountAddressDto(mViewModel));
+                // FIXME: 26.01.2017 this
+//                mModel.updateOrInsertAddress(new AccountAddressDto(mViewModel));
                 Flow.get(getView()).goBack();
             }
         }

@@ -7,7 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
 
+import java.util.UUID;
+
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AddressRealm;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenAccountBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -42,30 +46,20 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
 
     @Override
     public void switchViewState() {
-        mPresenter.switchViewState();
+        mViewModel.changeState();
     }
 
     @Override
     public void clickOnAddAddress() {
-        mPresenter.clickOnAddAddress();
-    }
-
-    @Override
-    public void switchOrder(boolean isChecked) {
-        mViewModel.setOrderNotification(isChecked);
-        mPresenter.switchNotification();
-    }
-
-    @Override
-    public void switchPromo(boolean isChecked) {
-        mViewModel.setPromoNotification(isChecked);
-        mPresenter.switchNotification();
+        String id = UUID.randomUUID().toString();
+        AddressRealm addressRealm = new AddressRealm(id);
+        showAddress(addressRealm);
     }
 
     @Override
     public void changeAvatar() {
         if (mViewModel.getViewState() == AccountViewModel.STATE.EDIT) {
-            mPresenter.changeAvatar();
+            showPhotoSourceDialog();
         }
     }
 
@@ -73,8 +67,8 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
 
 
     public void initAddressList() {
-        mAdapter = new AddressListAdapter();
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
+        mAdapter = new AddressListAdapter(getContext(), null, false);
         mBinding.addressList.setLayoutManager(lm);
         mBinding.addressList.setAdapter(mAdapter);
     }
@@ -85,11 +79,12 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
+                AddressRealm addressRealm = mAdapter.getData().get(position);
 
                 if (direction == ItemTouchHelper.LEFT) {
-                    showRemoveAddressDialog(position);
+                    showRemoveAddressDialog(addressRealm);
                 } else {
-                    showEditAddressDialog(position);
+                    showEditAddressDialog(addressRealm);
                 }
             }
         };
@@ -98,21 +93,21 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
         itemTouchHelper.attachToRecyclerView(mBinding.addressList);
     }
 
-    private void showRemoveAddressDialog(int position) {
+    private void showRemoveAddressDialog(AddressRealm addressRealm) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Удалить адрес")
                 .setMessage("Вы уверены что хотите удалить данный адрес?")
-                .setPositiveButton("Удалить", (dialog, i) -> mPresenter.removeAddress(position))
+                .setPositiveButton("Удалить", (dialog, i) -> mPresenter.removeAddress(addressRealm))
                 .setNegativeButton("Отмена", (dialog, i) -> dialog.cancel())
                 .setOnCancelListener(dialog -> mAdapter.notifyDataSetChanged())
                 .show();
     }
 
-    private void showEditAddressDialog(int position) {
+    private void showEditAddressDialog(AddressRealm addressRealm) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Перейти к редактированию адреса")
                 .setMessage("Вы уверены что хотите редактировать данный адрес?")
-                .setPositiveButton("Редактировать", (dialog, i) -> mPresenter.editAddress(position))
+                .setPositiveButton("Редактировать", (dialog, i) -> showAddress(addressRealm))
                 .setNegativeButton("Отмена", (dialog, i) -> dialog.cancel())
                 .setOnCancelListener(dialog -> mAdapter.notifyDataSetChanged())
                 .show();
@@ -122,27 +117,21 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
 
 
     @Override
-    public void setViewModel(AccountViewModel viewModel) {
-        mViewModel = viewModel;
-        mBinding.setViewModel(mViewModel);
-        mBinding.setActionsHandler(this);
+    public void showAddress(AddressRealm addressRealm) {
+        // TODO: 10.01.2017 open with addressRealm
     }
 
     @Override
-    public AddressListAdapter getAdapter() {
-        return mAdapter;
-    }
-
-    @Override
-    public void changeState() {
-        if (mViewModel.getViewState() == AccountViewModel.STATE.EDIT) {
-            mViewModel.setViewState(AccountViewModel.STATE.PREVIEW);
+    public void setViewModel(AccountRealm accountRealm) {
+        if (mViewModel == null) {
+            mViewModel = new AccountViewModel(accountRealm);
+            mBinding.setViewModel(mViewModel);
         } else {
-            mViewModel.setViewState(AccountViewModel.STATE.EDIT);
+            mViewModel.update(accountRealm);
         }
+        mAdapter.updateData(accountRealm.getAddressRealms());
     }
 
-    @Override
     public void showPhotoSourceDialog() {
         // FIXME: 01.12.2016 refactoring
         String[] source = {"Загрузить из галереи", "Сделать фото", "Отмена"};
@@ -167,15 +156,10 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
     @Override
     public boolean viewOnBackPressed() {
         if (mViewModel.getViewState() == AccountViewModel.STATE.EDIT) {
-            changeState();
+            switchViewState();
             return true;
         }
         return false;
-    }
-
-    @Override
-    public AccountViewModel getViewModel() {
-        return mViewModel;
     }
 
     //endregion

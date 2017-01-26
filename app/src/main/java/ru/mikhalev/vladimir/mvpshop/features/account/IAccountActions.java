@@ -10,9 +10,5 @@ public interface IAccountActions {
 
     void clickOnAddAddress();
 
-    void switchOrder(boolean isChecked);
-
-    void switchPromo(boolean isChecked);
-
     void changeAvatar();
 }

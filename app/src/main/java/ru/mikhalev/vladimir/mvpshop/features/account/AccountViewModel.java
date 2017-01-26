@@ -1,5 +1,6 @@
 package ru.mikhalev.vladimir.mvpshop.features.account;
 
+import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.IntDef;
 
@@ -7,104 +8,102 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import ru.mikhalev.vladimir.mvpshop.BR;
-import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
-import ru.mikhalev.vladimir.mvpshop.data.dto.AccountProfileDto;
-import ru.mikhalev.vladimir.mvpshop.data.dto.AccountSettingsDto;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
+import ru.mikhalev.vladimir.mvpshop.utils.RealmUtils;
+import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
  */
 
-public class AccountViewModel extends BaseViewModel {
+public class AccountViewModel extends BaseObservable {
 
-    @IntDef({STATE.PREVIEW, STATE.EDIT})
+    @IntDef({
+            STATE.PREVIEW,
+            STATE.EDIT})
     @Retention(RetentionPolicy.SOURCE)
     public @interface STATE {
         int PREVIEW = 0;
         int EDIT = 1;
     }
 
-    private int id;
-    private String fullName;
-    private String phone;
-    private String avatar;
-    private boolean orderNotification;
-    private boolean promoNotification;
-    private int viewState = STATE.PREVIEW;
+    private final AccountRealm mAccountRealm;
+    @Bindable private String fullName;
+    @Bindable private String phone;
+    @Bindable private String avatar;
+    @Bindable private boolean promoNotification;
+    @Bindable private boolean orderNotification;
+    @Bindable private @STATE int viewState;
 
-    public AccountViewModel(AccountProfileDto accountProfile, AccountSettingsDto accountSettings) {
-        this.fullName = accountProfile.getFullName();
-        this.phone = accountProfile.getPhone();
-        this.avatar = accountProfile.getAvatar();
-        this.orderNotification = accountSettings.isOrderNotification();
-        this.promoNotification = accountSettings.isPromoNotification();
+    public AccountViewModel(AccountRealm accountRealm) {
+        mAccountRealm = accountRealm;
+        fullName = accountRealm.getFullName();
+        phone = accountRealm.getPhone();
+        avatar = accountRealm.getAvatar();
+        promoNotification = accountRealm.isPromoNotification();
+        orderNotification = accountRealm.isOrderNotification();
     }
 
-    //region ==================== Getters and setters ========================
-
-    public int getId() {
-        return id;
+    public void update(AccountRealm accountRealm) {
+        setFullName(accountRealm.getFullName());
+        setPhone(accountRealm.getPhone());
+        setAvatar(accountRealm.getAvatar());
+        setOrderNotification(accountRealm.isOrderNotification());
+        setPromoNotification(accountRealm.isPromoNotification());
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void save() {
+        Timber.e("save: ");
+        RealmUtils.executeTransactionAsync(realm -> {
+            realm.insertOrUpdate(mAccountRealm);
+        });
     }
 
-    @Bindable
-    public String getFullName() {
-        return fullName;
+    public void changeState() {
+        if (viewState == AccountViewModel.STATE.EDIT) {
+            setViewState(AccountViewModel.STATE.PREVIEW);
+            save();
+        } else {
+            setViewState(AccountViewModel.STATE.EDIT);
+        }
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
-        notifyPropertyChanged(BR.fullName);
-    }
-
-    @Bindable
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-        notifyPropertyChanged(BR.avatar);
-    }
-
-    @Bindable
-    public String getPhone() {
-        return phone;
+        if (!this.fullName.equals(fullName)) {
+            this.fullName = fullName;
+            mAccountRealm.setFullName(fullName);
+            notifyPropertyChanged(BR.fullName);
+        }
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
-        notifyPropertyChanged(BR.phone);
+        if (!this.phone.equals(phone)) {
+            this.phone = phone;
+            mAccountRealm.setPhone(phone);
+        }
     }
 
-    @Bindable
-    public boolean isOrderNotification() {
-        return orderNotification;
-    }
-
-    public void setOrderNotification(boolean orderNotification) {
-        this.orderNotification = orderNotification;
-        notifyPropertyChanged(BR.orderNotification);
-    }
-
-    @Bindable
-    public boolean isPromoNotification() {
-        return promoNotification;
+    public void setAvatar(String avatar) {
+        if (!this.avatar.equals(avatar)) {
+            this.avatar = avatar;
+            mAccountRealm.setAvatar(avatar);
+        }
     }
 
     public void setPromoNotification(boolean promoNotification) {
-        this.promoNotification = promoNotification;
-        notifyPropertyChanged(BR.promoNotification);
+        if (this.promoNotification != promoNotification) {
+            this.promoNotification = promoNotification;
+            mAccountRealm.setPromoNotification(promoNotification);
+            save();
+        }
     }
 
-    @Bindable
-    public
-    @STATE
-    int getViewState() {
-        return viewState;
+    public void setOrderNotification(boolean orderNotification) {
+        if (this.orderNotification != orderNotification) {
+            this.orderNotification = orderNotification;
+            mAccountRealm.setOrderNotification(orderNotification);
+            save();
+        }
     }
 
     public void setViewState(@STATE int viewState) {
@@ -112,26 +111,33 @@ public class AccountViewModel extends BaseViewModel {
         notifyPropertyChanged(BR.viewState);
     }
 
-    public void update(AccountViewModel viewModel) {
-        if (!fullName.equals(viewModel.getFullName())) {
-            setFullName(viewModel.getFullName());
-        }
-        if (!phone.equals(viewModel.getPhone())) {
-            setPhone(viewModel.getPhone());
-        }
-        if (!avatar.equals(viewModel.getAvatar())) {
-            setAvatar(viewModel.getAvatar());
-        }
-        if (orderNotification != viewModel.isOrderNotification()) {
-            setOrderNotification(viewModel.isOrderNotification());
-        }
-        if (promoNotification != viewModel.isPromoNotification()) {
-            setPromoNotification(viewModel.isPromoNotification());
-        }
-        if (viewState != viewModel.getViewState()) {
-            setViewState(viewModel.getViewState());
-        }
+    public AccountRealm getAccountRealm() {
+        return mAccountRealm;
     }
 
-    //endregion
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public boolean isPromoNotification() {
+        return promoNotification;
+    }
+
+    public boolean isOrderNotification() {
+        return orderNotification;
+    }
+
+    public
+    @STATE
+    int getViewState() {
+        return viewState;
+    }
 }

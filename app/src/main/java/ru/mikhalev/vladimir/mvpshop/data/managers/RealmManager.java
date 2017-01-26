@@ -3,8 +3,11 @@ package ru.mikhalev.vladimir.mvpshop.data.managers;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import ru.mikhalev.vladimir.mvpshop.data.network.models.AccountRes;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.CommentRes;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.ProductRes;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AddressRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import rx.Observable;
@@ -45,7 +48,7 @@ public class RealmManager {
         realm.close();
     }
 
-    private void deleteFromDB(Class<? extends RealmObject> realmClass, String id) {
+    public void deleteFromDB(Class<? extends RealmObject> realmClass, String id) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> realm1.where(realmClass)
                 .equalTo("id", id)
@@ -61,5 +64,39 @@ public class RealmManager {
                 .findAllAsync()
                 .asObservable()
                 .filter(RealmResults::isLoaded);
+    }
+
+    public void saveAccountInDB(AccountRealm accountRealm) {
+        Realm realm = Realm.getDefaultInstance();
+        if (accountRealm.isManaged()) {
+            realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(accountRealm));
+        } else {
+            realm.executeTransactionAsync(realm1 -> realm1.insertOrUpdate(accountRealm));
+        }
+        realm.close();
+    }
+
+    public void saveAccountInDB(AccountRes accountRes) {
+        AccountRealm accountRealm = new AccountRealm(accountRes);
+
+        if (!accountRes.getAddresses().isEmpty()) {
+            Observable.from(accountRes.getAddresses())
+                    .map(AddressRealm::new)
+                    .subscribe(addressRealm -> accountRealm.getAddressRealms().add(addressRealm));
+        }
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(realm1 -> realm1.insertOrUpdate(accountRealm));
+        realm.close();
+    }
+
+    public Observable<AccountRealm> getAccount() {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(AccountRealm.class)
+                .findAllAsync()
+                .asObservable()
+                .filter(RealmResults::isLoaded)
+                .map(RealmResults::first)
+                .map(realm::copyFromRealm);
     }
 }

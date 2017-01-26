@@ -1,55 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="ru.mikhalev.vladimir.mvpshop.features.address.AddressViewModel"/>
-    </data>
+    <ImageView
+        style="@style/Icon.Account"
+        android:src="@drawable/ic_place_black_24dp"
+        tools:ignore="ContentDescription"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        >
 
-        <ImageView
-            style="@style/Icon.Account"
-            android:src="@drawable/ic_place_black_24dp"
-            tools:ignore="ContentDescription"/>
+        <TextView
+            style="@style/CustomText.AccountLabel"
+            android:text="@string/account.home.title"
+            />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+        <TextView
+            android:id="@+id/address"
+            style="@style/CustomText.AccountValue"
+            tools:text="@string/account.home.sample"
+            />
 
-            <TextView
-                style="@style/CustomText.AccountLabel"
-                android:text="@string/account.home.title"/>
+        <TextView
+            style="@style/CustomText.AccountLabel"
+            android:text="@string/account.comment.title"
+            />
 
-            <TextView
-                style="@style/CustomText.AccountValue"
-                android:text="@{viewModel.toString()}"
-                tools:text="@string/account.home.sample"/>
+        <TextView
+            android:id="@+id/comment"
+            style="@style/CustomText.AccountValue"
+            tools:text="@string/account.comment.sample"
+            />
 
-            <TextView
-                style="@style/CustomText.AccountLabel"
-                android:text="@string/account.commentRealm.title"
-                />
-
-            <TextView
-                style="@style/CustomText.AccountValue"
-                android:text="@{viewModel.comment}"
-                tools:text="@string/account.commentRealm.sample"
-                />
-
-            <View
-                style="@style/HorizontalDivider"/>
-
-        </LinearLayout>
+        <View
+            style="@style/HorizontalDivider"/>
 
     </LinearLayout>
-</layout>
+
+</LinearLayout>

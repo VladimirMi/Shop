@@ -1,4 +1,4 @@
-<!--suppress AndroidUnknownAttribute -->
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:bind="http://schemas.android.com/apk/res-auto"
@@ -85,7 +85,6 @@
                     />
 
             </FrameLayout>
-
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -206,18 +205,15 @@
 
                     <android.support.v7.widget.SwitchCompat
                         style="@style/CustomSwitch"
-                        android:checked="@{viewModel.orderNotification}"
-                        android:onCheckedChanged="@{(switch, isChecked) -> actionsHandler.switchOrder(isChecked)}"
+                        android:checked="@={viewModel.orderNotification}"
                         android:text="@string/account.order.notify"
                         />
 
                     <android.support.v7.widget.SwitchCompat
                         style="@style/CustomSwitch"
-                        android:checked="@{viewModel.promoNotification}"
-                        android:onCheckedChanged="@{(switch, isChecked) -> actionsHandler.switchPromo(isChecked)}"
+                        android:checked="@={viewModel.promoNotification}"
                         android:text="@string/account.extra.notify"
                         />
-
 
                 </LinearLayout>
 

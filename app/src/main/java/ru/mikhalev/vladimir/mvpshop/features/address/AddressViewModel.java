@@ -4,7 +4,7 @@ import android.databinding.Bindable;
 
 import ru.mikhalev.vladimir.mvpshop.BR;
 import ru.mikhalev.vladimir.mvpshop.core.BaseViewModel;
-import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AddressRealm;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -20,13 +20,13 @@ public class AddressViewModel extends BaseViewModel {
     private String comment;
     private boolean favorite;
 
-    public AddressViewModel(AccountAddressDto address) {
-        this.name = address.getName();
-        this.street = address.getStreet();
-        this.house = address.getHouse();
-        this.apartment = address.getApartment();
-        this.floor = address.getFloor();
-        this.comment = address.getComment();
+    public AddressViewModel(AddressRealm addressRealm) {
+        this.name = addressRealm.getName();
+        this.street = addressRealm.getStreet();
+        this.house = addressRealm.getHouse();
+        this.apartment = addressRealm.getApartment();
+        this.floor = addressRealm.getFloor();
+        this.comment = addressRealm.getComment();
     }
 
     @Override

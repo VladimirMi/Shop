@@ -1,20 +1,30 @@
 package ru.mikhalev.vladimir.mvpshop.features.root;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 
 import com.fernandocejas.frodo.annotation.RxLogSubscriber;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -22,9 +32,8 @@ import javax.inject.Inject;
 import mortar.Presenter;
 import mortar.bundler.BundleService;
 import ru.mikhalev.vladimir.mvpshop.core.App;
-import ru.mikhalev.vladimir.mvpshop.data.dto.ActivityResultDto;
-import ru.mikhalev.vladimir.mvpshop.data.dto.PermissionResultDto;
 import ru.mikhalev.vladimir.mvpshop.data.managers.DataManager;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountModel;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountViewModel;
 import rx.Observable;
@@ -32,7 +41,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
+import rx.subjects.BehaviorSubject;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -40,11 +49,14 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class RootPresenter extends Presenter<IRootView> implements IRootPresenter {
 
-    private static int DEFAULT_MODE = 0;
-    private static int TAB_MODE = 1;
+    private static final int DEFAULT_MODE = 0;
+    private static final int TAB_MODE = 1;
+    public static final int REQUEST_CAMERA = 100;
+    public static final int REQUEST_GALLERY = 101;
 
-    private PublishSubject<ActivityResultDto> mActivityResultSubject = PublishSubject.create();
-    private PublishSubject<PermissionResultDto> mPermissionResultSubject = PublishSubject.create();
+    private BehaviorSubject<String> mPhotoPathSubject = BehaviorSubject.create();
+    private String mCurrentPhotoPath;
+
     private CompositeSubscription mCompSubs = new CompositeSubscription();
 
     @Inject AccountModel mAccountModel;
@@ -58,18 +70,14 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
         return BundleService.getBundleService((Context) view);
     }
 
-    public PublishSubject<ActivityResultDto> getActivityResultSubject() {
-        return mActivityResultSubject;
-    }
-
-    public PublishSubject<PermissionResultDto> getPermissionResultSubject() {
-        return mPermissionResultSubject;
+    public BehaviorSubject<String> getPhotoPathSubject() {
+        return mPhotoPathSubject;
     }
 
     @Override
     protected void onLoad(Bundle savedInstanceState) {
         super.onLoad(savedInstanceState);
-        mCompSubs.add(subscribeOnAccountInfo());
+        mCompSubs.add(subscribeOnAccount());
         mCompSubs.add(subscribeOnProductsTimer());
     }
 
@@ -79,8 +87,9 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
         mCompSubs.unsubscribe();
     }
 
-    private Subscription subscribeOnAccountInfo() {
-        return mAccountModel.getAccountSubject()
+    private Subscription subscribeOnAccount() {
+
+        return mAccountModel.getAccountObs()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new UserInfoSubscriber());
@@ -99,12 +108,9 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
         return getView();
     }
 
-    public ActionBarBuilder newActionBarBuilder() {
-        return this.new ActionBarBuilder();
-    }
-
     @RxLogSubscriber
-    private class UserInfoSubscriber extends Subscriber<AccountViewModel> {
+    private class UserInfoSubscriber extends Subscriber<AccountRealm> {
+
         @Override
         public void onCompleted() {
 
@@ -118,14 +124,15 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
         }
 
         @Override
-        public void onNext(AccountViewModel accountViewModel) {
+        public void onNext(AccountRealm accountRealm) {
             if (getView() != null) {
-                getView().setDrawer(accountViewModel);
+                getView().setDrawer(new AccountViewModel(accountRealm));
             }
         }
+
     }
 
-    public void checkPermissionsAndRequestIfNotGranted(@NonNull String[] permissions, int requestCode) {
+    public void resolvePermissions(@NonNull String[] permissions, int requestCode) {
 
         boolean allGranted = true;
         for (String permission : permissions) {
@@ -144,29 +151,94 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
             } else {
                 ActivityCompat.requestPermissions(((RootActivity) getView()), permissions, requestCode);
             }
+        } else {
+            resolveGrantedPermissions(requestCode);
         }
-        mPermissionResultSubject.onNext(new PermissionResultDto(requestCode, allGranted));
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        // FIXME: 10.12.2016 grantResults length may be 0
-        boolean allGranted = true;
+        if (permissions.length == 0) {
+            return;
+        }
         for (int grantResult : grantResults) {
             if (grantResult == PackageManager.PERMISSION_DENIED) {
                 if (getView() != null) {
                     getView().showPermissionSnackBar();
                 }
-                allGranted = false;
-                break;
+                return;
             }
         }
-        mPermissionResultSubject.onNext(new PermissionResultDto(requestCode, allGranted));
+        resolveGrantedPermissions(requestCode);
     }
+
+    private void resolveGrantedPermissions(int requestCode) {
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                takePhotoFromCamera();
+                break;
+            case REQUEST_GALLERY:
+                takePhotoFromGallery();
+                break;
+        }
+    }
+
+
+    private void takePhotoFromGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        if (Build.VERSION.SDK_INT < 19) {
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+        } else {
+            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+        }
+        ((RootActivity) getView()).startActivityForResult(intent, REQUEST_GALLERY);
+    }
+
+    private void takePhotoFromCamera() {
+        File fileForPhoto = createFileForPhoto();
+        if (fileForPhoto == null) {
+            getView().showMessage("Фотография не может быть создана");
+            return;
+        }
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri photoURI = FileProvider.getUriForFile(((RootActivity) getView()),
+                "team.alpha.goodshop.provider",
+                fileForPhoto);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+        ((RootActivity) getView()).startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
+    private File createFileForPhoto() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "IMG_" + timeStamp;
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image;
+        try {
+            image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        } catch (IOException e) {
+            return null;
+        }
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        mActivityResultSubject.onNext(new ActivityResultDto(requestCode, resultCode, intent));
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_GALLERY) {
+                if (intent != null) {
+                    mCurrentPhotoPath = intent.getData().toString();
+                }
+            }
+            mPhotoPathSubject.onNext(mCurrentPhotoPath);
+        }
+    }
+
+    public ActionBarBuilder newActionBarBuilder() {
+        return this.new ActionBarBuilder();
     }
 
     public class ActionBarBuilder {

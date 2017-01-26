@@ -1,6 +1,8 @@
 package ru.mikhalev.vladimir.mvpshop.features.account;
 
 import ru.mikhalev.vladimir.mvpshop.core.IView;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AddressRealm;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -8,13 +10,7 @@ import ru.mikhalev.vladimir.mvpshop.core.IView;
 
 public interface IAccountView extends IView {
 
-    AddressListAdapter getAdapter();
+    void setViewModel(AccountRealm accountRealm);
 
-    void setViewModel(AccountViewModel viewModel);
-
-    void changeState();
-
-    void showPhotoSourceDialog();
-
-    AccountViewModel getViewModel();
+    void showAddress(AddressRealm addressRealm);
 }

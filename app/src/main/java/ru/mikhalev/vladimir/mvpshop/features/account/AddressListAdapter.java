@@ -1,67 +1,53 @@
 package ru.mikhalev.vladimir.mvpshop.features.account;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
-import ru.mikhalev.vladimir.mvpshop.databinding.ItemAddressBinding;
-import ru.mikhalev.vladimir.mvpshop.features.address.AddressViewModel;
+import io.realm.OrderedRealmCollection;
+import io.realm.RealmRecyclerViewAdapter;
+import ru.mikhalev.vladimir.mvpshop.R;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AddressRealm;
 
 /**
  * Developer Vladimir Mikhalev, 04.12.2016.
  */
 
-public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.ViewHolder> {
+public class AddressListAdapter extends RealmRecyclerViewAdapter<AddressRealm, AddressListAdapter.ViewHolder> {
 
-    private List<AddressViewModel> mAddresses = new ArrayList<>();
-
-    public AddressListAdapter() {
-
+    public AddressListAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<AddressRealm> data, boolean autoUpdate) {
+        super(context, data, autoUpdate);
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ItemAddressBinding binding = ItemAddressBinding.inflate(inflater, parent, false);
-        return new ViewHolder(binding);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_address, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(mAddresses.get(position));
+        holder.mAddress.setText(getItem(position).toString());
+        holder.mComment.setText(getItem(position).getComment());
     }
 
-    @Override
-    public int getItemCount() {
-        return mAddresses.size();
-    }
 
-    // TODO: 28.12.2016 optimize notify
-    public void addItem(AccountAddressDto address) {
-        mAddresses.add(new AddressViewModel(address));
-        notifyDataSetChanged();
-    }
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-    public void reloadAdapter() {
-        mAddresses.clear();
-        notifyDataSetChanged();
-    }
+        private TextView mAddress;
+        private TextView mComment;
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        private final ItemAddressBinding mBinding;
-
-        public ViewHolder(ItemAddressBinding binding) {
-            super(binding.getRoot());
-            mBinding = binding;
-        }
-
-        public void bind(AddressViewModel addressViewModel) {
-            mBinding.setViewModel(addressViewModel);
+        public ViewHolder(View view) {
+            super(view);
+            mAddress = (TextView) view.findViewById(R.id.address);
+            mComment = (TextView) view.findViewById(R.id.comment);
         }
     }
 }

@@ -2,7 +2,6 @@ package ru.mikhalev.vladimir.mvpshop.data.network.models;
 
 import java.util.ArrayList;
 
-import ru.mikhalev.vladimir.mvpshop.data.dto.AccountAddressDto;
 
 /**
  * Developer Vladimir Mikhalev, 13.12.2016.
@@ -15,7 +14,7 @@ public class AccountRes {
     private String avatar;
     private boolean orderNotification;
     private boolean promoNotification;
-    private ArrayList<AccountAddressDto> addresses;
+    private ArrayList<AddressRes> addresses;
 
     public int getId() {
         return id;
@@ -65,11 +64,11 @@ public class AccountRes {
         this.promoNotification = promoNotification;
     }
 
-    public ArrayList<AccountAddressDto> getAddresses() {
+    public ArrayList<AddressRes> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(ArrayList<AccountAddressDto> addresses) {
+    public void setAddresses(ArrayList<AddressRes> addresses) {
         this.addresses = addresses;
     }
 }

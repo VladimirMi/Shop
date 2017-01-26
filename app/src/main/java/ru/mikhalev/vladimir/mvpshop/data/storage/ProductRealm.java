@@ -35,12 +35,12 @@ public class ProductRealm extends RealmObject {
 
     public ProductRealm(ProductViewModel viewModel) {
         this.id = viewModel.getId();
-        this.productName = viewModel.productName.get();
-        this.imageUrl = viewModel.imageUrl.get();
-        this.description = viewModel.description.get();
-        this.price = viewModel.price.get();
-        this.count = viewModel.count.get();
-        this.favorite = viewModel.favorite.get();
+        this.productName = viewModel.getProductName();
+        this.imageUrl = viewModel.getImageUrl();
+        this.description = viewModel.getDescription();
+        this.price = viewModel.getPrice();
+        this.count = viewModel.getCount();
+        this.favorite = viewModel.isFavorite();
     }
 
     public int getId() {
