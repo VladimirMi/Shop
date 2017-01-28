@@ -13,7 +13,7 @@
 
         <variable
             name="actionsHandler"
-            type="ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductView"
+            type="ru.mikhalev.vladimir.mvpshop.features.catalog.product.IProductActions"
             />
     </data>
 
@@ -83,7 +83,7 @@
 
                             <TextView
                                 style="@style/CustomText.LabelPrice"
-                                android:text="@string/productRes.count"
+                                android:text="@string/product.count"
                                 />
 
                             <LinearLayout
@@ -132,7 +132,7 @@
 
                             <TextView
                                 style="@style/CustomText.LabelPrice"
-                                android:text="@string/productRes.price"
+                                android:text="@string/product.price"
                                 />
 
                             <TextView

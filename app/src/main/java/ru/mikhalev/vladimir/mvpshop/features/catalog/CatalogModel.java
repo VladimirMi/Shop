@@ -25,11 +25,16 @@ public class CatalogModel extends BaseModel {
         return mDataManager.getProductsFromDB();
     }
 
-    public void updateProduct(ProductRealm product) {
+    public void saveProduct(ProductRealm product) {
         Realm realm = Realm.getDefaultInstance();
         mDataManager.saveProductInDB(product);
         realm.close();
     }
+
+    public Observable<ProductRealm> getProductObs(String productId) {
+        return mDataManager.getProductFromDB(productId);
+    }
+
 
 //    @RxLogObservable
 //    public Observable<ProductRes> fromNetwork() {

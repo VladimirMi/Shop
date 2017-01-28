@@ -68,9 +68,4 @@ public class AddressRealm extends RealmObject {
     public boolean isFavorite() {
         return favorite;
     }
-
-    @Override
-    public String toString() {
-        return String.format("ул. %s  %s - %s, %s этаж", street, house, apartment, floor);
-    }
 }

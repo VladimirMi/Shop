@@ -79,7 +79,7 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
         @Override
         protected void initActionBar() {
             mRootPresenter.newActionBarBuilder()
-                    .addActoin(new MenuItemHolder("В корзину", R.drawable.ic_shopping_cart_color_primary_dark_24dp,
+                    .addAction(new MenuItemHolder("В корзину", R.drawable.ic_shopping_cart_color_primary_dark_24dp,
                             item -> {
                                 getRootView().showMessage("Перейти в корзину");
                                 return true;
@@ -144,13 +144,11 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
 
 
     public static class Factory {
-        public static Context createProductContext(ProductRealm productRealm, Context parentContext) {
+        public static Context createProductContext(String productId, Context parentContext) {
             MortarScope parentScope = MortarScope.getScope(parentContext);
             MortarScope childScope = null;
-            ProductScreen productScreen = new ProductScreen(productRealm);
-            String scopeName =
-                    String.format(Locale.getDefault(), "%s_%d", productScreen.getScopeName(),
-                            productRealm.getId());
+            ProductScreen productScreen = new ProductScreen(productId);
+            String scopeName = String.format(Locale.getDefault(), "%s_%s", productScreen.getScopeName(), productId);
 
             if (parentScope.findChild(scopeName) == null) {
                 childScope = parentScope.buildChild()

@@ -4,7 +4,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.ProductRes;
-import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
 
 /**
  * Developer Vladimir Mikhalev 19.12.2016
@@ -12,7 +11,7 @@ import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
 
 public class ProductRealm extends RealmObject {
     @PrimaryKey
-    private int id;
+    private String id;
     private String productName;
     private String imageUrl;
     private String description;
@@ -26,24 +25,14 @@ public class ProductRealm extends RealmObject {
     }
 
     public ProductRealm(ProductRes productRes) {
-        this.id = productRes.getRemoteId();
+        this.id = productRes.getId();
         this.productName = productRes.getProductName();
         this.imageUrl = productRes.getImageUrl();
         this.description = productRes.getDescription();
         this.price = productRes.getPrice();
     }
 
-    public ProductRealm(ProductViewModel viewModel) {
-        this.id = viewModel.getId();
-        this.productName = viewModel.getProductName();
-        this.imageUrl = viewModel.getImageUrl();
-        this.description = viewModel.getDescription();
-        this.price = viewModel.getPrice();
-        this.count = viewModel.getCount();
-        this.favorite = viewModel.isFavorite();
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -79,14 +68,6 @@ public class ProductRealm extends RealmObject {
         return mCommentRealms;
     }
 
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
-
-    public void setCommentRealms(RealmList<CommentRealm> commentRealms) {
-        mCommentRealms = commentRealms;
-    }
-
     public void inc() {
         count++;
     }
@@ -99,5 +80,9 @@ public class ProductRealm extends RealmObject {
 
     public void switchFavorite() {
         favorite = !favorite;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 }

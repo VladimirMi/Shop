@@ -37,6 +37,7 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
     @Override
     protected void initView() {
         mBinding = ScreenAccountBinding.bind(this);
+        mBinding.setActionsHandler(this);
         initAddressList();
         initSwipe();
     }
@@ -94,10 +95,11 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
     }
 
     private void showRemoveAddressDialog(AddressRealm addressRealm) {
+        // TODO: 26.01.2017 check notifydatasetchanged
         new AlertDialog.Builder(getContext())
                 .setTitle("Удалить адрес")
                 .setMessage("Вы уверены что хотите удалить данный адрес?")
-                .setPositiveButton("Удалить", (dialog, i) -> mPresenter.removeAddress(addressRealm))
+                .setPositiveButton("Удалить", (dialog, i) -> mViewModel.removeAddress(addressRealm))
                 .setNegativeButton("Отмена", (dialog, i) -> dialog.cancel())
                 .setOnCancelListener(dialog -> mAdapter.notifyDataSetChanged())
                 .show();
@@ -133,7 +135,6 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
     }
 
     public void showPhotoSourceDialog() {
-        // FIXME: 01.12.2016 refactoring
         String[] source = {"Загрузить из галереи", "Сделать фото", "Отмена"};
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("Установить фото");

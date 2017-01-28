@@ -100,7 +100,7 @@ public class AddressScreen extends BaseScreen<AccountScreen.Component> implement
 
         @Override
         protected void initActionBar() {
-            // TODO: 04.01.2017 init this
+            // TODO: 04.01.2017 update this
         }
 
 

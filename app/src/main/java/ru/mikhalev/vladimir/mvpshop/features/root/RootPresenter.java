@@ -16,15 +16,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 
-import com.fernandocejas.frodo.annotation.RxLogSubscriber;
-
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -33,13 +31,11 @@ import mortar.Presenter;
 import mortar.bundler.BundleService;
 import ru.mikhalev.vladimir.mvpshop.core.App;
 import ru.mikhalev.vladimir.mvpshop.data.managers.DataManager;
-import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountModel;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountViewModel;
+import ru.mikhalev.vladimir.mvpshop.utils.AppConfig;
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 import rx.subscriptions.CompositeSubscription;
@@ -49,8 +45,6 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class RootPresenter extends Presenter<IRootView> implements IRootPresenter {
 
-    private static final int DEFAULT_MODE = 0;
-    private static final int TAB_MODE = 1;
     public static final int REQUEST_CAMERA = 100;
     public static final int REQUEST_GALLERY = 101;
 
@@ -90,46 +84,20 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
     private Subscription subscribeOnAccount() {
 
         return mAccountModel.getAccountObs()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new UserInfoSubscriber());
+                .map(AccountViewModel::new)
+                .subscribe(getView()::setDrawer, getView()::showError);
     }
 
     private Subscription subscribeOnProductsTimer() {
         // TODO: 04.01.2017 inject datamanger?
         return Observable.interval(0, 5, TimeUnit.MINUTES)
                 .observeOn(Schedulers.io())
-                .doOnNext(aLong -> DataManager.getInstance().updateProductsFromNetwork())
-                .subscribe();
+                .subscribe(aLong -> DataManager.getInstance().updateProductsFromNetwork());
     }
 
     @Nullable
     public IRootView getRootView() {
         return getView();
-    }
-
-    @RxLogSubscriber
-    private class UserInfoSubscriber extends Subscriber<AccountRealm> {
-
-        @Override
-        public void onCompleted() {
-
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            if (getView() != null) {
-                getView().showError(e);
-            }
-        }
-
-        @Override
-        public void onNext(AccountRealm accountRealm) {
-            if (getView() != null) {
-                getView().setDrawer(new AccountViewModel(accountRealm));
-            }
-        }
-
     }
 
     public void resolvePermissions(@NonNull String[] permissions, int requestCode) {
@@ -197,27 +165,25 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
     }
 
     private void takePhotoFromCamera() {
-        File fileForPhoto = createFileForPhoto();
-        if (fileForPhoto == null) {
-            getView().showMessage("Фотография не может быть создана");
-            return;
-        }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Uri photoURI = FileProvider.getUriForFile(((RootActivity) getView()),
-                "team.alpha.goodshop.provider",
-                fileForPhoto);
+                AppConfig.FILE_PROVIDER_AUTHORITY,
+                createFileForPhoto());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
         ((RootActivity) getView()).startActivityForResult(intent, REQUEST_CAMERA);
     }
 
-    private File createFileForPhoto() {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "IMG_" + timeStamp;
+    private
+    @Nullable
+    File createFileForPhoto() {
+        String timeStamp = SimpleDateFormat.getTimeInstance(DateFormat.MEDIUM).format(new Date());
+        String imageFileName = AppConfig.PHOTO_FILE_NAME_PREFIX + timeStamp;
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image;
         try {
-            image = File.createTempFile(imageFileName, ".jpg", storageDir);
+            image = File.createTempFile(imageFileName, AppConfig.PHOTO_FILE_NAME_SUFFIX, storageDir);
         } catch (IOException e) {
+            getView().showError(e);
             return null;
         }
         mCurrentPhotoPath = image.getAbsolutePath();
@@ -242,6 +208,9 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
     }
 
     public class ActionBarBuilder {
+        private static final int DEFAULT_MODE = 0;
+        private static final int TAB_MODE = 1;
+
         // TODO: 20.01.2017 setBackArrow and lock drawer split
         private boolean isGoBack = false;
         private boolean isVisible = true;
@@ -265,7 +234,7 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
             return this;
         }
 
-        public ActionBarBuilder addActoin(MenuItemHolder item) {
+        public ActionBarBuilder addAction(MenuItemHolder item) {
             this.items.add(item);
             return this;
         }

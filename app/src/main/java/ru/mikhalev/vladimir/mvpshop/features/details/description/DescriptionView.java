@@ -4,17 +4,19 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
+import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenDescriptionBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.product.IProductView;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
 
 /**
  * Developer Vladimir Mikhalev, 14.01.2017.
  */
 
-public class DescriptionView extends BaseView<DescriptionScreen.DescriptionPresenter> implements IDescriptionActions, IDescriptionView {
-    private ProductViewModel mViewModel;
+public class DescriptionView extends BaseView<DescriptionScreen.DescriptionPresenter> implements IDescriptionActions, IProductView {
     private ScreenDescriptionBinding mBinding;
+    private ProductRealm mProductRealm;
 
     public DescriptionView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -31,43 +33,53 @@ public class DescriptionView extends BaseView<DescriptionScreen.DescriptionPrese
         mBinding.setActionsHandler(this);
     }
 
-
-    @Override
-    public void setViewModel(ProductViewModel viewModel) {
-        mViewModel = viewModel;
-        mBinding.setViewModel(mViewModel);
-    }
-
-
-    @Override
-    public boolean viewOnBackPressed() {
-        return false;
-    }
-
-    public ProductViewModel getViewModel() {
-        return mViewModel;
-    }
-
     //region =============== Events ==============
 
     @Override
     public void clickOnPlus() {
-        mPresenter.clickOnPlus();
+        mProductRealm.inc();
+        mPresenter.saveProduct(mProductRealm);
     }
 
     @Override
     public void clickOnMinus() {
-        mPresenter.clickOnMinus();
+        mProductRealm.dec();
+        mPresenter.saveProduct(mProductRealm);
     }
 
     @Override
     public void clickOnFavorite() {
-        mPresenter.clickOnFavorite();
+        mProductRealm.switchFavorite();
+        mPresenter.saveProduct(mProductRealm);
     }
+
 
     @Override
     public void clickOnRating(float rating) {
-        mPresenter.clickOnRating(rating);
+        mProductRealm.setRating(rating);
+        mPresenter.saveProduct(mProductRealm);
+    }
+
+    //endregion
+
+    //region ==================== IProductView ========================
+
+    @Override
+    public void setProduct(ProductRealm productRealm) {
+        mProductRealm = productRealm;
+        ProductViewModel viewModel = mBinding.getViewModel();
+        if (viewModel == null) {
+            viewModel = new ProductViewModel();
+            viewModel.update(productRealm);
+            mBinding.setViewModel(viewModel);
+        } else {
+            viewModel.update(productRealm);
+        }
+    }
+
+    @Override
+    public boolean viewOnBackPressed() {
+        return false;
     }
 
     //endregion

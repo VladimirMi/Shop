@@ -2,12 +2,13 @@ package ru.mikhalev.vladimir.mvpshop.features.details.comments;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 import io.realm.RealmList;
+import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
 import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
-import ru.mikhalev.vladimir.mvpshop.databinding.ScreenCommentsBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
 /**
@@ -15,7 +16,7 @@ import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
  */
 public class CommentsView extends BaseView<CommentsScreen.CommentsPresenter> {
 
-    private ScreenCommentsBinding mBinding;
+    private CommentsAdapter mAdapter;
 
     public CommentsView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -28,18 +29,23 @@ public class CommentsView extends BaseView<CommentsScreen.CommentsPresenter> {
 
     @Override
     protected void initView() {
-        mBinding = ScreenCommentsBinding.bind(this);
+        initCommentsList();
+    }
+
+    private void initCommentsList() {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comments);
+        LinearLayoutManager lm = new LinearLayoutManager(getContext());
+        mAdapter = new CommentsAdapter(getContext(), null, false);
+        recyclerView.setLayoutManager(lm);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    public void updateComments(RealmList<CommentRealm> commentRealms) {
+        mAdapter.updateData(commentRealms);
     }
 
     @Override
     public boolean viewOnBackPressed() {
         return false;
-    }
-
-    public void initComments(RealmList<CommentRealm> commentRealms) {
-        LinearLayoutManager lm = new LinearLayoutManager(getContext());
-        CommentsAdapter adapter = new CommentsAdapter(getContext(), commentRealms, true);
-        mBinding.comments.setLayoutManager(lm);
-        mBinding.comments.setAdapter(adapter);
     }
 }

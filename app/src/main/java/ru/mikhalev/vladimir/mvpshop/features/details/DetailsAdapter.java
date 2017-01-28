@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
-import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.features.details.comments.CommentsScreen;
 import ru.mikhalev.vladimir.mvpshop.features.details.description.DescriptionScreen;
 import ru.mikhalev.vladimir.mvpshop.mortar.ScreenScoper;
@@ -19,12 +18,13 @@ import ru.mikhalev.vladimir.mvpshop.mortar.ScreenScoper;
  */
 public class DetailsAdapter extends PagerAdapter {
 
-    private ProductRealm mProductRealm;
+
+    private final String mProductId;
     private final String[] mTabsTitles;
 
-    public DetailsAdapter(Context context, ProductRealm productRealm) {
-        mProductRealm = productRealm;
-        mTabsTitles = context.getResources().getStringArray(R.array.detail_tabs);
+    public DetailsAdapter(Context context, String id) {
+        mProductId = id;
+        mTabsTitles = context.getResources().getStringArray(R.array.details_tabs);
     }
 
     @Override
@@ -41,12 +41,12 @@ public class DetailsAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         BaseScreen screen;
         if (position == 0) {
-            screen = new DescriptionScreen(mProductRealm);
+            screen = new DescriptionScreen(mProductId);
         } else {
-            screen = new CommentsScreen(mProductRealm);
+            screen = new CommentsScreen(mProductId);
         }
 
-        MortarScope scope = ScreenScoper.createScreenScopeFromContext(container.getContext(), screen);
+        MortarScope scope = ScreenScoper.createScreenScopeFromContext(container.getContext(), screen, null);
         Context screenContext = scope.createContext(container.getContext());
 
         View newView = LayoutInflater.from(screenContext).inflate(screen.getLayoutResId(), container, false);

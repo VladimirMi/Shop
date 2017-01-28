@@ -5,7 +5,6 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
-import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenDetailsBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 
@@ -32,8 +31,8 @@ public class DetailsView extends BaseView<DetailsScreen.DetailsPresenter> implem
     }
 
     @Override
-    public void setProduct(ProductRealm productRealm) {
-        DetailsAdapter adapter = new DetailsAdapter(getContext(), productRealm);
+    public void setProduct(String id) {
+        DetailsAdapter adapter = new DetailsAdapter(getContext(), id);
         mBinding.pager.setAdapter(adapter);
     }
 

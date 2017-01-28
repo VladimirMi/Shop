@@ -14,6 +14,7 @@ import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogModel;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogScreen;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.product.IProductPresenter;
 import ru.mikhalev.vladimir.mvpshop.features.root.MenuItemHolder;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
@@ -24,10 +25,10 @@ import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 
 @Screen(R.layout.screen_details)
 public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implements TreeKey {
-    private ProductRealm mProductRealm;
+    private final String mProductId;
 
-    public DetailsScreen(ProductRealm productRealm) {
-        mProductRealm = productRealm;
+    public DetailsScreen(String id) {
+        mProductId = id;
     }
 
     @Override
@@ -68,7 +69,7 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
         CatalogModel getCatalogModel();
     }
 
-    public class DetailsPresenter extends BasePresenter<DetailsView, CatalogModel> {
+    public class DetailsPresenter extends BasePresenter<DetailsView, CatalogModel> implements IProductPresenter {
         @Override
         protected void initDagger(MortarScope scope) {
             scope.<DetailsScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
@@ -79,7 +80,7 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
             mRootPresenter.newActionBarBuilder()
                     .setTitle("ProductRealm name")
                     .setBackArrow(true)
-                    .addActoin(new MenuItemHolder("В корзину", R.drawable.ic_shopping_cart_color_primary_dark_24dp,
+                    .addAction(new MenuItemHolder("В корзину", R.drawable.ic_shopping_cart_color_primary_dark_24dp,
                             item -> {
                                 getRootView().showMessage("Перейти в корзину");
                                 return true;
@@ -91,7 +92,12 @@ public class DetailsScreen extends BaseScreen<CatalogScreen.Component> implement
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            getView().setProduct(mProductRealm);
+            getView().setProduct(mProductId);
+        }
+
+        @Override
+        public void saveProduct(ProductRealm productRealm) {
+            mModel.saveProduct(productRealm);
         }
     }
 

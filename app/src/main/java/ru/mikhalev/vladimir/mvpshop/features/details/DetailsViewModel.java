@@ -10,7 +10,7 @@ import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
  */
 
 public class DetailsViewModel extends BaseViewModel {
-    private int id;
+    private String id;
     private String productName;
     private String imageUrl;
     private String description;
@@ -31,7 +31,7 @@ public class DetailsViewModel extends BaseViewModel {
         favorite = productRealm.isFavorite();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

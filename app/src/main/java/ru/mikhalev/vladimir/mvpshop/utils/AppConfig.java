@@ -15,8 +15,13 @@ public interface AppConfig {
     Pattern PASSWORD_VALIDATE = Pattern.compile(
             "[a-zA-Z0-9@#$%!]{8,}"
     );
+
     String BASE_URL = "https://skba1.mgbeta.ru/api/v1/";
     int CONNECT_TIMEOUT = 5000;
     int READ_TIMEOUT = 5000;
     int WRITE_TIMEOUT = 5000;
+
+    String FILE_PROVIDER_AUTHORITY = "ru.mikhalev.vladimir.mvpshop.fileprovider";
+    String PHOTO_FILE_NAME_PREFIX = "IMG_";
+    String PHOTO_FILE_NAME_SUFFIX = ".jpg";
 }

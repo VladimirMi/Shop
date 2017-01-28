@@ -48,7 +48,7 @@
                         android:text="@{viewModel.fullName}"
                         android:textColor="@color/color_primary"
                         android:textSize="@dimen/font_larger_24"
-                        tools:text="@string/account.username.sample"
+                        tools:text="Иван Иванович"
                         />
 
                 </android.support.design.widget.CollapsingToolbarLayout>
@@ -131,7 +131,7 @@
                                 android:enabled="@{viewModel.viewState == STATE.EDIT}"
                                 android:inputType="text"
                                 android:text="@={viewModel.fullName}"
-                                tools:text="@string/account.username.sample"
+                                tools:text="Иван Иванович"
                                 />
 
                         </android.support.design.widget.TextInputLayout>
@@ -166,7 +166,7 @@
                                 android:enabled="@{viewModel.viewState == STATE.EDIT}"
                                 android:inputType="phone"
                                 android:text="@={viewModel.phone}"
-                                tools:text="@string/account.phone.sample"
+                                tools:text="+7 (123) 456-78-90"
                                 />
 
                         </android.support.design.widget.TextInputLayout>

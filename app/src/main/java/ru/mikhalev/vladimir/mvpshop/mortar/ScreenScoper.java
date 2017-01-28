@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import mortar.MortarScope;
@@ -81,19 +82,24 @@ public class ScreenScoper {
         return newScope;
     }
 
-    public static MortarScope createScreenScopeFromContext(Context context, BaseScreen screen) {
+    public static MortarScope createScreenScopeFromContext(Context context, BaseScreen screen, String scopeSuffix) {
+        String scopeName = screen.getScopeName();
+        if (scopeSuffix != null) {
+            scopeName = String.format(Locale.getDefault(), "%s_%s", scopeName, scopeSuffix);
+        }
+
         MortarScope parentScope = MortarScope.getScope(context);
-        MortarScope childScope = parentScope.findChild(screen.getScopeName());
+        MortarScope childScope = parentScope.findChild(scopeName);
 
         if (childScope == null) {
             Object screenComponent = screen.createScreenComponent(parentScope.getService(DaggerService.SERVICE_NAME));
             if (screenComponent == null) {
-                throw new IllegalStateException(screen.getScopeName() + " component isn't created");
+                throw new IllegalStateException(scopeName + " component isn't created");
             }
 
             childScope = parentScope.buildChild()
                     .withService(DaggerService.SERVICE_NAME, screenComponent)
-                    .build(screen.getScopeName());
+                    .build(scopeName);
         }
 
         return childScope;

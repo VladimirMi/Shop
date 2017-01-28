@@ -72,6 +72,8 @@ public abstract class BasePresenter<V extends BaseView, M extends BaseModel> ext
 
         @Override
         public void onError(Throwable e) {
+            Timber.tag(getClass().getSimpleName());
+            Timber.e(e);
             if (getRootView() != null) {
                 getRootView().showError(e);
             }

@@ -12,7 +12,10 @@ import java.util.List;
 import io.realm.RealmResults;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
+import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductScreen;
+import ru.mikhalev.vladimir.mvpshop.mortar.ScreenScoper;
 import timber.log.Timber;
 
 /**
@@ -43,8 +46,12 @@ public class CatalogAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         ProductRealm productRealm = mProductRealmList.get(position);
-        Context productContext = CatalogScreen.Factory.createProductContext(productRealm, container.getContext());
-        View newView = LayoutInflater.from(productContext).inflate(R.layout.screen_product, container, false);
+        BaseScreen screen = new ProductScreen(productRealm.getId());
+
+        MortarScope scope = ScreenScoper.createScreenScopeFromContext(container.getContext(), screen, productRealm.getId());
+        Context screenContext = scope.createContext(container.getContext());
+
+        View newView = LayoutInflater.from(screenContext).inflate(R.layout.screen_product, container, false);
         container.addView(newView);
         return newView;
     }

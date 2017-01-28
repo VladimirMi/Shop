@@ -16,7 +16,6 @@ import ru.mikhalev.vladimir.mvpshop.features.root.RootActivity;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 import rx.Subscription;
-import timber.log.Timber;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -91,7 +90,7 @@ AccountScreen extends BaseScreen<RootActivity.Component> {
         @Override
         protected void initActionBar() {
             mRootPresenter.newActionBarBuilder()
-                    .addActoin(new MenuItemHolder("В корзину", R.drawable.ic_shopping_cart_color_primary_dark_24dp,
+                    .addAction(new MenuItemHolder("В корзину", R.drawable.ic_shopping_cart_color_primary_dark_24dp,
                             item -> {
                                 getRootView().showMessage("Перейти в корзину");
                                 return true;
@@ -105,7 +104,6 @@ AccountScreen extends BaseScreen<RootActivity.Component> {
         //region =============== Subscription ==============
 
         private Subscription subscribeOnAccountObs() {
-            Timber.e("subscribeOnAccountObs: ");
             return mModel.getAccountObs()
                     .subscribe(new ViewSubscriber<AccountRealm>() {
                         @Override
@@ -158,5 +156,7 @@ AccountScreen extends BaseScreen<RootActivity.Component> {
             String[] permissions = new String[]{READ_EXTERNAL_STORAGE};
             mRootPresenter.resolvePermissions(permissions, REQUEST_GALLERY);
         }
+
+        // endregion
     }
 }

@@ -9,8 +9,8 @@ import java.lang.annotation.RetentionPolicy;
 
 import ru.mikhalev.vladimir.mvpshop.BR;
 import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AddressRealm;
 import ru.mikhalev.vladimir.mvpshop.utils.RealmUtils;
-import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -52,8 +52,7 @@ public class AccountViewModel extends BaseObservable {
         setPromoNotification(accountRealm.isPromoNotification());
     }
 
-    public void save() {
-        Timber.e("save: ");
+    private void save() {
         RealmUtils.executeTransactionAsync(realm -> {
             realm.insertOrUpdate(mAccountRealm);
         });
@@ -66,6 +65,11 @@ public class AccountViewModel extends BaseObservable {
         } else {
             setViewState(AccountViewModel.STATE.EDIT);
         }
+    }
+
+    public void removeAddress(AddressRealm addressRealm) {
+        mAccountRealm.getAddressRealms().remove(addressRealm);
+        save();
     }
 
     public void setFullName(String fullName) {
@@ -109,10 +113,6 @@ public class AccountViewModel extends BaseObservable {
     public void setViewState(@STATE int viewState) {
         this.viewState = viewState;
         notifyPropertyChanged(BR.viewState);
-    }
-
-    public AccountRealm getAccountRealm() {
-        return mAccountRealm;
     }
 
     public String getFullName() {

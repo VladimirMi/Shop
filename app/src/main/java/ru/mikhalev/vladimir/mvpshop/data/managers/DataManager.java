@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import ru.mikhalev.vladimir.mvpshop.R;
@@ -16,7 +15,6 @@ import ru.mikhalev.vladimir.mvpshop.core.App;
 import ru.mikhalev.vladimir.mvpshop.data.network.RestCallTransformer;
 import ru.mikhalev.vladimir.mvpshop.data.network.api.RestService;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.AccountRes;
-import ru.mikhalev.vladimir.mvpshop.data.network.models.ProductRes;
 import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
@@ -25,8 +23,6 @@ import ru.mikhalev.vladimir.mvpshop.di.modules.LocaleModule;
 import ru.mikhalev.vladimir.mvpshop.di.modules.NetworkModule;
 import ru.mikhalev.vladimir.mvpshop.utils.RawUtils;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class DataManager {
     @SuppressLint("StaticFieldLeak")
@@ -36,7 +32,6 @@ public class DataManager {
     @Inject RealmManager mRealmManager;
     @Inject RestService mRestService;
     @Inject Context mContext;
-    private Realm mRealm;
 
     public static DataManager getInstance() {
         return instance;
@@ -51,7 +46,6 @@ public class DataManager {
                 App.getAppComponent(),
                 new LocaleModule(),
                 new NetworkModule()).inject(this);
-        mRealm = Realm.getDefaultInstance();
         generateMockAccount();
     }
 
@@ -70,18 +64,9 @@ public class DataManager {
         mRestService.getProductResponse(getLastProductUpdate())
                 .compose(new RestCallTransformer<>())
                 .flatMap(Observable::from)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(productRes -> {
-                    ProductRealm product = new ProductRealm(productRes);
-                    if (!productRes.isActive()) {
-                        saveProductInDB(product);
-                    } else {
-                        deleteProductFromDB(product);
-                    }
-                })
-                .filter(ProductRes::isActive)
-                .subscribe(mRealmManager::saveProductInDB);
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mRealmManager::saveProductInDB, Throwable::printStackTrace);
     }
 
     //endregion
@@ -93,13 +78,9 @@ public class DataManager {
         mRealmManager.saveProductInDB(product);
     }
 
-    public void deleteProductFromDB(ProductRealm product) {
-        mRealm.executeTransaction(realm -> realm.where(ProductRealm.class)
-                .equalTo("id", product.getId())
-                .findAll()
-                .deleteAllFromRealm());
+    public Observable<ProductRealm> getProductFromDB(String productId) {
+        return mRealmManager.getProductFromDB(productId);
     }
-
 
     public Observable<RealmResults<ProductRealm>> getProductsFromDB() {
         return mRealmManager.getProductsFromDB();
@@ -109,22 +90,23 @@ public class DataManager {
         mRealmManager.saveAccountInDB(accountRealm);
     }
 
-    public void deleteFromDB(Class<? extends RealmObject> realmClass, String id) {
-        mRealmManager.deleteFromDB(realmClass, id);
-    }
-
     public Observable<AccountRealm> getAccountFromDB() {
         return mRealmManager.getAccount();
     }
 
-    //endregion
+    public void deleteFromDB(Class<? extends RealmObject> realmClass, String id) {
+        mRealmManager.deleteFromDB(realmClass, id);
+    }
 
+
+    //endregion
 
     //region =============== Shared Preferences ==============
 
     public String getLastProductUpdate() {
         return mPreferencesManager.getLastProductUpdate();
     }
+
 
     public String getAuthToken() {
         return mPreferencesManager.getAuthToken();

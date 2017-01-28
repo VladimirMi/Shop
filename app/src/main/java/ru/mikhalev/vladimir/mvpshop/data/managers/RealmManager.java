@@ -29,6 +29,12 @@ public class RealmManager {
     }
 
     public void saveProductInDB(ProductRes productRes) {
+
+        if (!productRes.isActive()) {
+            deleteFromDB(ProductRealm.class, productRes.getId());
+            return;
+        }
+
         ProductRealm product = new ProductRealm(productRes);
 
         if (!productRes.getComments().isEmpty()) {
@@ -57,6 +63,14 @@ public class RealmManager {
         realm.close();
     }
 
+
+    public Observable<ProductRealm> getProductFromDB(String productId) {
+        return Realm.getDefaultInstance().where(ProductRealm.class)
+                .equalTo("id", productId)
+                .findFirstAsync()
+                .<ProductRealm>asObservable()
+                .filter(productRealm -> productRealm.isLoaded());
+    }
 
     public Observable<RealmResults<ProductRealm>> getProductsFromDB() {
         // TODO: 18.01.2017 close?
@@ -93,10 +107,9 @@ public class RealmManager {
     public Observable<AccountRealm> getAccount() {
         Realm realm = Realm.getDefaultInstance();
         return realm.where(AccountRealm.class)
-                .findAllAsync()
-                .asObservable()
-                .filter(RealmResults::isLoaded)
-                .map(RealmResults::first)
+                .findFirstAsync()
+                .<AccountRealm>asObservable()
+                .filter(accountRealm -> accountRealm.isLoaded())
                 .map(realm::copyFromRealm);
     }
 }

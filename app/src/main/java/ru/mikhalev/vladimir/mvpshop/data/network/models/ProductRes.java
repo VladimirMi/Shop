@@ -1,5 +1,7 @@
 package ru.mikhalev.vladimir.mvpshop.data.network.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -7,18 +9,20 @@ import java.util.List;
  */
 
 public class ProductRes {
-    // TODO: 06.01.2017 change to id, check setters
-    private int remoteId;
+    // TODO: 06.01.2017 check setters
+    @SerializedName("_id")
+    private String id;
     private String productName;
     private String imageUrl;
     private String description;
     private int price;
+    @SerializedName("raiting")
     private float rating;
     private boolean active;
     private List<CommentRes> comments;
 
-    public int getRemoteId() {
-        return remoteId;
+    public String getId() {
+        return id;
     }
 
     public String getProductName() {

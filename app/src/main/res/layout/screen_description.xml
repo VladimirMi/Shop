@@ -13,7 +13,7 @@
 
         <variable
             name="actionsHandler"
-            type="ru.mikhalev.vladimir.mvpshop.features.details.description.DescriptionView"
+            type="ru.mikhalev.vladimir.mvpshop.features.details.description.IDescriptionActions"
             />
     </data>
 
@@ -54,6 +54,7 @@
                         style="@style/CustomText"
                         android:layout_marginBottom="@dimen/spacing_normal_16"
                         android:layout_marginTop="@dimen/spacing_normal_16"
+                        android:layout_gravity="center"
                         android:textAlignment="center"
                         android:textSize="@dimen/font_small_14"
                         android:text="@{viewModel.description}"
@@ -68,7 +69,8 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="@dimen/spacing_normal_16"
                         android:layout_marginTop="@dimen/spacing_normal_16"
-                        android:rating="2.5"
+                        android:rating="@{viewModel.rating}"
+                        tools:rating="2.5"
                         />
 
                 </LinearLayout>
@@ -98,7 +100,7 @@
 
                         <TextView
                             style="@style/CustomText.LabelPrice"
-                            android:text="@string/productRes.count"
+                            android:text="@string/product.count"
                             />
 
                         <LinearLayout
@@ -149,7 +151,7 @@
 
                         <TextView
                             style="@style/CustomText.LabelPrice"
-                            android:text="@string/productRes.price"
+                            android:text="@string/product.price"
                             />
 
                         <TextView

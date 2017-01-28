@@ -3,7 +3,6 @@ package ru.mikhalev.vladimir.mvpshop.features.details.description;
 import android.os.Bundle;
 
 import dagger.Provides;
-import io.realm.Realm;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
@@ -12,10 +11,11 @@ import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogModel;
-import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.product.IProductPresenter;
 import ru.mikhalev.vladimir.mvpshop.features.details.DetailsScreen;
 import ru.mikhalev.vladimir.mvpshop.features.details.comments.CommentsScreen;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
+import rx.Subscription;
 
 /**
  * Developer Vladimir Mikhalev, 14.01.2017.
@@ -24,10 +24,10 @@ import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 @Screen(R.layout.screen_description)
 public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
 
-    private ProductRealm mProductRealm;
+    private final String mProductId;
 
-    public DescriptionScreen(ProductRealm productRealm) {
-        mProductRealm = productRealm;
+    public DescriptionScreen(String id) {
+        mProductId = id;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
     public class Module {
         @Provides
         DescriptionPresenter provideDescriptionPresenter() {
-            return new DescriptionPresenter(mProductRealm);
+            return new DescriptionPresenter();
         }
     }
 
@@ -58,15 +58,7 @@ public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
 
     //endregion
 
-    public class DescriptionPresenter extends BasePresenter<DescriptionView, CatalogModel> implements IDescriptionPresenter {
-
-        private final ProductRealm mProduct;
-
-        public DescriptionPresenter(ProductRealm productRealm) {
-            Realm realm = Realm.getDefaultInstance();
-            mProduct = realm.copyFromRealm(productRealm);
-            realm.close();
-        }
+    public class DescriptionPresenter extends BasePresenter<DescriptionView, CatalogModel> implements IProductPresenter {
 
         @Override
         protected void initDagger(MortarScope scope) {
@@ -81,33 +73,19 @@ public class DescriptionScreen extends BaseScreen<DetailsScreen.Component> {
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            getView().setViewModel(new ProductViewModel(mProductRealm));
+            mCompSubs.add(subscribeOnProductObs(mProductId));
+        }
+
+        private Subscription subscribeOnProductObs(String productId) {
+            return mModel.getProductObs(productId)
+                    .subscribe(productRealm -> getView().setProduct(productRealm));
         }
 
         //region =============== IDescriptionPresenter ==============
 
         @Override
-        public void clickOnPlus() {
-            mProduct.inc();
-            mModel.updateProduct(mProduct);
-        }
-
-        @Override
-        public void clickOnMinus() {
-            mProduct.dec();
-            mModel.updateProduct(mProduct);
-        }
-
-        @Override
-        public void clickOnFavorite() {
-            mProduct.switchFavorite();
-            mModel.updateProduct(mProduct);
-        }
-
-        @Override
-        public void clickOnRating(float rating) {
-            mProduct.setRating(rating);
-            mModel.updateProduct(mProduct);
+        public void saveProduct(ProductRealm productRealm) {
+            mModel.saveProduct(productRealm);
         }
 
         //endregion

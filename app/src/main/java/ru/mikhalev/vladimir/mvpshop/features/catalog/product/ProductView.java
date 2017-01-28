@@ -3,10 +3,12 @@ package ru.mikhalev.vladimir.mvpshop.features.catalog.product;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import flow.Flow;
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenProductBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
+import ru.mikhalev.vladimir.mvpshop.features.details.DetailsScreen;
 
 
 /**
@@ -14,6 +16,7 @@ import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
  */
 public class ProductView extends BaseView<ProductScreen.ProductPresenter> implements IProductView, IProductActions {
     private ScreenProductBinding mBinding;
+    private ProductRealm mProductRealm;
     private ProductViewModel mViewModel;
 
     public ProductView(Context context, AttributeSet attrs) {
@@ -35,22 +38,25 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
 
     @Override
     public void clickOnPlus() {
-        mPresenter.clickOnPlus();
+        mProductRealm.inc();
+        mPresenter.saveProduct(mProductRealm);
     }
 
     @Override
     public void clickOnMinus() {
-        mPresenter.clickOnMinus();
+        mProductRealm.dec();
+        mPresenter.saveProduct(mProductRealm);
     }
 
     @Override
     public void clickOnShowMore() {
-        mPresenter.clickOnShowMore();
+        Flow.get(this).set(new DetailsScreen(mProductRealm.getId()));
     }
 
     @Override
     public void clickOnFavorite() {
-        mPresenter.clickOnFavorite();
+        mProductRealm.switchFavorite();
+        mPresenter.saveProduct(mProductRealm);
     }
 
 
@@ -58,18 +64,17 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
 
     //region ==================== IProductView ========================
 
-
-    @Override
-    public void setViewModel(ProductViewModel viewModel) {
-        mViewModel = viewModel;
-        mBinding.setViewModel(mViewModel);
-    }
-
     @Override
     public void setProduct(ProductRealm productRealm) {
-
+        mProductRealm = productRealm;
+        if (mViewModel == null) {
+            mViewModel = new ProductViewModel();
+            mViewModel.update(productRealm);
+            mBinding.setViewModel(mViewModel);
+        } else {
+            mViewModel.update(productRealm);
+        }
     }
-
 
     @Override
     public boolean viewOnBackPressed() {

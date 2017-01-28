@@ -12,5 +12,4 @@ public interface IProductView extends IView {
 
     void setProduct(ProductRealm productRealm);
 
-    void setViewModel(ProductViewModel viewModel);
 }

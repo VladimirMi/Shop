@@ -32,10 +32,20 @@ public class AddressListAdapter extends RealmRecyclerViewAdapter<AddressRealm, A
         return new ViewHolder(view);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mAddress.setText(getItem(position).toString());
+        holder.mAddress.setText(addressToString(getItem(position)));
         holder.mComment.setText(getItem(position).getComment());
+    }
+
+    private String addressToString(@NonNull AddressRealm address) {
+        return String.format(
+                context.getString(R.string.account_address_format),
+                address.getStreet(),
+                address.getHouse(),
+                address.getApartment(),
+                address.getFloor());
     }
 
 
@@ -48,6 +58,7 @@ public class AddressListAdapter extends RealmRecyclerViewAdapter<AddressRealm, A
             super(view);
             mAddress = (TextView) view.findViewById(R.id.address);
             mComment = (TextView) view.findViewById(R.id.comment);
+            mAddress.setText("");
         }
     }
 }
