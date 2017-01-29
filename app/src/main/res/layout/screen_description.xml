@@ -69,8 +69,9 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="@dimen/spacing_normal_16"
                         android:layout_marginTop="@dimen/spacing_normal_16"
+                        android:stepSize="0.5"
                         android:rating="@{viewModel.rating}"
-                        tools:rating="2.5"
+                        tools:rating="2.7"
                         />
 
                 </LinearLayout>

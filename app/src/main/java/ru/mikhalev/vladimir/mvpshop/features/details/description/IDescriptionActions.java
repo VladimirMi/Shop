@@ -9,7 +9,5 @@ public interface IDescriptionActions {
 
     void clickOnMinus();
 
-    void clickOnFavorite();
-
     void clickOnRating(float rating);
 }

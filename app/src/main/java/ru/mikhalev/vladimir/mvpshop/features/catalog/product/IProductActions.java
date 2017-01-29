@@ -11,6 +11,5 @@ public interface IProductActions {
 
     void clickOnShowMore();
 
-    void clickOnFavorite();
-
+    void clickOnFavorite(boolean isChecked);
 }

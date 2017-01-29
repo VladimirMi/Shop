@@ -31,5 +31,6 @@ public class ProductViewModel extends BaseViewModel {
         price.set(productRealm.getPrice());
         count.set(productRealm.getCount());
         favorite.set(productRealm.isFavorite());
+        rating.set(productRealm.getRating());
     }
 }

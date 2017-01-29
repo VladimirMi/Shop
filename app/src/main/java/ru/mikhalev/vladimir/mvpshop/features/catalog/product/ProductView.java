@@ -54,8 +54,8 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
     }
 
     @Override
-    public void clickOnFavorite() {
-        mProductRealm.switchFavorite();
+    public void clickOnFavorite(boolean isChecked) {
+        mProductRealm.setFavorite(isChecked);
         mPresenter.saveProduct(mProductRealm);
     }
 

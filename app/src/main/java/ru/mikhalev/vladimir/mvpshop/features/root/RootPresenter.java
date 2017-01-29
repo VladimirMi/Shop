@@ -82,7 +82,6 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
     }
 
     private Subscription subscribeOnAccount() {
-
         return mAccountModel.getAccountObs()
                 .map(AccountViewModel::new)
                 .subscribe(getView()::setDrawer, getView()::showError);

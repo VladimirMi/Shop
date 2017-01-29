@@ -168,6 +168,8 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="@dimen/spacing_normal_16"
+                            android:checked="@{viewModel.favorite}"
+                            android:onCheckedChanged="@{(view, isChecked) -> {actionsHandler.clickOnFavorite(isChecked)}}"
                             android:button="@drawable/favorite_selector_btn"
                             />
                     </RelativeLayout>

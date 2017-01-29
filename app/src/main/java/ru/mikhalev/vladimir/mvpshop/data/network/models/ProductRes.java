@@ -9,7 +9,6 @@ import java.util.List;
  */
 
 public class ProductRes {
-    // TODO: 06.01.2017 check setters
     @SerializedName("_id")
     private String id;
     private String productName;
@@ -29,32 +28,16 @@ public class ProductRes {
         return productName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public int getPrice() {
         return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public boolean isActive() {

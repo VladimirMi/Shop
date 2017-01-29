@@ -48,13 +48,6 @@ public class DescriptionView extends BaseView<DescriptionScreen.DescriptionPrese
     }
 
     @Override
-    public void clickOnFavorite() {
-        mProductRealm.switchFavorite();
-        mPresenter.saveProduct(mProductRealm);
-    }
-
-
-    @Override
     public void clickOnRating(float rating) {
         mProductRealm.setRating(rating);
         mPresenter.saveProduct(mProductRealm);

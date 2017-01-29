@@ -5,6 +5,7 @@ import io.realm.RealmResults;
 import ru.mikhalev.vladimir.mvpshop.core.BaseModel;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import rx.Observable;
+import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev, 29.10.2016.
@@ -22,6 +23,7 @@ public class CatalogModel extends BaseModel {
 //    }
 
     public Observable<RealmResults<ProductRealm>> getProductsObs() {
+        Timber.e("getProductsObs: ");
         return mDataManager.getProductsFromDB();
     }
 

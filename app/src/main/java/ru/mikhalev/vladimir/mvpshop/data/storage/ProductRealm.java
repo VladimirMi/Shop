@@ -30,6 +30,7 @@ public class ProductRealm extends RealmObject {
         this.imageUrl = productRes.getImageUrl();
         this.description = productRes.getDescription();
         this.price = productRes.getPrice();
+        this.rating = productRes.getRating();
     }
 
     public String getId() {
@@ -78,8 +79,8 @@ public class ProductRealm extends RealmObject {
         }
     }
 
-    public void switchFavorite() {
-        favorite = !favorite;
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
     public void setRating(float rating) {

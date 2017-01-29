@@ -65,15 +65,16 @@ public class RealmManager {
 
 
     public Observable<ProductRealm> getProductFromDB(String productId) {
-        return Realm.getDefaultInstance().where(ProductRealm.class)
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(ProductRealm.class)
                 .equalTo("id", productId)
                 .findFirstAsync()
                 .<ProductRealm>asObservable()
-                .filter(productRealm -> productRealm.isLoaded());
+                .filter(productRealm -> productRealm.isLoaded())
+                .map(realm::copyFromRealm);
     }
 
     public Observable<RealmResults<ProductRealm>> getProductsFromDB() {
-        // TODO: 18.01.2017 close?
         return Realm.getDefaultInstance().where(ProductRealm.class)
                 .findAllAsync()
                 .asObservable()
