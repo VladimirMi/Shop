@@ -7,27 +7,38 @@ apply plugin: 'realm-android'
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
-    defaultConfig {
-        applicationId "ru.mikhalev.vladimir.mvpshop"
-        minSdkVersion 16
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    productFlavors {
+        base {
+            minSdkVersion 16
+            targetSdkVersion 24
+            applicationId "ru.mikhalev.vladimir.mvpshop"
+            versionCode 1
+            versionName "1.0"
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        }
+        realmMp {
+            minSdkVersion 16
+            targetSdkVersion 24
+            applicationId "ru.mikhalev.vladimir.mvpshop.realm"
+            versionCode 1
+            versionName '2.0'
+            versionNameSuffix 'realmMp'
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+            realm {
+                syncEnabled = true;
+            }
+        }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     dataBinding {
         enabled = true
     }
@@ -43,28 +54,21 @@ dependencies {
     compile 'com.android.support:design:25.1.0'
     compile 'com.android.support:cardview-v7:25.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
-
     compile 'com.google.dagger:dagger:2.8'
     apt 'com.google.dagger:dagger-compiler:2.8'
-
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
-    compile 'com.uphyca:stetho_realm:2.0.0'
-
+    baseCompile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.squareup.flow:flow:1.0.0-alpha2'
     compile 'com.squareup.mortar:mortar:0.20'
-
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.4'
-
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jakewharton.timber:timber:4.4.0'
     compile 'io.realm:android-adapters:1.4.0'
 }

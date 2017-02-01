@@ -1,9 +1,15 @@
 package ru.mikhalev.vladimir.mvpshop.features.details.comments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import io.realm.RealmList;
 import ru.mikhalev.vladimir.mvpshop.R;
@@ -42,6 +48,23 @@ public class CommentsView extends BaseView<CommentsScreen.CommentsPresenter> {
 
     public void updateComments(RealmList<CommentRealm> commentRealms) {
         mAdapter.updateData(commentRealms);
+    }
+
+    public void showAddCommentDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        @SuppressLint("InflateParams") View dialogView = inflater.inflate(R.layout.dialog_comment, null);
+
+        AppCompatRatingBar ratingBar = (AppCompatRatingBar) findViewById(R.id.comment_rating_field);
+        TextInputEditText editText = (TextInputEditText) findViewById(R.id.comment_field);
+
+        alertDialog.setTitle(R.string.comments_dialog_title)
+                .setView(dialogView)
+                .setPositiveButton("Оставить отзыв", (dialog, which) -> {
+                    mPresenter.saveComment(ratingBar.getRating(), editText.getText().toString());
+                })
+                .setNegativeButton("Отмена", null)
+                .show();
     }
 
     @Override

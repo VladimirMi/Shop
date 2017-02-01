@@ -1,5 +1,7 @@
 package ru.mikhalev.vladimir.mvpshop.data.storage;
 
+import com.google.common.base.Objects;
+
 import java.util.Date;
 
 import io.realm.RealmObject;
@@ -32,6 +34,15 @@ public class CommentRealm extends RealmObject {
         this.comment = commentRes.getComment();
     }
 
+    public CommentRealm(float rating, String comment, AccountRealm accountRealm) {
+        this.id = String.valueOf(this.hashCode());
+        this.userName = accountRealm.getFullName();
+        this.avatar = accountRealm.getAvatar();
+        this.rating = rating;
+        this.commentDate = new Date();
+        this.comment = comment;
+    }
+
     public String getId() {
         return id;
     }
@@ -54,5 +65,10 @@ public class CommentRealm extends RealmObject {
 
     public String getComment() {
         return comment;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, userName, avatar, rating, commentDate, comment);
     }
 }

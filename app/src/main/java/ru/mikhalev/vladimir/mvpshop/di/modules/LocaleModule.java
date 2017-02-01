@@ -14,7 +14,7 @@ import ru.mikhalev.vladimir.mvpshop.data.managers.RealmManager;
  */
 
 @Module
-public class LocaleModule {
+public class LocaleModule extends FlavorLocaleModule {
 
     @Provides
     @Singleton
@@ -22,10 +22,5 @@ public class LocaleModule {
         return new PreferencesManager(context);
     }
 
-    @Provides
-    @Singleton
-    RealmManager provideRealmManager() {
-        return new RealmManager();
-    }
 }
 

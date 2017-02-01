@@ -7,6 +7,8 @@ import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
+import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
@@ -59,6 +61,8 @@ public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
 
     public class CommentsPresenter extends BasePresenter<CommentsView, CatalogModel> {
 
+        private AccountRealm mAccountRealm;
+
         @Override
         protected void initDagger(MortarScope scope) {
             scope.<CommentsScreen.Component>getService(DaggerService.SERVICE_NAME).inject(this);
@@ -72,13 +76,24 @@ public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
+            mCompSubs.add(subscribeOnAccountObs());
             mCompSubs.add(subscribeOnCommentsObs(mProductId));
+        }
+
+        private Subscription subscribeOnAccountObs() {
+            return mModel.getAccountObs()
+                    .subscribe(accountRealm -> mAccountRealm = accountRealm);
         }
 
         private Subscription subscribeOnCommentsObs(String productId) {
             return mModel.getProductObs(productId)
                     .map(ProductRealm::getCommentRealms)
                     .subscribe(getView()::updateComments);
+        }
+
+        public void saveComment(float rating, String comment) {
+            CommentRealm commentRealm = new CommentRealm(rating, comment, mAccountRealm);
+            mModel.saveComment(mProductId, commentRealm);
         }
     }
 }

@@ -3,8 +3,11 @@ package ru.mikhalev.vladimir.mvpshop.features.catalog;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.mikhalev.vladimir.mvpshop.core.BaseModel;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
+import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import rx.Observable;
+import rx.Subscription;
 import timber.log.Timber;
 
 /**
@@ -18,38 +21,24 @@ public class CatalogModel extends BaseModel {
         return false;
     }
 
-//    public Observable<ProductDto> getProductFromPosition(int position) {
-//        return mDataManager.getProductFromPosition(position);
-//    }
-
     public Observable<RealmResults<ProductRealm>> getProductsObs() {
         Timber.e("getProductsObs: ");
         return mDataManager.getProductsFromDB();
     }
 
     public void saveProduct(ProductRealm product) {
-        Realm realm = Realm.getDefaultInstance();
         mDataManager.saveProductInDB(product);
-        realm.close();
     }
 
     public Observable<ProductRealm> getProductObs(String productId) {
         return mDataManager.getProductFromDB(productId);
     }
 
+    public Observable<AccountRealm> getAccountObs() {
+        return mDataManager.getAccountFromDB();
+    }
 
-//    @RxLogObservable
-//    public Observable<ProductRes> fromNetwork() {
-//        return mDataManager.getProductsFromNetwork();
-//    }
-//
-//    @RxLogObservable
-//    public Observable<ProductDto> fromDisk() {
-//        return Observable.defer(() -> {
-//            List<ProductDto> diskData = mDataManager.getProductsFromDB();
-//            return diskData == null ?
-//                    Observable.empty() :
-//                    Observable.from(diskData);
-//        });
-//    }
+    public void saveComment(String productId, CommentRealm commentRealm) {
+        // TODO: 29.01.2017 job
+    }
 }

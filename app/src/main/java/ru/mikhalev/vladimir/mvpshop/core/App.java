@@ -34,12 +34,6 @@ public class App extends Application {
 
         Realm.init(this);
 
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
-                        .build());
-
         sAppComponent = DaggerService.createDaggerComponent(AppComponent.class,
                 new AppModule(getApplicationContext()));
 

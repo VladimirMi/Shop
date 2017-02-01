@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MVPShop</string>
+    <string name="app_name">MVPShop RealmMp</string>
 
     <string name="message.exit">Нажмите снова для выхода</string>
     <string name="message.auth">Необходима авторизация</string>
