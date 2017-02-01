@@ -62,6 +62,7 @@ public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
     public class CommentsPresenter extends BasePresenter<CommentsView, CatalogModel> {
 
         private AccountRealm mAccountRealm;
+        private ProductRealm mProductRealm;
 
         @Override
         protected void initDagger(MortarScope scope) {
@@ -87,13 +88,17 @@ public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
 
         private Subscription subscribeOnCommentsObs(String productId) {
             return mModel.getProductObs(productId)
-                    .map(ProductRealm::getCommentRealms)
+                    .map(productRealm -> {
+                        mProductRealm = productRealm;
+                        return productRealm.getCommentRealms();
+                    })
                     .subscribe(getView()::updateComments);
         }
 
         public void saveComment(float rating, String comment) {
             CommentRealm commentRealm = new CommentRealm(rating, comment, mAccountRealm);
-            mModel.saveComment(mProductId, commentRealm);
+            mProductRealm.getCommentRealms().add(commentRealm);
+            mModel.saveProduct(mProductRealm);
         }
     }
 }

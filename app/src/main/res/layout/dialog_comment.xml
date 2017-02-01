@@ -16,7 +16,7 @@
         android:text="@string/comments.dialog.hint"/>
 
     <android.support.v7.widget.AppCompatRatingBar
-        android:id="@+id/comment_rating_field"
+        android:id="@+id/comment_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_normal_16"

@@ -55,7 +55,7 @@ public class CommentsView extends BaseView<CommentsScreen.CommentsPresenter> {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         @SuppressLint("InflateParams") View dialogView = inflater.inflate(R.layout.dialog_comment, null);
 
-        AppCompatRatingBar ratingBar = (AppCompatRatingBar) findViewById(R.id.comment_rating_field);
+        AppCompatRatingBar ratingBar = (AppCompatRatingBar) findViewById(R.id.comment_rating);
         TextInputEditText editText = (TextInputEditText) findViewById(R.id.comment_field);
 
         alertDialog.setTitle(R.string.comments_dialog_title)

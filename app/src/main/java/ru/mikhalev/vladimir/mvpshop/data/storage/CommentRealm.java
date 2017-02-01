@@ -69,6 +69,12 @@ public class CommentRealm extends RealmObject {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, userName, avatar, rating, commentDate, comment);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (avatar != null ? avatar.hashCode() : 0);
+        result = 31 * result + (rating != +0.0f ? Float.floatToIntBits(rating) : 0);
+        result = 31 * result + (commentDate != null ? commentDate.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
+        return result;
     }
 }

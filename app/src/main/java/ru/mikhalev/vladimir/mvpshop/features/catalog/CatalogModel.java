@@ -37,8 +37,4 @@ public class CatalogModel extends BaseModel {
     public Observable<AccountRealm> getAccountObs() {
         return mDataManager.getAccountFromDB();
     }
-
-    public void saveComment(String productId, CommentRealm commentRealm) {
-        // TODO: 29.01.2017 job
-    }
 }

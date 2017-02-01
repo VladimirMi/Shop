@@ -75,7 +75,7 @@
     </string-array>
     <string name="description.title">О товаре</string>
     <string name="comments.dialog.title">Оставить отзыв от товаре</string>
-    <string name="comments.dialog.hint">Оцените данный товар</string>
+    <string name="comments.dialog.hint">Поставьте свою оцеку данному товару</string>
 
 
     <string name="progress_show_text">Пожлуйста, подождите</string>
