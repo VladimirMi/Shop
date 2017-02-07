@@ -34,6 +34,7 @@ import ru.mikhalev.vladimir.mvpshop.data.managers.DataManager;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountModel;
 import ru.mikhalev.vladimir.mvpshop.features.account.AccountViewModel;
 import ru.mikhalev.vladimir.mvpshop.utils.AppConfig;
+import ru.mikhalev.vladimir.mvpshop.utils.NetworkStatusChecker;
 import rx.Observable;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
@@ -89,7 +90,9 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
 
     private Subscription subscribeOnProductsTimer() {
         // TODO: 04.01.2017 inject datamanger?
-        return Observable.interval(0, 5, TimeUnit.MINUTES)
+        return Observable.interval(0, AppConfig.UPDATE_INTERVAL_SEC, TimeUnit.SECONDS)
+                .flatMap(aLong -> NetworkStatusChecker.isNetworkAvailable())
+                .filter(aBoolean -> aBoolean)
                 .observeOn(Schedulers.io())
                 .subscribe(aLong -> DataManager.getInstance().updateProductsFromNetwork());
     }

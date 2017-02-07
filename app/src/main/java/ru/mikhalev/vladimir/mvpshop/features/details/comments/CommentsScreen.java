@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import dagger.Provides;
 import mortar.MortarScope;
+import ru.mikhalev.vladimir.mvpshop.BuildConfig;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
@@ -99,6 +100,9 @@ public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
             CommentRealm commentRealm = new CommentRealm(rating, comment, mAccountRealm);
             mProductRealm.getCommentRealms().add(commentRealm);
             mModel.saveProduct(mProductRealm);
+            if (BuildConfig.FLAVOR.equals("base")) {
+                mModel.sendMessage(mProductId, commentRealm);
+            }
         }
     }
 }

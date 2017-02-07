@@ -6,23 +6,32 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import okhttp3.MultipartBody;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.App;
 import ru.mikhalev.vladimir.mvpshop.data.network.RestCallTransformer;
 import ru.mikhalev.vladimir.mvpshop.data.network.api.RestService;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.AccountRes;
+import ru.mikhalev.vladimir.mvpshop.data.network.models.AvatarUrlRes;
+import ru.mikhalev.vladimir.mvpshop.data.network.models.CommentRes;
 import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.components.DataManagerComponent;
 import ru.mikhalev.vladimir.mvpshop.di.modules.LocaleModule;
 import ru.mikhalev.vladimir.mvpshop.di.modules.NetworkModule;
+import ru.mikhalev.vladimir.mvpshop.utils.AppConfig;
 import ru.mikhalev.vladimir.mvpshop.utils.RawUtils;
 import rx.Observable;
+import timber.log.Timber;
 
 public class DataManager {
     @SuppressLint("StaticFieldLeak")
@@ -66,7 +75,22 @@ public class DataManager {
                 .flatMap(Observable::from)
 //                .subscribeOn(Schedulers.newThread())
 //                .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(errorObservable -> errorObservable
+                        .zipWith(Observable.range(1, AppConfig.RETRY_REQUEST_COUNT), (throwable, retryCount) -> retryCount)
+                        .doOnNext(retryCount -> Timber.e("Local update retry count : $d, %s", retryCount, new Date().toString()))
+                        .map(retryCount -> ((long) (AppConfig.RETRY_REQUEST_BASE_DELAY * Math.pow(Math.E, retryCount))))
+                        .doOnNext(delay -> Timber.e("Local update delay: %l", delay))
+                        .flatMap(delay -> Observable.timer(delay, TimeUnit.MILLISECONDS))
+                )
                 .subscribe(mRealmManager::saveProductInDB, Throwable::printStackTrace);
+    }
+
+    public Observable<CommentRes> sendComment(String productId, CommentRes commentRes) {
+        return mRestService.sendComment(productId, commentRes);
+    }
+
+    public Observable<AvatarUrlRes> uploadAvatar(MultipartBody.Part bodyPart) {
+        return mRestService.uploadUserAvatar(bodyPart);
     }
 
     //endregion

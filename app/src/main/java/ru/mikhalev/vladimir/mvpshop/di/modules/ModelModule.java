@@ -1,5 +1,9 @@
 package ru.mikhalev.vladimir.mvpshop.di.modules;
 
+import android.content.Context;
+
+import com.birbit.android.jobqueue.JobManager;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -12,7 +16,11 @@ import ru.mikhalev.vladimir.mvpshop.data.managers.DataManager;
  */
 
 @Module
-public class ModelModule {
+public class ModelModule extends FlavorModelModule{
+    public ModelModule(Context context) {
+        super(context);
+    }
+
     @Provides
     @Singleton
     DataManager provideDataManager() {

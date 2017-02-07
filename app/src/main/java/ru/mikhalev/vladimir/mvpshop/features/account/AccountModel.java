@@ -1,6 +1,7 @@
 package ru.mikhalev.vladimir.mvpshop.features.account;
 
 import ru.mikhalev.vladimir.mvpshop.core.BaseModel;
+import ru.mikhalev.vladimir.mvpshop.data.jobs.UploadAvatarJob;
 import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.AddressRealm;
 import rx.Observable;
@@ -21,6 +22,13 @@ public class AccountModel extends BaseModel {
 
     public void saveAccount(AccountRealm accountRealm) {
         mDataManager.saveAccountInDB(accountRealm);
+        if (!accountRealm.getAvatar().contains("http")) {
+            uploadAvatar(accountRealm.getAvatar());
+        }
+    }
+
+    private void uploadAvatar(String currentAvatarPath) {
+        mJobManager.addJobInBackground(new UploadAvatarJob(currentAvatarPath));
     }
 
     //endregion

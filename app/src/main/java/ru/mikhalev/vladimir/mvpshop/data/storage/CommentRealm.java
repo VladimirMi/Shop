@@ -2,6 +2,7 @@ package ru.mikhalev.vladimir.mvpshop.data.storage;
 
 import com.google.common.base.Objects;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import io.realm.RealmObject;
@@ -12,7 +13,7 @@ import ru.mikhalev.vladimir.mvpshop.data.network.models.CommentRes;
  * Developer Vladimir Mikhalev, 06.01.2017.
  */
 
-public class CommentRealm extends RealmObject {
+public class CommentRealm extends RealmObject implements Serializable{
 
     @PrimaryKey
     private String id;

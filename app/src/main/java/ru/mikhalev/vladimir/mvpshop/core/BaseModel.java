@@ -1,5 +1,7 @@
 package ru.mikhalev.vladimir.mvpshop.core;
 
+import com.birbit.android.jobqueue.JobManager;
+
 import javax.inject.Inject;
 
 import ru.mikhalev.vladimir.mvpshop.data.AsyncTransformer;
@@ -16,6 +18,9 @@ public abstract class BaseModel {
 
     @Inject
     protected AsyncTransformer mAsyncTransformer;
+
+    @Inject
+    protected JobManager mJobManager;
 
     public BaseModel() {
         DaggerModelComponent.create().inject(this);

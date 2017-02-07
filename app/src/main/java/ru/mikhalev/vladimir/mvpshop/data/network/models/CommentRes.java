@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
+
 /**
  * Developer Vladimir Mikhalev, 06.01.2017.
  */
@@ -17,6 +19,14 @@ public class CommentRes {
     private Date commentDate;
     private String comment;
     private boolean active;
+
+    public CommentRes(CommentRealm commentRealm) {
+        this.avatar = commentRealm.getAvatar();
+        this.userName = commentRealm.getUserName();
+        this.rating = commentRealm.getRating();
+        this.commentDate = commentRealm.getCommentDate();
+        this.comment = commentRealm.getComment();
+    }
 
     public String getId() {
         return id;

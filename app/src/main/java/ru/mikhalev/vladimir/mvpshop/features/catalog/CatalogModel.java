@@ -3,6 +3,7 @@ package ru.mikhalev.vladimir.mvpshop.features.catalog;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.mikhalev.vladimir.mvpshop.core.BaseModel;
+import ru.mikhalev.vladimir.mvpshop.data.jobs.SendMessageJob;
 import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
@@ -36,5 +37,10 @@ public class CatalogModel extends BaseModel {
 
     public Observable<AccountRealm> getAccountObs() {
         return mDataManager.getAccountFromDB();
+    }
+
+    public void sendMessage(String productId, CommentRealm commentRealm) {
+        SendMessageJob job = new SendMessageJob(productId, commentRealm);
+        mJobManager.addJobInBackground(job);
     }
 }
