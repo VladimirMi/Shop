@@ -9,6 +9,7 @@ import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenProductBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.features.details.DetailsScreen;
+import timber.log.Timber;
 
 
 /**
@@ -54,8 +55,8 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
     }
 
     @Override
-    public void clickOnFavorite(boolean isChecked) {
-        mProductRealm.setFavorite(isChecked);
+    public void clickOnFavorite() {
+        mProductRealm.switchFavorite();
         mPresenter.saveProduct(mProductRealm);
     }
 
@@ -66,6 +67,7 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
 
     @Override
     public void setProduct(ProductRealm productRealm) {
+        Timber.e("setProduct: ");
         mProductRealm = productRealm;
         if (mViewModel == null) {
             mViewModel = new ProductViewModel();

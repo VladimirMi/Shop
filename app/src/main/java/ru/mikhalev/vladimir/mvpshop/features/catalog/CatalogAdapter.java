@@ -45,6 +45,7 @@ public class CatalogAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+        Timber.e("instantiateItem");
         ProductRealm productRealm = mProductRealmList.get(position);
         BaseScreen screen = new ProductScreen(productRealm.getId());
 
@@ -63,6 +64,4 @@ public class CatalogAdapter extends PagerAdapter {
         container.removeView((View) object);
         Timber.e("destroyItem");
     }
-
-
 }

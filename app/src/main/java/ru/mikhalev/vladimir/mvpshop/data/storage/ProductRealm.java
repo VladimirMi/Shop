@@ -79,11 +79,11 @@ public class ProductRealm extends RealmObject {
         }
     }
 
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
-
     public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    public void switchFavorite() {
+        favorite = !favorite;
     }
 }

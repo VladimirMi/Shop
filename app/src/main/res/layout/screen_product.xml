@@ -169,7 +169,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginRight="@dimen/spacing_normal_16"
                             android:checked="@{viewModel.favorite}"
-                            android:onCheckedChanged="@{(view, isChecked) -> {actionsHandler.clickOnFavorite(isChecked)}}"
+                            bind:onClick="@{actionsHandler::clickOnFavorite}"
                             android:button="@drawable/favorite_selector_btn"
                             />
                     </RelativeLayout>

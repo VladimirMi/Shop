@@ -11,6 +11,7 @@ import ru.mikhalev.vladimir.mvpshop.data.storage.AddressRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.CommentRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import rx.Observable;
+import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev, 06.01.2017.
@@ -66,12 +67,17 @@ public class RealmManager {
 
     public Observable<ProductRealm> getProductFromDB(String productId) {
         Realm realm = Realm.getDefaultInstance();
-        return realm.where(ProductRealm.class)
+        Observable<ProductRealm> obs = realm.where(ProductRealm.class)
                 .equalTo("id", productId)
                 .findFirstAsync()
                 .<ProductRealm>asObservable()
                 .filter(productRealm -> productRealm.isLoaded())
-                .map(realm::copyFromRealm);
+                .map(realm::copyFromRealm)
+                .doOnEach(notification -> {
+                    Timber.e("getProductFromDB: ");
+                });
+        realm.close();
+        return obs;
     }
 
     public Observable<RealmResults<ProductRealm>> getProductsFromDB() {

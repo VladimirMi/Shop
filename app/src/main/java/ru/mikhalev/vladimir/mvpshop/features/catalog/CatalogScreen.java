@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import dagger.Provides;
 import io.realm.RealmResults;
@@ -22,6 +23,7 @@ import ru.mikhalev.vladimir.mvpshop.features.root.RootActivity;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
