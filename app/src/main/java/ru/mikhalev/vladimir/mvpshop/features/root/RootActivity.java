@@ -292,6 +292,11 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
     @Override
     public void setTitle(String title) {
         mBinding.toolbar.setTitle(title);
+        if (title == null) {
+            mBinding.toolbarLogo.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.toolbarLogo.setVisibility(View.GONE);
+        }
     }
 
     @Override

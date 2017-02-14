@@ -12,6 +12,7 @@ import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.features.details.comments.CommentsScreen;
 import ru.mikhalev.vladimir.mvpshop.features.details.description.DescriptionScreen;
 import ru.mikhalev.vladimir.mvpshop.mortar.ScreenScoper;
+import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev, 06.01.2017.
