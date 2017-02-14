@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -239,6 +240,29 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                 Uri.parse("package:" + getPackageName()));
         startActivityForResult(intent, REQUEST_SETTINGS_INTENT);
+    }
+
+    @Override
+    public void showFab() {
+        mBinding.rootFab.show();
+    }
+
+    @Override
+    public void hideFab() {
+        if (mBinding.rootFab.hasOnClickListeners()) {
+            mBinding.rootFab.setOnClickListener(null);
+        }
+        mBinding.rootFab.hide();
+    }
+
+    @Override
+    public void setFabOnClickListener(View.OnClickListener listener) {
+        mBinding.rootFab.setOnClickListener(listener);
+    }
+
+    @Override
+    public void setFabImageResource(@DrawableRes int id) {
+        mBinding.rootFab.setImageResource(id);
     }
 
     //endregion

@@ -39,6 +39,7 @@ public abstract class BasePresenter<V extends BaseView, M extends BaseModel> ext
         super.onLoad(savedInstanceState);
         mCompSubs = new CompositeSubscription();
         initActionBar();
+        initFab();
         Timber.tag(getClass().getSimpleName());
         Timber.d("onLoad");
     }
@@ -56,6 +57,10 @@ public abstract class BasePresenter<V extends BaseView, M extends BaseModel> ext
     protected abstract void initDagger(MortarScope scope);
 
     protected abstract void initActionBar();
+
+    protected void initFab() {
+        mRootPresenter.getRootView().hideFab();
+    }
 
     @Nullable
     protected IRootView getRootView() {

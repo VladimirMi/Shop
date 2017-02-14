@@ -2,6 +2,9 @@ package ru.mikhalev.vladimir.mvpshop.di.modules;
 
 import android.content.Context;
 
+import com.facebook.stetho.Stetho;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
+
 import javax.inject.Singleton;
 
 import dagger.Module;

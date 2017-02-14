@@ -76,6 +76,13 @@ public class CommentsScreen extends BaseScreen<DetailsScreen.Component> {
         }
 
         @Override
+        protected void initFab() {
+            mRootPresenter.getRootView().showFab();
+            mRootPresenter.getRootView().setFabOnClickListener(fab -> getView().showAddCommentDialog());
+            mRootPresenter.getRootView().setFabImageResource(R.drawable.ic_add_white_24dp);
+        }
+
+        @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             mCompSubs.add(subscribeOnAccountObs());

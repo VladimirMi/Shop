@@ -7,6 +7,7 @@ import com.birbit.android.jobqueue.config.Configuration;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.mikhalev.vladimir.mvpshop.data.managers.DataManager;
 import ru.mikhalev.vladimir.mvpshop.utils.AppConfig;
 
 /**
@@ -15,15 +16,10 @@ import ru.mikhalev.vladimir.mvpshop.utils.AppConfig;
 
 @Module
 public class FlavorModelModule {
-    Context mContext;
-
-    public FlavorModelModule(Context context) {
-        mContext = context;
-    }
 
     @Provides
     JobManager provideJobManager() {
-        Configuration configuration = new Configuration.Builder(mContext)
+        Configuration configuration = new Configuration.Builder(DataManager.getInstance().getContext())
                 .minConsumerCount(AppConfig.MIN_CONSUMER_COUNT)
                 .maxConsumerCount(AppConfig.MAX_CONSUMER_COUNT)
                 .loadFactor(AppConfig.LOAD_FACTOR)

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.mikhalev.vladimir.mvpshop.core.App;
 
 /**
  * Developer Vladimir Mikhalev 05.11.2016
@@ -16,6 +17,7 @@ public class AppModule {
     public AppModule(Context context) {
         mContext = context;
     }
+
 
     @Provides
     Context provideContext() {

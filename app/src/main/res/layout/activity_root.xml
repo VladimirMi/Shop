@@ -54,6 +54,19 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 />
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/root_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="@dimen/spacing_normal_16"
+                android:layout_marginRight="@dimen/spacing_normal_16"
+                android:visibility="gone"
+                app:fabSize="normal"
+                tools:ignore="RtlHardcoded"
+                tools:visibility="visible"
+                />
+
         </android.support.design.widget.CoordinatorLayout>
 
 

@@ -50,6 +50,10 @@ public class DataManager {
         return mPreferencesManager;
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     private DataManager() {
         DaggerService.createDaggerComponent(DataManagerComponent.class,
                 App.getAppComponent(),
@@ -93,8 +97,8 @@ public class DataManager {
         return mRestService.uploadUserAvatar(bodyPart);
     }
 
-    //endregion
 
+    //endregion
 
     //region =============== DataBase ==============
 
@@ -118,19 +122,19 @@ public class DataManager {
         return mRealmManager.getAccount();
     }
 
+
     public void deleteFromDB(Class<? extends RealmObject> realmClass, String id) {
         mRealmManager.deleteFromDB(realmClass, id);
     }
-
 
     //endregion
 
     //region =============== Shared Preferences ==============
 
+
     public String getLastProductUpdate() {
         return mPreferencesManager.getLastProductUpdate();
     }
-
 
     public String getAuthToken() {
         return mPreferencesManager.getAuthToken();
