@@ -10,6 +10,4 @@ public interface IAuthPresenter {
     void clickOnTwitter();
 
     void clickOnShowCatalog();
-
-    boolean checkUserAuth();
 }

@@ -120,18 +120,7 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
         @Override
         public void clickOnBuyButton(int position) {
             if (getView() != null) {
-                //                mCatalogModel.getProductsObs()
-                //                        .filter(product -> product.getId() == position)
-                //                        .subscribe(product -> {
-                //                            if (checkUserAuth() && getRootView() != null) {
-                ////                                getRootView().showMessage("Товар " + mCatalogModel.getProductFromPosition(position).getProductName()
-                ////                                        + " успешно добавлен в корзину");
-                ////                                mCartCounter += mCatalogModel.getProductFromPosition(position);
-                //                                getRootView().setBasketCounter(mCartCounter);
-                //                            } else {
-                //                                Flow.get(getView()).set(new AuthScreen());
-                //                            }
-                //                        });
+
             }
         }
 
@@ -145,22 +134,22 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
     }
 
 
-    public static class Factory {
-        public static Context createProductContext(String productId, Context parentContext) {
-            MortarScope parentScope = MortarScope.getScope(parentContext);
-            MortarScope childScope = null;
-            ProductScreen productScreen = new ProductScreen(productId);
-            String scopeName = String.format(Locale.getDefault(), "%s_%s", productScreen.getScopeName(), productId);
-
-            if (parentScope.findChild(scopeName) == null) {
-                childScope = parentScope.buildChild()
-                        .withService(DaggerService.SERVICE_NAME, productScreen.createScreenComponent(
-                                DaggerService.getDaggerComponent(parentContext)))
-                        .build(scopeName);
-            } else {
-                childScope = parentScope.findChild(scopeName);
-            }
-            return childScope.createContext(parentContext);
-        }
-    }
+//    public static class Factory {
+//        public static Context createProductContext(String productId, Context parentContext) {
+//            MortarScope parentScope = MortarScope.getScope(parentContext);
+//            MortarScope childScope = null;
+//            ProductScreen productScreen = new ProductScreen(productId);
+//            String scopeName = String.format(Locale.getDefault(), "%s_%s", productScreen.getScopeName(), productId);
+//
+//            if (parentScope.findChild(scopeName) == null) {
+//                childScope = parentScope.buildChild()
+//                        .withService(DaggerService.SERVICE_NAME, productScreen.createScreenComponent(
+//                                DaggerService.getDaggerComponent(parentContext)))
+//                        .build(scopeName);
+//            } else {
+//                childScope = parentScope.findChild(scopeName);
+//            }
+//            return childScope.createContext(parentContext);
+//        }
+//    }
 }

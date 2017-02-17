@@ -13,7 +13,6 @@ import android.widget.TextView;
  */
 
 public class BindingUtils {
-    private static final String TAG = "BindingUtils";
 
     @BindingAdapter("onClick")
     public static void bindOnClick(View view, Runnable runnable) {

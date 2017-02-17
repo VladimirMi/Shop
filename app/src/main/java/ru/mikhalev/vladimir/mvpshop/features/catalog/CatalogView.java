@@ -39,7 +39,6 @@ public class CatalogView extends BaseView<CatalogScreen.CatalogPresenter> implem
     }
 
 
-    // TODO: 06.01.2017 может передать сам товар?
     //region ==================== Events ========================
 
     @Override

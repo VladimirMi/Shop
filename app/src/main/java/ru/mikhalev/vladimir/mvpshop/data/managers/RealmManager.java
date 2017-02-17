@@ -30,12 +30,10 @@ public class RealmManager {
     }
 
     public void saveProductInDB(ProductRes productRes) {
-
         if (!productRes.isActive()) {
             deleteFromDB(ProductRealm.class, productRes.getId());
             return;
         }
-
         ProductRealm product = new ProductRealm(productRes);
 
         if (!productRes.getComments().isEmpty()) {
@@ -117,6 +115,7 @@ public class RealmManager {
                 .findFirstAsync()
                 .<AccountRealm>asObservable()
                 .filter(accountRealm -> accountRealm.isLoaded())
+                .filter(accountRealm -> accountRealm.isValid())
                 .map(realm::copyFromRealm);
     }
 }

@@ -7,14 +7,11 @@ import android.preference.PreferenceManager;
 
 import java.util.Date;
 
-import ru.mikhalev.vladimir.mvpshop.utils.StringUtils;
-
 @SuppressWarnings("WeakerAccess")
 public class PreferencesManager {
     private final SharedPreferences.Editor mEditor;
     private SharedPreferences mSharedPreferences;
 
-    private static final String AUTH_TOKEN_KEY = "AUTH_TOKEN_KEY";
     private static final String PRODUCT_LAST_UPDATE_KEY = "PRODUCT_LAST_UPDATE_KEY";
 
 
@@ -22,15 +19,6 @@ public class PreferencesManager {
     public PreferencesManager(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mSharedPreferences.edit();
-    }
-
-    public void saveAuthToken(String authToken) {
-        mEditor.putString(AUTH_TOKEN_KEY, authToken);
-        mEditor.commit();
-    }
-
-    public String getAuthToken() {
-        return mSharedPreferences.getString(AUTH_TOKEN_KEY, StringUtils.EMPTY);
     }
 
     public void saveLastProductUpdate(String date) {

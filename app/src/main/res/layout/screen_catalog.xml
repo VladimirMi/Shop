@@ -58,7 +58,7 @@
                     android:layout_marginBottom="@dimen/spacing_normal_16"
                     android:text="@string/catalog.add"
                     android:theme="@style/EnterButton"
-                    bind:onClick="@{actionsHandler::clickOnAddGoodsToBasket}"
+                    android:onClick="@{(view) -> actionsHandler.clickOnAddGoodsToBasket()}"
                     />
 
             </LinearLayout>

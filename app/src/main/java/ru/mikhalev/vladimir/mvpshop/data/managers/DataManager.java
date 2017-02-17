@@ -59,7 +59,6 @@ public class DataManager {
                 App.getAppComponent(),
                 new LocaleModule(),
                 new NetworkModule()).inject(this);
-        generateMockAccount();
     }
 
     private void generateMockAccount() {
@@ -71,6 +70,7 @@ public class DataManager {
 
     public void loginUser(String email, String password) {
         // TODO: 10/22/16 implement auth
+        generateMockAccount();
     }
 
     public void updateProductsFromNetwork() {
@@ -135,10 +135,5 @@ public class DataManager {
     public String getLastProductUpdate() {
         return mPreferencesManager.getLastProductUpdate();
     }
-
-    public String getAuthToken() {
-        return mPreferencesManager.getAuthToken();
-    }
-
     //endregion
 }

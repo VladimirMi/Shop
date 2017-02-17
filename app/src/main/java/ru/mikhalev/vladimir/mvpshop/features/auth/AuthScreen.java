@@ -10,11 +10,15 @@ import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BasePresenter;
 import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
+import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.CatalogScreen;
 import ru.mikhalev.vladimir.mvpshop.features.root.RootActivity;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
+import rx.Subscriber;
+import rx.Subscription;
+import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev, 27.11.2016.
@@ -72,11 +76,7 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            if (checkUserAuth()) {
-                clickOnShowCatalog();
-                return;
-            }
-            getView().setViewModel(mViewModel);
+            mCompSubs.add(subscribeOnAccount());
         }
 
         @Override
@@ -90,6 +90,25 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
                     .setBackArrow(true)
                     .setVisible(false)
                     .build();
+        }
+
+        private Subscription subscribeOnAccount() {
+            return mModel.getAccountObs().subscribe(new Subscriber<AccountRealm>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    getView().setViewModel(mViewModel);
+                }
+
+                @Override
+                public void onNext(AccountRealm accountRealm) {
+                    clickOnShowCatalog();
+                }
+            });
         }
 
         @Override
@@ -132,11 +151,6 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
                 }
                 Flow.get(getView()).replaceTop(new CatalogScreen(), Direction.REPLACE);
             }
-        }
-
-        @Override
-        public boolean checkUserAuth() {
-            return false;
         }
     }
 }
