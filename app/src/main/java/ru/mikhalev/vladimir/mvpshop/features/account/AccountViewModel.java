@@ -27,7 +27,7 @@ public class AccountViewModel extends BaseObservable {
         int EDIT = 1;
     }
 
-    private final AccountRealm mAccountRealm;
+    private AccountRealm mAccountRealm;
     @Bindable private String fullName;
     @Bindable private String phone;
     @Bindable private String avatar;
@@ -36,12 +36,7 @@ public class AccountViewModel extends BaseObservable {
     @Bindable private @STATE int viewState;
 
     public AccountViewModel(AccountRealm accountRealm) {
-        mAccountRealm = accountRealm;
-        fullName = accountRealm.getFullName();
-        phone = accountRealm.getPhone();
-        avatar = accountRealm.getAvatar();
-        promoNotification = accountRealm.isPromoNotification();
-        orderNotification = accountRealm.isOrderNotification();
+        update(accountRealm);
     }
 
     public void update(AccountRealm accountRealm) {

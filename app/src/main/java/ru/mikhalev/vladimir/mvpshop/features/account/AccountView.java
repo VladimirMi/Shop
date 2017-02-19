@@ -48,6 +48,9 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
     @Override
     public void switchViewState() {
         mViewModel.changeState();
+        if (mViewModel.getViewState() == AccountViewModel.STATE.EDIT) {
+            mPresenter.saveAccount(mViewModel);
+        }
     }
 
     @Override

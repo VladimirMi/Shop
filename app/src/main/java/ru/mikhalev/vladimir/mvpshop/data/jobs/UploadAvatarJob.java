@@ -22,13 +22,13 @@ import timber.log.Timber;
  */
 
 public class UploadAvatarJob extends Job {
-    private final String mImageIri;
+    private final String mImageUri;
 
     public UploadAvatarJob(String imageUri) {
         super(new Params(JobPriority.HIGH)
                 .requireNetwork()
                 .persist());
-        mImageIri = imageUri;
+        mImageUri = imageUri;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UploadAvatarJob extends Job {
     @Override
     public void onRun() throws Throwable {
         Timber.e("onRun: ");
-        File file = new File(Uri.parse(mImageIri).getPath());
+        File file = new File(Uri.parse(mImageUri).getPath());
         RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
         MultipartBody.Part bodyPart = MultipartBody.Part.createFormData("avatar", file.getName(), body);
