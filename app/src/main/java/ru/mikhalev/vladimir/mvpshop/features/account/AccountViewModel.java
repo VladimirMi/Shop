@@ -47,6 +47,10 @@ public class AccountViewModel extends BaseObservable {
         setPromoNotification(accountRealm.isPromoNotification());
     }
 
+    public AccountRealm getAccountRealm() {
+        return mAccountRealm;
+    }
+
     private void save() {
         RealmUtils.executeTransactionAsync(realm -> {
             realm.insertOrUpdate(mAccountRealm);

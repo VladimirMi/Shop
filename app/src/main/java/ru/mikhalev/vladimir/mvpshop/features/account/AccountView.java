@@ -49,7 +49,7 @@ public class AccountView extends BaseView<AccountScreen.AccountPresenter> implem
     public void switchViewState() {
         mViewModel.changeState();
         if (mViewModel.getViewState() == AccountViewModel.STATE.EDIT) {
-            mPresenter.saveAccount(mViewModel);
+            mPresenter.saveAccount(mViewModel.getAccountRealm());
         }
     }
 

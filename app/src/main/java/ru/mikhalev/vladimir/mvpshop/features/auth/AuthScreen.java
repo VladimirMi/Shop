@@ -106,7 +106,7 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
 
                 @Override
                 public void onNext(AccountRealm accountRealm) {
-                    clickOnShowCatalog();
+//                    clickOnShowCatalog();
                 }
             });
         }

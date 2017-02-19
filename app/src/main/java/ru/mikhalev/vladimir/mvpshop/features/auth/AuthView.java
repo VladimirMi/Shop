@@ -1,8 +1,13 @@
 package ru.mikhalev.vladimir.mvpshop.features.auth;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 
 import ru.mikhalev.vladimir.mvpshop.R;
@@ -57,6 +62,7 @@ public class AuthView extends BaseView<AuthScreen.AuthPresenter> implements IAut
     public void clickOnVk(View view) {
         view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_animation));
         mPresenter.clickOnVk();
+        invalidLoginAnimation();
     }
 
     @Override
@@ -93,6 +99,27 @@ public class AuthView extends BaseView<AuthScreen.AuthPresenter> implements IAut
         }
         return false;
     }
+
+    //endregion
+
+    //region =============== Animation ==============
+
+    private void invalidLoginAnimation() {
+        // TODO: 19.02.2017 start if ivlid login or password
+        Animator animator = AnimatorInflater.loadAnimator(getContext(), R.animator.invalid_field_animator);
+        animator.setTarget(mBinding.loginBtn);
+        animator.start();
+
+    }
+
+    private void showLoginWithAnim() {
+
+    }
+
+    private void showIdleWithAnim() {
+
+    }
+
 
     //endregion
 }
