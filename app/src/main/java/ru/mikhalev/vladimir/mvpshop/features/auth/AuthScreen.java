@@ -28,14 +28,6 @@ import timber.log.Timber;
 public class AuthScreen extends BaseScreen<RootActivity.Component> {
     private AuthViewModel mViewModel = new AuthViewModel();
 
-    public AuthViewModel getViewModel() {
-        return mViewModel;
-    }
-
-    public void setViewModel(AuthViewModel viewModel) {
-        mViewModel = viewModel;
-    }
-
     @Override
     public Object createScreenComponent(RootActivity.Component parentComponent) {
         return DaggerAuthScreen_Component.builder()
@@ -76,7 +68,7 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            mCompSubs.add(subscribeOnAccount());
+            getView().setViewModel(mViewModel);
         }
 
         @Override
@@ -90,25 +82,6 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
                     .setBackArrow(true)
                     .setVisible(false)
                     .build();
-        }
-
-        private Subscription subscribeOnAccount() {
-            return mModel.getAccountObs().subscribe(new Subscriber<AccountRealm>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    getView().setViewModel(mViewModel);
-                }
-
-                @Override
-                public void onNext(AccountRealm accountRealm) {
-//                    clickOnShowCatalog();
-                }
-            });
         }
 
         @Override

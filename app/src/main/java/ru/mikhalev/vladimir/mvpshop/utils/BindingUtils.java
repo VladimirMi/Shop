@@ -5,6 +5,7 @@ import android.databinding.BindingConversion;
 import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 

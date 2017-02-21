@@ -12,8 +12,4 @@ public class AuthModel extends BaseModel {
     public void loginUser(String email, String password) {
         mDataManager.loginUser(email, password);
     }
-
-    public Observable<AccountRealm> getAccountObs() {
-        return mDataManager.getAccountFromDB();
-    }
 }

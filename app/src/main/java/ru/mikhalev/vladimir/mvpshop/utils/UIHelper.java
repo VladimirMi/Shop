@@ -1,7 +1,9 @@
 package ru.mikhalev.vladimir.mvpshop.utils;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.WindowManager;
 
 /**
  * Developer Vladimir Mikhalev 10.12.2016
@@ -16,5 +18,11 @@ public class UIHelper {
             result = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
         }
         return result;
+    }
+
+    public static float getDensity(Context context) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.density;
     }
 }
