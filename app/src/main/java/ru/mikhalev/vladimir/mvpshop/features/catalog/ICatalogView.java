@@ -15,4 +15,6 @@ public interface ICatalogView extends IView {
     void showCatalogView(List<ProductViewModel> productList);
 
     void updateProductCounter(int i);
+
+    void startCartAnimation();
 }

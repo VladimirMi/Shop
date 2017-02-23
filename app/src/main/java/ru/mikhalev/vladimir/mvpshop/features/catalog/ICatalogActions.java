@@ -7,5 +7,5 @@ package ru.mikhalev.vladimir.mvpshop.features.catalog;
 
 public interface ICatalogActions {
 
-    void clickOnAddGoodsToBasket();
+    void clickOnAdd();
 }

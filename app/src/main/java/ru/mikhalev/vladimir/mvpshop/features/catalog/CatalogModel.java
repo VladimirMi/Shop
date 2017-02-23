@@ -19,7 +19,7 @@ public class CatalogModel extends BaseModel {
 
     public boolean isUserAuth() {
 //        return mDataManager.getAuthToken();
-        return false;
+        return true;
     }
 
     public Observable<RealmResults<ProductRealm>> getProductsObs() {

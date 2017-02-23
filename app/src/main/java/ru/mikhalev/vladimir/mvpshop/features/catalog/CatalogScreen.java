@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import dagger.Provides;
+import flow.Flow;
 import io.realm.RealmResults;
 import mortar.MortarScope;
 import ru.mikhalev.vladimir.mvpshop.R;
@@ -16,6 +17,7 @@ import ru.mikhalev.vladimir.mvpshop.core.BaseScreen;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
 import ru.mikhalev.vladimir.mvpshop.di.scopes.DaggerScope;
+import ru.mikhalev.vladimir.mvpshop.features.auth.AuthScreen;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductScreen;
 import ru.mikhalev.vladimir.mvpshop.features.root.IRootView;
 import ru.mikhalev.vladimir.mvpshop.features.root.MenuItemHolder;
@@ -24,6 +26,7 @@ import ru.mikhalev.vladimir.mvpshop.features.root.RootPresenter;
 import ru.mikhalev.vladimir.mvpshop.flow.Screen;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -120,7 +123,11 @@ public class CatalogScreen extends BaseScreen<RootActivity.Component> {
         @Override
         public void clickOnBuyButton(int position) {
             if (getView() != null) {
-
+                if (checkUserAuth()) {
+                    getView().startCartAnimation();
+                } else {
+                    Flow.get(getView()).set(new AuthScreen());
+                }
             }
         }
 

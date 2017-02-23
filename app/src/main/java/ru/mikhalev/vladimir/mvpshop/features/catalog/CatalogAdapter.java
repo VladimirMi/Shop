@@ -53,6 +53,7 @@ public class CatalogAdapter extends PagerAdapter {
         Context screenContext = scope.createContext(container.getContext());
 
         View newView = LayoutInflater.from(screenContext).inflate(R.layout.screen_product, container, false);
+        newView.setTag("Product"+position);
         container.addView(newView);
         return newView;
     }

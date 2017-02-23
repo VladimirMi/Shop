@@ -10,4 +10,6 @@
     <color name="yellow">#FFD710</color>
     <color name="blue">#03A9F4</color>
     <color name="red">#E65100</color>
+
+    <color name="transparent">#00FFFFFF</color>
 </resources>

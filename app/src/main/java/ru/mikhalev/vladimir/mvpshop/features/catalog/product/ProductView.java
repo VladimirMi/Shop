@@ -1,9 +1,25 @@
 package ru.mikhalev.vladimir.mvpshop.features.catalog.product;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
+import android.view.ViewAnimationUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import flow.Flow;
+import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenProductBinding;
@@ -19,6 +35,7 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
     private ScreenProductBinding mBinding;
     private ProductRealm mProductRealm;
     private ProductViewModel mViewModel;
+    private AnimatorSet mResultSet;
 
     public ProductView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -81,6 +98,72 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
     @Override
     public boolean viewOnBackPressed() {
         return false;
+    }
+
+    //endregion
+
+    //region =============== Animation ==============
+
+    public void startAddToCartAnim() {
+        final int cx = (mBinding.productWrapper.getRight() + mBinding.productWrapper.getLeft()) / 2;
+        final int cy = (mBinding.productWrapper.getBottom() + mBinding.productWrapper.getTop()) / 2;
+        final int radius = Math.max(mBinding.productWrapper.getWidth(), mBinding.productWrapper.getHeight());
+        Animator hideCardAnim = null;
+        Animator showCardAnim = null;
+        Animator hideColorAnim = null;
+        Animator showColorAnim = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            hideCardAnim = ViewAnimationUtils.createCircularReveal(mBinding.productWrapper, cx, cy, radius, 0);
+            hideCardAnim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    mBinding.productWrapper.setVisibility(INVISIBLE);
+                }
+            });
+            showCardAnim = ViewAnimationUtils.createCircularReveal(mBinding.productWrapper, cx, cy, 0, radius);
+            showCardAnim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    mBinding.productWrapper.setVisibility(VISIBLE);
+                }
+            });
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                ColorDrawable foreground = (ColorDrawable) mBinding.productWrapper.getForeground();
+                hideColorAnim = ObjectAnimator.ofArgb(foreground, "color",
+                        ContextCompat.getColor(getContext(), R.color.transparent),
+                        ContextCompat.getColor(getContext(), R.color.color_accent));
+                showColorAnim = ObjectAnimator.ofArgb(foreground, "color",
+                        ContextCompat.getColor(getContext(), R.color.color_accent),
+                        ContextCompat.getColor(getContext(), R.color.transparent));
+            }
+        } else {
+            hideCardAnim = ObjectAnimator.ofFloat(mBinding.productWrapper, "alpha", 0);
+            showCardAnim = ObjectAnimator.ofFloat(mBinding.productWrapper, "alpha", 1);
+        }
+
+        AnimatorSet hideSet = new AnimatorSet();
+        AnimatorSet showSet = new AnimatorSet();
+        hideSet.setDuration(600);
+        hideSet.setInterpolator(new FastOutSlowInInterpolator());
+        addAnimTogetherInSet(hideSet, hideCardAnim, hideColorAnim);
+
+        showSet.setStartDelay(600);
+        showSet.setInterpolator(new FastOutSlowInInterpolator());
+        addAnimTogetherInSet(showSet, showCardAnim, showColorAnim);
+
+        if ((mResultSet != null && !mResultSet.isStarted()) || mResultSet == null) {
+            mResultSet = new AnimatorSet();
+            mResultSet.playSequentially(hideSet, showSet);
+            mResultSet.start();
+        }
+    }
+
+    private void addAnimTogetherInSet(AnimatorSet set, Animator... anims) {
+        List<Animator> animatorList = new ArrayList<>();
+        Collections.addAll(animatorList, anims);
+        set.playTogether(animatorList);
     }
 
     //endregion

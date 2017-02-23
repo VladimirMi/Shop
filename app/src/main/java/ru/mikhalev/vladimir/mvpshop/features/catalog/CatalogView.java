@@ -3,6 +3,7 @@ package ru.mikhalev.vladimir.mvpshop.features.catalog;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.View;
 
 import java.util.List;
 
@@ -10,7 +11,9 @@ import ru.mikhalev.vladimir.mvpshop.R;
 import ru.mikhalev.vladimir.mvpshop.core.BaseView;
 import ru.mikhalev.vladimir.mvpshop.databinding.ScreenCatalogBinding;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
+import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductView;
 import ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductViewModel;
+import timber.log.Timber;
 
 /**
  * Developer Vladimir Mikhalev 29.11.2016
@@ -33,6 +36,7 @@ public class CatalogView extends BaseView<CatalogScreen.CatalogPresenter> implem
     @Override
     protected void initView() {
         mBinding = ScreenCatalogBinding.bind(this);
+        mBinding.setActionsHandler(this);
         mAdapter = new CatalogAdapter();
         mBinding.productPager.setAdapter(mAdapter);
         mBinding.pagerIndicator.setupWithViewPager(mBinding.productPager);
@@ -42,7 +46,7 @@ public class CatalogView extends BaseView<CatalogScreen.CatalogPresenter> implem
     //region ==================== Events ========================
 
     @Override
-    public void clickOnAddGoodsToBasket() {
+    public void clickOnAdd() {
         mPresenter.clickOnBuyButton(mBinding.productPager.getCurrentItem());
     }
 
@@ -68,6 +72,12 @@ public class CatalogView extends BaseView<CatalogScreen.CatalogPresenter> implem
     @Override
     public void updateProductCounter(int i) {
 //        getRootActivity().setBasketCounter(count);
+    }
+
+    @Override
+    public void startCartAnimation() {
+        ProductView productView = (ProductView) mBinding.productPager.findViewWithTag("Product" + mBinding.productPager.getCurrentItem());
+        productView.startAddToCartAnim();
     }
 
     @Override
