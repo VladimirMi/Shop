@@ -16,6 +16,7 @@ import com.bumptech.glide.module.GlideModule;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 
+@SuppressWarnings("WeakerAccess")
 public class MyGlideModule implements GlideModule {
 
     @Override
@@ -39,10 +40,9 @@ public class MyGlideModule implements GlideModule {
     public static void setImage(String path, ImageView view) {
         Glide.with(view.getContext())
                 .load(path)
-                .centerCrop()
                 .fitCenter()
                 .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(view);
     }
 

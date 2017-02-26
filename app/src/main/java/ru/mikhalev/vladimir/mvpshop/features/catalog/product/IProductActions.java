@@ -12,4 +12,6 @@ public interface IProductActions {
     void clickOnShowMore();
 
     void clickOnFavorite();
+
+    void clickOnImage();
 }

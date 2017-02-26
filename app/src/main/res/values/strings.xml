@@ -80,5 +80,7 @@
 
     <string name="progress_show_text">Пожлуйста, подождите</string>
     <string name="avatar_behavior" translatable="false">ru.mikhalev.vladimir.mvpshop.features.account.AvatarBehavior</string>
+    <string name="added_to_cart">Товар добавлен в корзину</string>
+    <string name="show_more">Подробнее</string>
 
 </resources>

@@ -9,10 +9,10 @@ android {
     buildToolsVersion '25.0.2'
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
-        targetSdkVersion 25
     }
     productFlavors {
         base {
+            targetSdkVersion 25
             minSdkVersion 16
             applicationId "ru.mikhalev.vladimir.mvpshop"
             versionCode 1
@@ -20,6 +20,7 @@ android {
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         }
         realmMp {
+            targetSdkVersion 25
             minSdkVersion 16
             applicationId "ru.mikhalev.vladimir.mvpshop.realm"
             versionCode 1
@@ -51,11 +52,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:support-v4:25.1.1'
-    compile 'com.android.support:design:25.1.1'
-    compile 'com.android.support:cardview-v7:25.1.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:cardview-v7:25.2.0'
+    compile 'com.android.support:percent:25.2.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0'
 
     compile 'com.google.dagger:dagger:2.8'
     apt 'com.google.dagger:dagger-compiler:2.8'

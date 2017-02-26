@@ -24,7 +24,12 @@ public class AspectRatioImageView extends ImageView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         int newWidth = getMeasuredWidth();
-        int newHeight = (int) (newWidth / mAspectRatio);
+        int newHeight;
+        if (mAspectRatio != 0) {
+            newHeight =  (int) (newWidth / mAspectRatio);
+        } else {
+            newHeight = getMeasuredHeight();
+        }
 
         setMeasuredDimension(newWidth, newHeight);
     }

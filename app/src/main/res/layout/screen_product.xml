@@ -20,15 +20,22 @@
 
     <ru.mikhalev.vladimir.mvpshop.features.catalog.product.ProductView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        tools:ignore="ContentDescription"
         >
 
         <android.support.v7.widget.CardView
-            style="@style/CustomCard.ProductCard">
+            android:id="@+id/product_card"
+            style="@style/CustomCard.ProductCard"
+            app:contentPadding="0dp"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables"
                 >
 
                 <ImageView
@@ -41,7 +48,7 @@
                     style="@style/CustomText.ProductTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Товар добавлен в корзину"
+                    android:text="@string/added_to_cart"
                     android:textColor="@color/color_primary_dark"
                     />
             </LinearLayout>
@@ -49,7 +56,7 @@
             <LinearLayout
                 android:id="@+id/product_wrapper"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/white"
                 android:foreground="@color/transparent"
                 android:orientation="vertical"
@@ -59,6 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/spacing_small_8"
                     >
 
                     <TextView
@@ -80,96 +88,41 @@
                         />
                 </LinearLayout>
 
-
-                <ru.mikhalev.vladimir.mvpshop.ui.AspectRatioImageView
-                    android:id="@+id/aspectRatioImageView"
+                <!--<ImageView
+                    android:id="@+id/product_image"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small_8"
+                    android:layout_height="180dp"
+                    android:scaleType="centerCrop"
                     bind:image="@{viewModel.imageUrl}"
-                    tools:ignore="ContentDescription"
+                    bind:onClick="@{actionsHandler::clickOnImage}"
                     tools:src="@drawable/nav_header_bg"
-                    />
+                    />-->
 
-                <LinearLayout
+                <android.support.percent.PercentFrameLayout
+                    android:id="@+id/image_wrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_small_8"
-                    android:layout_marginTop="@dimen/spacing_small_8"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/image_border_accent"
                     >
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        >
+                    <ImageView
+                        android:id="@+id/product_image"
+                        android:scaleType="centerCrop"
+                        app:layout_aspectRatio="178%"
+                        app:layout_widthPercent="100%"
+                        bind:image="@{viewModel.imageUrl}"
+                        bind:onClick="@{actionsHandler::clickOnImage}"
+                        tools:src="@drawable/nav_header_bg"
+                        />
 
-                        <TextView
-                            style="@style/CustomText.LabelPrice"
-                            android:text="@string/product.count"
-                            />
+                </android.support.percent.PercentFrameLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            >
-
-                            <ImageButton
-                                android:id="@+id/minus"
-                                style="@style/CountButton"
-                                android:layout_marginEnd="@dimen/spacing_small_8"
-                                android:layout_marginRight="@dimen/spacing_small_8"
-                                app:srcCompat="@drawable/ic_minus_24dp"
-                                bind:onClick="@{actionsHandler::clickOnMinus}"
-                                tools:ignore="ContentDescription"
-                                />
-
-                            <TextView
-                                style="@style/CustomText.ValuePrice"
-                                android:gravity="center_vertical"
-                                android:text="@{String.valueOf(viewModel.count)}"
-                                tools:text="1"
-                                />
-
-                            <ImageButton
-                                android:id="@+id/plus"
-                                style="@style/CountButton"
-                                android:layout_marginLeft="@dimen/spacing_small_8"
-                                android:layout_marginStart="@dimen/spacing_small_8"
-                                app:srcCompat="@drawable/ic_plus_24dp"
-                                bind:onClick="@{actionsHandler::clickOnPlus}"
-                                tools:ignore="ContentDescription"
-                                />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        >
-
-                        <TextView
-                            style="@style/CustomText.LabelPrice"
-                            android:text="@string/product.price"
-                            />
-
-                        <TextView
-                            style="@style/CustomText.ValuePrice"
-                            android:gravity="center_vertical"
-                            android:text="@{String.valueOf(viewModel.price * viewModel.count)}"
-                            tools:text="999"
-                            />
-                    </LinearLayout>
-                </LinearLayout>
+                <include
+                    layout="@layout/card_price"
+                    bind:actionsHandler="@{actionsHandler}"
+                    bind:viewModel="@{viewModel}"
+                    />
 
                 <View style="@style/HorizontalDivider"/>
 
@@ -183,18 +136,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:text="Подробнее"
+                        android:text="@string/show_more"
                         android:textColor="@color/color_accent"
                         bind:onClick="@{actionsHandler::clickOnShowMore}"
+                        tools:ignore="RelativeOverlap"
                         />
 
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/spacing_normal_16"
+                        android:layout_marginEnd="@dimen/spacing_normal_16"
                         android:button="@drawable/favorite_selector_btn"
                         android:checked="@{viewModel.favorite}"
                         bind:onClick="@{actionsHandler::clickOnFavorite}"
