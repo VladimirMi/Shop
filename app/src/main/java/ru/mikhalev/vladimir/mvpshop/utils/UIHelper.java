@@ -6,6 +6,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
@@ -42,5 +43,31 @@ public class UIHelper {
             }
         }
         return children;
+    }
+
+    public static void waitForMeasure(View view, OnMeasureCallback callback) {
+        int width = view.getWidth();
+        int height = view.getHeight();
+
+        if (width > 0 && height > 0) {
+            callback.onMeasure(view, width, height);
+            return;
+        }
+
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                final ViewTreeObserver observer = view.getViewTreeObserver();
+                if (observer.isAlive()) {
+                    observer.removeOnPreDrawListener(this);
+                }
+                callback.onMeasure(view, view.getWidth(), view.getHeight());
+                return false;
+            }
+        });
+    }
+
+    public interface OnMeasureCallback {
+        void onMeasure(View view, int width, int height);
     }
 }
