@@ -228,7 +228,7 @@ public class ProductView extends BaseView<ProductScreen.ProductPresenter> implem
 
         LayoutParams prodWrapParam = (LayoutParams) mBinding.productWrapper.getLayoutParams();
         int margin = !isZoomed ? 0 : (int) getResources().getDimension(R.dimen.font_normal_16);
-        prodWrapParam.setMargins(margin, 0, margin, 0);
+        prodWrapParam.setMargins(margin, margin, margin, margin);
         mBinding.productWrapper.setLayoutParams(prodWrapParam);
 
         LayoutParams newImageParam;

@@ -130,18 +130,18 @@ public class TreeKeyDispatcher implements Dispatcher, KeyChanger {
 
     @NonNull
     private Animator createAnimation(View from, View to, Direction direction) {
-        boolean backward = direction == Direction.BACKWARD;
+        boolean forward = direction == Direction.FORWARD;
 
         AnimatorSet set = new AnimatorSet();
 
         int fromTransition;
         if (from != null) {
-            fromTransition = backward ? from.getWidth() : -from.getWidth();
+            fromTransition = forward ? -from.getWidth() : from.getWidth();
             ObjectAnimator outAnimation = ObjectAnimator.ofFloat(from, "translationX", fromTransition);
             set.play(outAnimation);
         }
-            int toTransition = backward ? -to.getWidth() : to.getWidth();
-            ObjectAnimator inAnimation = ObjectAnimator.ofFloat(to, "translationX", toTransition);
+            int toTransition = forward ? to.getWidth() : -to.getWidth();
+            ObjectAnimator inAnimation = ObjectAnimator.ofFloat(to, "translationX", toTransition, 0);
             set.play(inAnimation);
 
         return set;
