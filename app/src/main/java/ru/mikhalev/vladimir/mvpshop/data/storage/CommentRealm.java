@@ -1,7 +1,5 @@
 package ru.mikhalev.vladimir.mvpshop.data.storage;
 
-import com.google.common.base.Objects;
-
 import java.io.Serializable;
 import java.util.Date;
 
