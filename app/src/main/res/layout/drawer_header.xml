@@ -23,8 +23,7 @@
             android:id="@+id/avatar"
             android:layout_width="@dimen/drawer_avatar_size"
             android:layout_height="@dimen/drawer_avatar_size"
-            bind:avatar="@{viewModel.avatar}"
-            tools:src="@drawable/user_avatar"/>
+            bind:avatar="@{viewModel.avatar}"/>
 
         <TextView
             android:layout_width="wrap_content"

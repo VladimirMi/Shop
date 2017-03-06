@@ -15,6 +15,8 @@ import com.bumptech.glide.load.engine.cache.MemorySizeCalculator;
 import com.bumptech.glide.module.GlideModule;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
+import ru.mikhalev.vladimir.mvpshop.R;
+
 
 @SuppressWarnings("WeakerAccess")
 public class MyGlideModule implements GlideModule {
@@ -71,6 +73,7 @@ public class MyGlideModule implements GlideModule {
                 .centerCrop()
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .placeholder(R.drawable.ic_account_circle_black_24dp)
                 .into(new BitmapImageViewTarget(view) {
                     @Override
                     protected void setResource(Bitmap resource) {

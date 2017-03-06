@@ -155,7 +155,11 @@ public class RootActivity extends BaseActivity implements IRootView, NavigationV
         Object key = null;
         switch (item.getItemId()) {
             case R.id.nav_account:
-                key = new AccountScreen();
+                if (mRootPresenter.isUserAuth()) {
+                    key = new AccountScreen();
+                } else {
+                    key = new AuthScreen();
+                }
                 break;
 
             case R.id.nav_catalog:

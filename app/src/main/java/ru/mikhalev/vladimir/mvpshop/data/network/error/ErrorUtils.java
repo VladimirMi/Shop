@@ -10,7 +10,7 @@ public class ErrorUtils {
     public static ApiError parseError(Response<?> response) {
         ApiError error = new ApiError();
 
-        // TODO: 15.12.2016 DI
+        // TODO: implement
 //        try {
 //            error = (ApiError) DataManager.getInstance()
 //                    .getRetrofit().responseBodyConverter(ApiError.class, ApiError.class.getAnnotations())

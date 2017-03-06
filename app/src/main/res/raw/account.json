@@ -1,14 +1,14 @@
 {
-  "fullName": "Евгений Максимович",
+  "fullName": "Владимир Сергеевич",
   "avatar": "https://http://skill-branch.ru/img/app/avatar-2.png",
-  "phone": "+7 (909) 987-45-15",
+  "phone": "+7 (989) 123-45-67",
   "orderNotification": "true",
   "promoNotification": "false",
   "addresses": [
     {
       "id": 0,
       "name": "Дом",
-      "street": "Пушкина",
+      "street": "Центральная",
       "house": "21",
       "apartment": "73",
       "floor": "3",
@@ -17,7 +17,7 @@
     {
       "id": 1,
       "name": "Работа",
-      "street": "Ленина",
+      "street": "Крайняя",
       "house": "50",
       "apartment": "99",
       "floor": "9",

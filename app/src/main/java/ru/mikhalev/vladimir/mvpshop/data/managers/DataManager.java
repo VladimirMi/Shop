@@ -22,6 +22,7 @@ import ru.mikhalev.vladimir.mvpshop.data.network.api.RestService;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.AccountRes;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.AvatarUrlRes;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.CommentRes;
+import ru.mikhalev.vladimir.mvpshop.data.network.models.LoginReq;
 import ru.mikhalev.vladimir.mvpshop.data.storage.AccountRealm;
 import ru.mikhalev.vladimir.mvpshop.data.storage.ProductRealm;
 import ru.mikhalev.vladimir.mvpshop.di.DaggerService;
@@ -64,12 +65,13 @@ public class DataManager {
     private void generateMockAccount() {
         AccountRes accountRes = new Gson().fromJson(RawUtils.getJson(mContext, R.raw.account), AccountRes.class);
         mRealmManager.saveAccountInDB(accountRes);
+        saveToken("test_token");
     }
 
     //region =============== Network ==============
 
     public void loginUser(String email, String password) {
-        // TODO: 10/22/16 implement auth
+//        mRestService.loginUser(new LoginReq(email, password));
         generateMockAccount();
     }
 
@@ -131,6 +133,13 @@ public class DataManager {
 
     //region =============== Shared Preferences ==============
 
+    public void saveToken(String token) {
+        mPreferencesManager.saveToken(token);
+    }
+
+    public String getToken() {
+        return mPreferencesManager.getToken();
+    }
 
     public String getLastProductUpdate() {
         return mPreferencesManager.getLastProductUpdate();

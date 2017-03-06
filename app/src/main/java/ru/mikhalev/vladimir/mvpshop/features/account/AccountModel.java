@@ -31,5 +31,9 @@ public class AccountModel extends BaseModel {
         mJobManager.addJobInBackground(new UploadAvatarJob(currentAvatarPath));
     }
 
+    public boolean isUserAuth() {
+        return !mDataManager.getToken().isEmpty();
+    }
+
     //endregion
 }

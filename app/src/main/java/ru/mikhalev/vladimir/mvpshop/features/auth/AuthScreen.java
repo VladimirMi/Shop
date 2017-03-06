@@ -87,7 +87,6 @@ public class AuthScreen extends BaseScreen<RootActivity.Component> {
         @Override
         public void clickOnLogin() {
             mModel.loginUser(mViewModel.getEmail(), mViewModel.getPassword());
-
             if (getRootView() != null) {
                 getRootView().showLoad();
             }

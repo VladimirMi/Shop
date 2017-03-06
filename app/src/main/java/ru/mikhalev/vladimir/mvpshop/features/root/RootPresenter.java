@@ -210,6 +210,10 @@ public class RootPresenter extends Presenter<IRootView> implements IRootPresente
         return this.new ActionBarBuilder();
     }
 
+    public boolean isUserAuth() {
+        return mAccountModel.isUserAuth();
+    }
+
     public class ActionBarBuilder {
         private static final int DEFAULT_MODE = 0;
         private static final int TAB_MODE = 1;

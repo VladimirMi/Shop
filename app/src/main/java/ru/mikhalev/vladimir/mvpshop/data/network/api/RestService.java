@@ -13,6 +13,8 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.AvatarUrlRes;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.CommentRes;
+import ru.mikhalev.vladimir.mvpshop.data.network.models.LoginReq;
+import ru.mikhalev.vladimir.mvpshop.data.network.models.LoginRes;
 import ru.mikhalev.vladimir.mvpshop.data.network.models.ProductRes;
 import ru.mikhalev.vladimir.mvpshop.utils.ConstantManager;
 import rx.Observable;
@@ -31,4 +33,7 @@ public interface RestService {
     @Multipart
     @POST("avatar")
     Observable<AvatarUrlRes> uploadUserAvatar(@Part MultipartBody.Part file);
+
+    @POST("login")
+    Observable<LoginRes> loginUser(@Body LoginReq loginReq);
 }
